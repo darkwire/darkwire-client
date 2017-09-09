@@ -1,3 +1,5 @@
 import socketIO from 'socket.io-client'
 
-export default socketIO('http://localhost:3000')
+export const connect = (roomId) => {
+  return socketIO(`http://localhost:3000/${roomId}`)
+}

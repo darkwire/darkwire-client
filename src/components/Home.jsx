@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router-dom'
 import Crypto from '../utils/crypto'
-import io from '../utils/socket'
+import { connect } from '../utils/socket'
 
 const crypto = new Crypto()
 
@@ -11,19 +11,23 @@ export default class Home extends React.Component {
     super(props)
 
     this.state = {
-      message: ''
+      message: '',
+      io: null
     }
+  }
 
-    const roomId = props.match.params.roomId
+  async componentWillMount() {
+    const roomId = this.props.match.params.roomId
 
-    io.emit('JOIN_ROOM', {
-      roomId
-    })
+    await this.props.createRoom(roomId)
+    console.log(roomId)
+
+    this.state.io = connect(roomId)
   }
 
   handleFormSubmit(evt) {
     evt.preventDefault()
-    io.emit('SEND_MESSAGE', {
+    this.state.io.emit('SEND_MESSAGE', {
       text: this.state.message
     })
   }
@@ -47,4 +51,5 @@ export default class Home extends React.Component {
 }
 
 Home.propTypes = {
+  createRoom: PropTypes.func.isRequired
 }
