@@ -8,6 +8,9 @@ import { push } from 'react-router-redux'
 import { getPublicRoutePaths, getPreventIfAuthenticatedPaths } from '../config/routes'
 import Main from '../components/Main.jsx'
 import Home from '../containers/Home'
+import io from 'socket.io-client'
+
+io('http://localhost:3000')
 
 class App extends React.Component {
   componentWillMount() {
