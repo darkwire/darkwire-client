@@ -16,7 +16,7 @@ export default class Home extends React.Component {
 
     const roomId = crypto.getRandomBytes()
 
-    io.emit('CREATE_ROOM', {
+    io.emit('JOIN_ROOM', {
       roomId
     })
   }
