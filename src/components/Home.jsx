@@ -10,6 +10,10 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      message: ''
+    }
+
     const roomId = crypto.getRandomBytes()
 
     io.emit('CREATE_ROOM', {
@@ -17,10 +21,26 @@ export default class Home extends React.Component {
     })
   }
 
+  handleFormSubmit(evt) {
+    evt.preventDefault()
+    io.emit('SEND_MESSAGE', {
+      text: this.state.message
+    })
+  }
+
+  handleInputChange(evt) {
+    this.setState({
+      message: evt.target.value
+    })
+  }
+
   render() {
     return (
       <div className='container-fluid page landing-page'>
         <div>Hello World</div>
+        <form onSubmit={this.handleFormSubmit.bind(this)}>
+          <input type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
+        </form>
       </div>
     )
   }
