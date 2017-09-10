@@ -20,15 +20,17 @@ export default class Home extends React.Component {
     const roomId = this.props.match.params.roomId
 
     await this.props.createRoom(roomId)
-    console.log(roomId)
 
     this.state.io = connect(roomId)
   }
 
   handleFormSubmit(evt) {
     evt.preventDefault()
-    this.state.io.emit('SEND_MESSAGE', {
-      text: this.state.message
+    this.state.io.emit('PAYLOAD', {
+      type: 'SEND_MESSAGE'
+      payload: {
+        text: this.state.message
+      }
     })
   }
 
