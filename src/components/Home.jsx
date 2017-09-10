@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router-dom'
 import Crypto from '../utils/crypto'
-import { Activity, Info, Settings, PlusCircle } from 'react-feather';
+import { Activity, Info, Settings, PlusCircle, User } from 'react-feather';
 import { connect } from '../utils/socket'
 const crypto = new Crypto()
 
@@ -61,14 +61,14 @@ export default class Home extends React.Component {
           </div>
           <div className="row">
             <div className="col-12">
-              abc
+              <User /> abc
             </div>
           </div>
         </div>
         <div className="col-9 offset-3 pt-3">
           <div className="row h-100">
             <div className="col-12">
-              <div className="row bottom-border">
+              <div className="row bottom-border" style={{marginBottom: '20px'}}>
                 <div className="col-9">
                   <div className="p-1">
                     /roomId
@@ -92,6 +92,14 @@ export default class Home extends React.Component {
               </div>
               <div className="row row-eq-height">
                 <div className="col-12">
+                  <div className="chat-message">
+                    <div className="chat-meta"> 
+                      <span className="username">Dan</span> <span className="timestamp">1 min ago</span>
+                    </div>
+                    <div className="chat">
+                      <p>Hay</p>
+                    </div>
+                  </div>
                   <form onSubmit={this.handleFormSubmit.bind(this)}>
                     <textarea className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
                   </form>
