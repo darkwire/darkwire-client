@@ -17,18 +17,12 @@ class App extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-  }
 
   render() {
     return (
-      <div>
-        <div>
-          <main>
-            <Route path="/" exact component={Init}/>
-            <Route path="/:roomId" component={Home}/>
-          </main>
-        </div>
+      <div className="container-fluid h-100">
+        <Route path="/" exact component={Init}/>
+        <Route path="/:roomId" component={Home}/>
       </div>
     )
   }

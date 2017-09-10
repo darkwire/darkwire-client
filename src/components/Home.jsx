@@ -49,43 +49,44 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <div className='container-fluid'>
-          <div className="row h-100">
-          <div className="col-3 right-border">
-            <div className="row bottom-border">
-              <div className="col-12">
-                <h1>darkwire</h1>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12">
-                abc
-              </div>
+        <div className="row h-100">
+        <div className="col-3 right-border">
+          <div className="row bottom-border">
+            <div className="col-12">
+              <h1 className="p-1">darkwire</h1>
             </div>
           </div>
-          <div className="col-9">
-            <div className="row h-100">
-              <div className="col-12">
-                <div className="row bottom-border">
-                  <div className="col-9">
+          <div className="row">
+            <div className="col-12">
+              abc
+            </div>
+          </div>
+        </div>
+        <div className="col-9">
+          <div className="row h-100">
+            <div className="col-12">
+              <div className="row bottom-border">
+                <div className="col-9">
+                  <div className="p-1">
                     /roomId
                   </div>
-                  <div className="col-3">
+                </div>
+                <div className="col-3">
+                  <div className="p-1">
                     icons
                   </div>
                 </div>
-                <div className="row row-eq-height">
-                  <div className="col-12">
-                    <form onSubmit={this.handleFormSubmit.bind(this)}>
-                      <textarea className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
-                    </form>
-                  </div>
+              </div>
+              <div className="row row-eq-height">
+                <div className="col-12">
+                  <form onSubmit={this.handleFormSubmit.bind(this)}>
+                    <textarea className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     )
   }
