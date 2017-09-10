@@ -7,7 +7,7 @@ body
   background-color: $primary
   color: $body
 
-textarea.chat
+input.chat
   width: 100%
   padding: 12px
   background-color: $secondary
@@ -47,3 +47,23 @@ textarea.chat
       font-size: 16px
   margin-bottom: 20px
   border-bottom: 1px solid $inactive
+
+.online-users
+  font-size: 11px
+  font-weight: bold
+  text-transform: uppercase
+  color: $inactive
+  margin: 10px 0
+
+.chat-preflight-container
+  position: relative
+  .icon
+    height: 2.25em
+    pointer-events: none
+    position: absolute
+    top: 0
+    width: 2.25em
+    z-index: 4
+    padding: 12px
+  .is-right
+    right: 20px

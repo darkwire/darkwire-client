@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router-dom'
 import Crypto from '../utils/crypto'
-import { Activity, Info, Settings, PlusCircle, User } from 'react-feather';
+import { Activity, Info, Settings, PlusCircle, User, CornerDownRight } from 'react-feather';
 import { connect } from '../utils/socket'
 const crypto = new Crypto()
 
@@ -61,7 +61,10 @@ export default class Home extends React.Component {
           </div>
           <div className="row">
             <div className="col-12">
-              <User /> abc
+              <div className="online-users">
+                ONLINE - 1
+              </div>
+              <User /> Dan
             </div>
           </div>
         </div>
@@ -100,8 +103,11 @@ export default class Home extends React.Component {
                       <p>Hay</p>
                     </div>
                   </div>
-                  <form onSubmit={this.handleFormSubmit.bind(this)}>
-                    <textarea className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
+                  <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
+                    <input className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
+                    <div className="icon is-right">
+                      <CornerDownRight />
+                    </div>
                   </form>
                 </div>
               </div>
