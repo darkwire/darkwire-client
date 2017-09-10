@@ -1,0 +1,23 @@
+
+
+
+
+
+{
+  username,
+  roomId,
+  activity: [{
+    type: 'message | file | isTyping | usernameChange | slashCommand',
+    data,
+    username,
+    timestamp
+  }],
+  members: [{
+    username,
+    publicKey
+  }],
+  keys: {
+    privateKey,
+    publicKey
+  }
+}
