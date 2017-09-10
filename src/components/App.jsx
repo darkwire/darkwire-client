@@ -20,7 +20,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid h-100">
+      <div className="container-fluid">
         <Route path="/" exact component={Init}/>
         <Route path="/:roomId" component={Home}/>
       </div>

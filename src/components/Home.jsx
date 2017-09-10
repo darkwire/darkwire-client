@@ -49,8 +49,8 @@ export default class Home extends React.Component {
 
   render() {
     return (
-        <div className="row h-100">
-        <div className="col-3 right-border">
+      <div className="row h-100">
+        <div className="col-3 sidebar">
           <div className="row bottom-border">
             <div className="col-12">
               <h1 className="p-1">darkwire</h1>
@@ -62,7 +62,7 @@ export default class Home extends React.Component {
             </div>
           </div>
         </div>
-        <div className="col-9">
+        <div className="col-9 offset-3 pt-3">
           <div className="row h-100">
             <div className="col-12">
               <div className="row bottom-border">
