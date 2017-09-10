@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import 'feather-icons'
 import BootstrapCSS from 'bootstrap/dist/css/bootstrap.min.css'
 import ShepherdCSS from 'tether-shepherd/dist/css/shepherd-theme-dark.css'
 import animateStyles from 'animate.css/animate.min.css'

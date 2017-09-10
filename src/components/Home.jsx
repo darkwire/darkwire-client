@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router-dom'
 import Crypto from '../utils/crypto'
+import { Activity, Info, Settings, PlusCircle } from 'react-feather';
 import { connect } from '../utils/socket'
 const crypto = new Crypto()
 
@@ -53,7 +54,9 @@ export default class Home extends React.Component {
         <div className="col-3 sidebar">
           <div className="row bottom-border">
             <div className="col-12">
-              <h1 className="p-1">darkwire</h1>
+              <div className="p-1">
+                <h2><Activity /> darkwire</h2>
+                </div>
             </div>
           </div>
           <div className="row">
@@ -73,7 +76,17 @@ export default class Home extends React.Component {
                 </div>
                 <div className="col-3">
                   <div className="p-1">
-                    icons
+                    <div className="row">
+                      <div className="col">
+                        <PlusCircle />
+                      </div>
+                      <div className="col">
+                        <Settings />
+                      </div>
+                      <div className="col">
+                        <Info />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
