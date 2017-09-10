@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router-dom'
 import Crypto from '../utils/crypto'
 import { connect } from '../utils/socket'
-
 const crypto = new Crypto()
 
 export default class Home extends React.Component {
@@ -21,7 +20,15 @@ export default class Home extends React.Component {
 
     await this.props.createRoom(roomId)
 
-    this.state.io = connect(roomId)
+    this.setState(
+                  {io: connect(roomId)})
+  }
+
+  componentDidMount() {
+    this.state.io.on('PAYLOAD', function (data) {
+      console.log(data);
+      // socket.emit('my other event', { my: 'data' });
+    });
   }
 
   handleFormSubmit(evt) {
@@ -42,11 +49,32 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <div className='container-fluid page landing-page'>
-        <div>Hello World</div>
-        <form onSubmit={this.handleFormSubmit.bind(this)}>
-          <input type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
-        </form>
+      <div className='page'>
+        <div className="row">
+          <div className="col-3">
+            <h1>darkwire</h1>
+          </div>
+          <div className="col-9">
+            <div className="row">
+              <div className="col-9">
+                /roomId
+              </div>
+              <div className="col-3">
+                icons
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-3">
+            Person
+          </div>
+          <div className="col-9">
+            <form onSubmit={this.handleFormSubmit.bind(this)}>
+              <textarea className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
+            </form>
+          </div>
+        </div>
       </div>
     )
   }
