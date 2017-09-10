@@ -27,7 +27,7 @@ export default class Home extends React.Component {
   handleFormSubmit(evt) {
     evt.preventDefault()
     this.state.io.emit('PAYLOAD', {
-      type: 'SEND_MESSAGE'
+      type: 'SEND_MESSAGE',
       payload: {
         text: this.state.message
       }
