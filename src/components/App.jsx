@@ -6,7 +6,6 @@ import styles from '../stylesheets/app.sass'
 import { Route } from 'react-router'
 import { push } from 'react-router-redux'
 import { getPublicRoutePaths, getPreventIfAuthenticatedPaths } from '../config/routes'
-import Main from '../components/Main.jsx'
 import Init from '../containers/Init'
 import Home from '../containers/Home'
 import io from '../utils/socket'
@@ -26,7 +25,6 @@ class App extends React.Component {
       <div>
         <div>
           <main>
-            <Route path="/" component={Main}/>
             <Route path="/" exact component={Init}/>
             <Route path="/:roomId" component={Home}/>
           </main>
