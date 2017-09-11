@@ -28,7 +28,11 @@ export default class Home extends React.Component {
     })
 
     io.on('USER_ENTER', (payload) => {
-      this.props.receiveUserEnter(payload)
+      this.props.receiveUserEnter(io, payload)
+    })
+
+    io.on('USER_ENTER_ECHO', (payload) => {
+      this.props.receiveUserEnterEcho(io, payload)
     })
 
     io.on('USER_EXIT', (payload) => {
@@ -92,5 +96,6 @@ Home.propTypes = {
   sendSocketMessage: PropTypes.func.isRequired,
   createUser: PropTypes.func.isRequired,
   receiveUserExit: PropTypes.func.isRequired,
-  receiveUserEnter: PropTypes.func.isRequired
+  receiveUserEnter: PropTypes.func.isRequired,
+  receiveUserEnterEcho: PropTypes.func.isRequired
 }

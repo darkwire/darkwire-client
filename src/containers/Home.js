@@ -7,7 +7,8 @@ import {
   createUser,
   userEnter,
   receiveUserExit,
-  receiveUserEnter
+  receiveUserEnter,
+  receiveUserEnterEcho
 } from '../actions'
 
 const mapStateToProps = (state) => ({
@@ -19,6 +20,7 @@ const mapDispatchToProps = {
   sendSocketMessage,
   receiveUserExit,
   receiveUserEnter,
+  receiveUserEnterEcho,
   createUser
 }
 
