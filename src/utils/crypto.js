@@ -32,11 +32,14 @@ export default class Crypto {
     return str;
   }
 
-  createSigningKey() {
+  createSignVerifyKeys() {
     return this._crypto.subtle.generateKey(
       {
-        name: 'HMAC',
+        name: 'RSASSA-PKCS1-v1_5',
+        modulusLength: 2048, //can be 1024, 2048, or 4096
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
         hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
+        // hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
         //length: 256, //optional, if you want your key length to differ from the hash function's block length
       },
       true, //whether the key is extractable (i.e. can be used in exportKey)
@@ -44,7 +47,7 @@ export default class Crypto {
     );
   }
 
-  createPrimaryKeys() {
+  createEncryptDecryptKeys() {
     return this._crypto.subtle.generateKey(
       {
         name: 'RSA-OAEP',
@@ -97,17 +100,32 @@ export default class Crypto {
     );
   }
 
-  encryptSigningKey(data, signingKey) {
+  encryptPayload(data, key) {
     // Secret key will be recipient's public key
     return this._crypto.subtle.encrypt(
       {
         name: 'RSA-OAEP',
         modulusLength: 2048,
         publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: {name: 'SHA-256'}
+        // Can use SHA-256 in Safari 10 -- need to check?
+        hash: { name: this._crypto.webkitSubtle ? 'SHA-1' : 'SHA-256' }
       },
-      signingKey,
+      key,
       data //ArrayBuffer of data you want to encrypt
+    );
+  }
+
+  decryptPayload(data, key) {
+    return this._crypto.subtle.decrypt(
+      {
+        name: 'RSA-OAEP',
+        modulusLength: 2048,
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        // Can use SHA-256 in Safari 10 -- need to check?
+        hash: { name: this._crypto.webkitSubtle ? 'SHA-1' : 'SHA-256' }
+      },
+      key,
+      data
     );
   }
 
@@ -163,23 +181,24 @@ export default class Crypto {
     );
   }
 
- importPrimaryKey(jwkData, format) {
-    // Will be someone's public key
+  importEncryptDecryptKey(jwkData, format = 'jwk', ops) {
     let hashObj = {
       name: 'RSA-OAEP'
     };
     if (!this._crypto.webkitSubtle) {
       hashObj.hash = {name: 'SHA-256'};
     }
+
     return this._crypto.subtle.importKey(
-      format || 'jwk', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
+      format, //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
       jwkData,
       hashObj,
       true, //whether the key is extractable (i.e. can be used in exportKey)
-      ['encrypt'] //'encrypt' or 'wrapKey' for public key import or
+      ops || ['encrypt'] //'encrypt' or 'wrapKey' for public key import or
                   //'decrypt' or 'unwrapKey' for private key imports
     );
   }
+
 
   exportKey(key, format) {
     // Will be public primary key or public signing key
@@ -189,18 +208,19 @@ export default class Crypto {
     );
   }
 
-  importSigningKey(jwkData) {
+  importSignVerifyKey(jwkData, keyOps) {
     return this._crypto.subtle.importKey(
-      'raw', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
+      'jwk', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
       //this is an example jwk key, other key types are Uint8Array objects
       jwkData,
       {   //these are the algorithm options
-        name: 'HMAC',
+        name: 'RSASSA-PKCS1-v1_5',
+        modulusLength: 2048, //can be 1024, 2048, or 4096
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
         hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
-        //length: 256, //optional, if you want your key length to differ from the hash function's block length
       },
       true, //whether the key is extractable (i.e. can be used in exportKey)
-      ['verify'] //'verify' for public key import, 'sign' for private key imports
+      keyOps //'verify' for public key import, 'sign' for private key imports
     );
   }
 
@@ -208,8 +228,10 @@ export default class Crypto {
     // Will use my private key
     return this._crypto.subtle.sign(
       {
-        name: 'HMAC',
-        hash: {name: 'SHA-256'}
+        name: 'RSASSA-PKCS1-v1_5',
+        modulusLength: 2048, //can be 1024, 2048, or 4096
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
       },
       keyToSignWith, //from generateKey or importKey above
       data //ArrayBuffer of data you want to sign

@@ -21,12 +21,65 @@ export default class Home extends React.Component {
 
     await this.props.createRoom(roomId)
 
-    this.state.io = connect(roomId)
+    const io = connect(roomId)
+
+    this.setState({
+      io
+    })
+
+    io.on('USER_ENTER', (payload) => {
+      this.props.userEnter(payload)
+    })
+
+    io.on('USER_EXIT', (payload) => {
+      this.props.userExit(payload)
+    })
+
+    io.on('PAYLOAD', (payload) => {
+      this.props.receiveSocketMessage(payload)
+    })
+
+    this.createUser()
+  }
+
+  async createUser() {
+    let username = await crypto.getRandomBytes()
+    username = username.replace('-', '').substring(0, 10)
+
+    const encryptDecryptKeys = await crypto.createEncryptDecryptKeys()
+    const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
+    const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
+
+    const signVerifyKeys = await crypto.createSignVerifyKeys()
+    const exportedSignVerifyPrivateKey = await crypto.exportKey(signVerifyKeys.privateKey)
+    const exportedSignVerifyPublicKey = await crypto.exportKey(signVerifyKeys.publicKey)
+
+    this.props.createUser({
+      username,
+      encryptDecryptKeys: {
+        publicKey: exportedEncryptDecryptPublicKey,
+        privateKey: exportedEncryptDecryptPrivateKey
+      },
+      signVerifyKeys: {
+        publicKey: exportedSignVerifyPublicKey,
+        privateKey: exportedSignVerifyPrivateKey
+      }
+    })
+
+    this.props.sendSocketMessage(this.state.io, {
+      type: 'ADD_USER',
+      payload: {
+        username,
+        encryptDecryptPublicKey: exportedEncryptDecryptPublicKey,
+        signVerifyPublicKey: exportedSignVerifyPublicKey
+      }
+    })
   }
 
   handleFormSubmit(evt) {
     evt.preventDefault()
-    this.state.io.emit('PAYLOAD', {
+
+    this.props.sendSocketMessage(this.state.io, {
       type: 'SEND_MESSAGE',
       payload: {
         text: this.state.message
@@ -53,5 +106,10 @@ export default class Home extends React.Component {
 }
 
 Home.propTypes = {
-  createRoom: PropTypes.func.isRequired
+  createRoom: PropTypes.func.isRequired,
+  receiveSocketMessage: PropTypes.func.isRequired,
+  sendSocketMessage: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
+  userEnter: PropTypes.func.isRequired,
+  userExit: PropTypes.func.isRequired
 }
