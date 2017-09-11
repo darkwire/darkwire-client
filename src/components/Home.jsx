@@ -85,6 +85,14 @@ export default class Home extends React.Component {
         <form onSubmit={this.handleFormSubmit.bind(this)}>
           <input type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
         </form>
+        <ul>
+          {this.props.messages.map((message, index) => (
+            <li key={index}>
+              <span>{message.text}</span><br/>
+              <span>{message.sender}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     )
   }
@@ -97,5 +105,6 @@ Home.propTypes = {
   createUser: PropTypes.func.isRequired,
   receiveUserExit: PropTypes.func.isRequired,
   receiveUserEnter: PropTypes.func.isRequired,
-  receiveUserEnterEcho: PropTypes.func.isRequired
+  receiveUserEnterEcho: PropTypes.func.isRequired,
+  messages: PropTypes.array.isRequired
 }

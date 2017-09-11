@@ -12,6 +12,7 @@ import {
 } from '../actions'
 
 const mapStateToProps = (state) => ({
+  messages: state.activities.items
 })
 
 const mapDispatchToProps = {

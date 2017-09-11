@@ -83,13 +83,15 @@ export const prepare = (payload, state) => {
     const signingKey = await crypto.createSigningKey()
     const iv = await crypto.crypto.getRandomValues(new Uint8Array(16))
 
-    const payloadBuffer = crypto.convertStringToArrayBufferView(JSON.stringify({
+    const jsonToSend = {
       ...payload,
       payload: {
         ...payload.payload,
         sender: myUsername
       }
-    }))
+    }
+
+    const payloadBuffer = crypto.convertStringToArrayBufferView(JSON.stringify(jsonToSend))
 
     const encryptedPayload = await crypto.encryptMessage(payloadBuffer, sessionKey, iv)
     const payloadString = await crypto.convertArrayBufferViewToString(new Uint8Array(encryptedPayload))
@@ -114,10 +116,13 @@ export const prepare = (payload, state) => {
     const signatureString = await crypto.convertArrayBufferViewToString(new Uint8Array(signature))
 
     resolve({
-      payload: payloadString,
-      signature: signatureString,
-      iv: ivString,
-      keys: encryptedKeys
+      toSend: {
+        payload: payloadString,
+        signature: signatureString,
+        iv: ivString,
+        keys: encryptedKeys
+      },
+      original: jsonToSend
     })
   });
 }

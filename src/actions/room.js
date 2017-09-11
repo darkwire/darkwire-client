@@ -64,7 +64,10 @@ export const sendSocketMessage = (io, payload) => {
     try {
       const state = getState()
       const msg = await prepareMessage(payload, state)
-      io.emit('PAYLOAD', msg)
+      
+      dispatch({ type: msg.original.type, payload: msg.original.payload })
+
+      io.emit('PAYLOAD', msg.toSend)
     } catch(e) {
     }
   }
