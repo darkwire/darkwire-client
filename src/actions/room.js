@@ -17,48 +17,30 @@ export const createRoom = (id) => {
 export const receiveSocketMessage = (payload) => {
   return async (dispatch, getState) => {
     dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
-    // Process message
     const state = getState()
     const message = await processMessage(payload, state)
-    // Dispatch message type action
     dispatch({ type: message.type, payload: message.payload })
   }
 }
 
 export const createUser = (io, payload) => {
   return async (dispatch, getState) => {
-    // dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
-    // Process message
-    // const state = getState()
-    io.emit('USER_ENTER', payload)
-    // const message = await processUserEnterMessage(payload, state)
-    // Dispatch message type action
+    io.emit('USER_ENTER', {
+      username: payload.username,
+      publicKey: payload.publicKey
+    })
     dispatch({ type: 'CREATE_USER', payload })
   }
 }
 
 export const receiveUserExit = (payload) => {
   return async (dispatch, getState) => {
-    // dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
-    // Process message
-    // const state = getState()
-    // io.emit('PAYLOAD', payload)
-    // const message = await processUserExitMessage(payload, state)
-    // Dispatch message type action
     dispatch({ type: 'USER_EXIT', payload })
-    // dispatch({ type: 'USER_ENTER', payload })
   }
 }
 
 export const receiveUserEnter = (payload) => {
   return async (dispatch, getState) => {
-    // dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
-    // Process message
-    // const state = getState()
-    // io.emit('PAYLOAD', payload)
-    // const message = await processUserExitMessage(payload, state)
-    // Dispatch message type action
-    // dispatch({ type: 'USER_EXIT', payload })
     dispatch({ type: 'USER_ENTER', payload })
   }
 }
@@ -66,23 +48,12 @@ export const receiveUserEnter = (payload) => {
 export const sendSocketMessage = (io, payload) => {
   return async (dispatch, getState) => {
     dispatch({ type: 'SEND_SOCKET_MESSAGE', payload })
-
-    // Dispatch message type action
-    // dispatch({ type: payload.type, payload: payload.payload })
-
     try {
-      // Prep for sending (encrypt payload)
       const state = getState()
       const msg = await prepareMessage(payload, state)
-      console.log('EMIT')
-      console.log(msg)
       io.emit('PAYLOAD', msg)
     } catch(e) {
-      console.log(e)
     }
   }
 }
 
-// export const createUser = (user) => {
-//   return { type: 'CREATE_USER', payload: user }
-// }

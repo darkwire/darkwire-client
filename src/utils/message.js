@@ -2,32 +2,66 @@ import Crypto from './crypto'
 
 const crypto = new Crypto()
 
-export const process = (payload, state) => {
-  console.log('PROCESS')
-  console.log(payload)
+export const process = async (payload, state) => {
 
-  const myUsername = state.user.username
+  const username = state.user.username
+  const privateKeyJson = state.user.privateKey
 
-  let decryptedPayload
-  console.log(payload)
-  const encryptDecryptPrivateKey = state.user.encryptDecryptKeys.privateKey
+  const privateKey = await crypto.importEncryptDecryptKey(privateKeyJson, 'jwk', ['decrypt', 'unwrapKey'])
 
-  payload.forEach(async (p) => {
-    try {
-      const decryptKey = encryptDecryptPrivateKey
-      console.log(decryptKey)
-      const key = await crypto.importEncryptDecryptKey(decryptKey, 'jwk', ['decrypt'])
-      console.log(p)
-      console.log(encryptDecryptPrivateKey)
-      decryptedPayload = await crypto.decryptPayload(p, key)
-      console.log(decryptedPayload)
-      // For perf should break here and prevent trying to decrypt others
-      // payload = decryptedPayload
-    } catch(e) {
-      console.log('CATCH', e)
-    }
+  let sessionKey
+  let signingKey
+
+  const iv = await crypto.convertStringToArrayBufferView(payload.iv)
+  const signature = await crypto.convertStringToArrayBufferView(payload.signature)
+  const payloadBuffer = await crypto.convertStringToArrayBufferView(payload.payload)
+  
+  await new Promise((resolve, reject) => {
+    payload.keys.forEach(async key => {
+      try {
+        sessionKey = await crypto.unwrapKey(
+          'jwk',
+          key.sessionKey,
+          privateKey,
+          'RSA-OAEP',
+          'AES-CBC',
+          true,
+          ['decrypt']
+        ),
+        signingKey = await crypto.unwrapKey(
+          'jwk',
+          key.signingKey,
+          privateKey,
+          'RSA-OAEP',
+          { name: 'HMAC', hash: 'SHA-256' },
+          true,
+          ['verify']
+        )
+        resolve()
+      } catch(e) {}
+    })
   })
-  console.log(decryptedPayload)
+
+  const decryptedPayload = await crypto.decryptMessage(
+    payloadBuffer,
+    sessionKey,
+    iv
+  )
+
+  const payloadJson = crypto.convertArrayBufferViewToString(new Uint8Array(decryptedPayload))
+
+  const verified = await crypto.verifyPayload(
+    signature,
+    decryptedPayload,
+    signingKey
+  )
+
+  if (verified) {
+    console.log('SUCCESS')
+    console.log(payloadJson)
+  } else {
+    console.log('FAIL')
+  }
 
   return new Promise((resolve, reject) => {
     resolve({
@@ -40,45 +74,48 @@ export const process = (payload, state) => {
 export const prepare = (payload, state) => {
   return new Promise(async(resolve, reject) => {
 
-    if (state.room.members < 2 && payload.type !== 'ADD_USER') {
+    if (state.room.members < 2) {
       return reject('No members to send message to')
     }
+
     const myUsername = state.user.username
-    const signVerifyPrivateKey = state.user.signVerifyKeys.privateKey
-    const importedSignVerifyPrivateKey = await crypto.importSignVerifyKey(signVerifyPrivateKey, ['sign'])
+    
+    const sessionKey = await crypto.createSecretKey()
+    const signingKey = await crypto.createSigningKey()
+    const iv = await crypto.crypto.getRandomValues(new Uint8Array(16))
+
+    const payloadBuffer = crypto.convertStringToArrayBufferView(JSON.stringify({
+      sender: myUsername,
+      payload: payload.payload
+    }))
+
+    const encryptedPayload = await crypto.encryptMessage(payloadBuffer, sessionKey, iv)
+    const payloadString = await crypto.convertArrayBufferViewToString(new Uint8Array(encryptedPayload))
+    
+    const signature = await crypto.signMessage(payloadBuffer, signingKey)
   
-    const payloads = await Promise.all(state.room.members
-      // .filter(m => m.username !== myUsername)
-      .map((member) => {
-        return new Promise(async(resolve, reject) => {
-          const payloadObj = {
-            username: member.username,
-            payload: payload.payload
-          }
-          console.log(payloadObj)
-          const payloadBuffer =  crypto.convertStringToArrayBufferView(JSON.stringify(payloadObj))
-          console.log('1')
-          const signedPayload = await crypto.signKey(payloadBuffer, importedSignVerifyPrivateKey)
-          console.log('2')
-
-          const publicKey = member.encryptDecryptPublicKey
-          const key = await crypto.importEncryptDecryptKey(publicKey)
-          // console.log(signedPayload, key)
-
-          let encryptedPayload
-          try {
-            console.log('TRY')
-            encryptedPayload = await crypto.encryptPayload(signedPayload, key)
-          } catch(e) {
-            console.log(e)
-          }
-          console.log('4')
-          
-          resolve(encryptedPayload)
-        })
+    const encryptedKeys = await Promise.all(state.room.members
+      .map(async (member) => {
+        const key = await crypto.importEncryptDecryptKey(member.publicKey)
+        const enc = await Promise.all([
+          crypto.wrapKey(sessionKey, key),
+          crypto.wrapKey(signingKey, key)
+        ])
+        return {
+          sessionKey: enc[0],
+          signingKey: enc[1]
+        }
       })
     )
-    console.log(payloads)
-    resolve(payloads)
+
+    const ivString = await crypto.convertArrayBufferViewToString(new Uint8Array(iv))
+    const signatureString = await crypto.convertArrayBufferViewToString(new Uint8Array(signature))
+
+    resolve({
+      payload: payloadString,
+      signature: signatureString,
+      iv: ivString,
+      keys: encryptedKeys
+    })
   });
 }

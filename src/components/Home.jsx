@@ -49,31 +49,10 @@ export default class Home extends React.Component {
     const encryptDecryptKeys = await crypto.createEncryptDecryptKeys()
     const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
     const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
-    console.log(encryptDecryptKeys.publicKey)
-    console.log(exportedEncryptDecryptPublicKey)
-
-    // const signVerifyKeys = await crypto.createSignVerifyKeys()
-    // const exportedSignVerifyPrivateKey = await crypto.exportKey(signVerifyKeys.privateKey)
-    // const exportedSignVerifyPublicKey = await crypto.exportKey(signVerifyKeys.publicKey)
-
-    // this.props.createUser({
-    //   username,
-    //   encryptDecryptKeys: {
-    //     publicKey: exportedEncryptDecryptPublicKey,
-    //     privateKey: exportedEncryptDecryptPrivateKey
-    //   },
-    //   signVerifyKeys: {
-    //     publicKey: exportedSignVerifyPublicKey,
-    //     privateKey: exportedSignVerifyPrivateKey
-    //   }
-    // })
 
     this.props.createUser(this.state.io, {
-      // type: 'USER_ENTER',
-      // payload: {
-      username,
-      publicKey: exportedEncryptDecryptPublicKey
-      // }
+      publicKey: exportedEncryptDecryptPublicKey,
+      privateKey: exportedEncryptDecryptPrivateKey
     })
   }
 
@@ -111,7 +90,6 @@ Home.propTypes = {
   receiveSocketMessage: PropTypes.func.isRequired,
   sendSocketMessage: PropTypes.func.isRequired,
   createUser: PropTypes.func.isRequired,
-  // userEnter: PropTypes.func.isRequired,
   receiveUserExit: PropTypes.func.isRequired,
   receiveUserEnter: PropTypes.func.isRequired
 }
