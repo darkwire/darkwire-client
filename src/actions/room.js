@@ -25,25 +25,41 @@ export const receiveSocketMessage = (payload) => {
   }
 }
 
-export const userEnter = (payload) => {
+export const createUser = (io, payload) => {
   return async (dispatch, getState) => {
-    dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
+    // dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
     // Process message
-    const state = getState()
+    // const state = getState()
+    io.emit('USER_ENTER', payload)
     // const message = await processUserEnterMessage(payload, state)
     // Dispatch message type action
-    dispatch({ type: 'USER_ENTER', payload })
+    dispatch({ type: 'CREATE_USER', payload })
   }
 }
 
-export const userExit = (payload) => {
+export const receiveUserExit = (payload) => {
   return async (dispatch, getState) => {
-    dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
+    // dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
     // Process message
-    const state = getState()
+    // const state = getState()
+    // io.emit('PAYLOAD', payload)
     // const message = await processUserExitMessage(payload, state)
     // Dispatch message type action
     dispatch({ type: 'USER_EXIT', payload })
+    // dispatch({ type: 'USER_ENTER', payload })
+  }
+}
+
+export const receiveUserEnter = (payload) => {
+  return async (dispatch, getState) => {
+    // dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
+    // Process message
+    // const state = getState()
+    // io.emit('PAYLOAD', payload)
+    // const message = await processUserExitMessage(payload, state)
+    // Dispatch message type action
+    // dispatch({ type: 'USER_EXIT', payload })
+    dispatch({ type: 'USER_ENTER', payload })
   }
 }
 
@@ -67,6 +83,6 @@ export const sendSocketMessage = (io, payload) => {
   }
 }
 
-export const createUser = (user) => {
-  return { type: 'CREATE_USER', payload: user }
-}
+// export const createUser = (user) => {
+//   return { type: 'CREATE_USER', payload: user }
+// }
