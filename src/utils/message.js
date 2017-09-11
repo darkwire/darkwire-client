@@ -3,7 +3,6 @@ import Crypto from './crypto'
 const crypto = new Crypto()
 
 export const process = async (payload, state) => {
-
   const username = state.user.username
   const privateKeyJson = state.user.privateKey
 
@@ -48,7 +47,7 @@ export const process = async (payload, state) => {
     iv
   )
 
-  const payloadJson = crypto.convertArrayBufferViewToString(new Uint8Array(decryptedPayload))
+  const payloadJson = JSON.parse(crypto.convertArrayBufferViewToString(new Uint8Array(decryptedPayload)))
 
   const verified = await crypto.verifyPayload(
     signature,
@@ -86,12 +85,12 @@ export const prepare = (payload, state) => {
 
     const payloadBuffer = crypto.convertStringToArrayBufferView(JSON.stringify({
       sender: myUsername,
-      payload: payload.payload
+      payload
     }))
 
     const encryptedPayload = await crypto.encryptMessage(payloadBuffer, sessionKey, iv)
     const payloadString = await crypto.convertArrayBufferViewToString(new Uint8Array(encryptedPayload))
-    
+
     const signature = await crypto.signMessage(payloadBuffer, signingKey)
   
     const encryptedKeys = await Promise.all(state.room.members

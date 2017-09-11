@@ -51,6 +51,7 @@ export default class Home extends React.Component {
     const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
 
     this.props.createUser(this.state.io, {
+      username,
       publicKey: exportedEncryptDecryptPublicKey,
       privateKey: exportedEncryptDecryptPrivateKey
     })
