@@ -1,10 +1,15 @@
 import { combineReducers } from 'redux'
 import app from './app'
-import entities from './entities'
+import activities from './activities'
+import user from './user'
+import room from './room'
 import { routerReducer } from 'react-router-redux'
 
 const appReducer = combineReducers({
-  entities,
+  app,
+  user,
+  room,
+  activities,
   router: routerReducer
 })
 

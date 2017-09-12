@@ -34,7 +34,8 @@
     "socket.io-client": "^2.0.3",
     "tether": "^1.4.0",
     "tether-shepherd": "^1.8.1",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "webcrypto-shim": "^0.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",

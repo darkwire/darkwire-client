@@ -31,7 +31,6 @@ export const fetch = (opts, dispatch, name, meta = {}) => {
   }
 
   return new Promise((resolve, reject) => {
-    console.log(config)
     meta = { ...meta, timestamp: Date.now() }
     dispatch(fetchStart(name, method, resourceId, meta))
     return isoFetch(url, config)

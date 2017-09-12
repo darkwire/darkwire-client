@@ -21,20 +21,50 @@ export default class Home extends React.Component {
 
     await this.props.createRoom(roomId)
 
-    this.setState(
-                  {io: connect(roomId)})
+    const io = connect(roomId)
+
+    this.setState({
+      io
+    })
+
+    io.on('USER_ENTER', (payload) => {
+      this.props.receiveUserEnter(io, payload)
+    })
+
+    io.on('USER_ENTER_ECHO', (payload) => {
+      this.props.receiveUserEnterEcho(io, payload)
+    })
+
+    io.on('USER_EXIT', (payload) => {
+      this.props.receiveUserExit(payload)
+    })
+
+    io.on('PAYLOAD', (payload) => {
+      this.props.receiveSocketMessage(payload)
+    })
+
+    this.createUser()
   }
 
-  componentDidMount() {
-    this.state.io.on('PAYLOAD', function (data) {
-      console.log(data);
-      // socket.emit('my other event', { my: 'data' });
-    });
+  async createUser() {
+    let username = await crypto.getRandomBytes()
+    username = username.replace('-', '').substring(0, 10)
+
+    const encryptDecryptKeys = await crypto.createEncryptDecryptKeys()
+    const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
+    const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
+
+    this.props.createUser(this.state.io, {
+      username,
+      publicKey: exportedEncryptDecryptPublicKey,
+      privateKey: exportedEncryptDecryptPrivateKey
+    })
   }
 
   handleFormSubmit(evt) {
     evt.preventDefault()
-    this.state.io.emit('PAYLOAD', {
+
+    this.props.sendSocketMessage(this.state.io, {
       type: 'SEND_MESSAGE',
       payload: {
         text: this.state.message
@@ -103,6 +133,14 @@ export default class Home extends React.Component {
                       <p>Hay</p>
                     </div>
                   </div>
+<ul>
+          {this.props.messages.map((message, index) => (
+            <li key={index}>
+              <span>{message.text}</span><br/>
+              <span>{message.sender}</span>
+            </li>
+          ))}
+          </ul>
                   <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
                     <input className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
                     <div className="icon is-right">
@@ -120,5 +158,12 @@ export default class Home extends React.Component {
 }
 
 Home.propTypes = {
-  createRoom: PropTypes.func.isRequired
+  createRoom: PropTypes.func.isRequired,
+  receiveSocketMessage: PropTypes.func.isRequired,
+  sendSocketMessage: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
+  receiveUserExit: PropTypes.func.isRequired,
+  receiveUserEnter: PropTypes.func.isRequired,
+  receiveUserEnterEcho: PropTypes.func.isRequired,
+  messages: PropTypes.array.isRequired
 }

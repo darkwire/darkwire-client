@@ -32,19 +32,7 @@ export default class Crypto {
     return str;
   }
 
-  createSigningKey() {
-    return this._crypto.subtle.generateKey(
-      {
-        name: 'HMAC',
-        hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
-        //length: 256, //optional, if you want your key length to differ from the hash function's block length
-      },
-      true, //whether the key is extractable (i.e. can be used in exportKey)
-      ['sign', 'verify'] //can be any combination of 'sign' and 'verify'
-    );
-  }
-
-  createPrimaryKeys() {
+  createEncryptDecryptKeys() {
     return this._crypto.subtle.generateKey(
       {
         name: 'RSA-OAEP',
@@ -53,7 +41,7 @@ export default class Crypto {
         hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
       },
       true, //whether the key is extractable (i.e. can be used in exportKey)
-      ['encrypt', 'decrypt'] //must be ['encrypt', 'decrypt'] or ['wrapKey', 'unwrapKey']
+      ['encrypt', 'decrypt', 'wrapKey', 'unwrapKey'] //must be ['encrypt', 'decrypt'] or ['wrapKey', 'unwrapKey']
     );
   }
 
@@ -68,61 +56,14 @@ export default class Crypto {
     );
   }
 
-  encryptSecretKey(data, secretKey) {
-    // Secret key will be recipient's public key
-    return this._crypto.subtle.encrypt(
+  createSigningKey() {
+    return this._crypto.subtle.generateKey(
       {
-        name: 'RSA-OAEP',
-        modulusLength: 2048,
-        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        name: 'HMAC',
         hash: {name: 'SHA-256'}
       },
-      secretKey,
-      data //ArrayBuffer of data you want to encrypt
-    );
-  }
-
-  decryptSecretKey(data, key) {
-    // key will be my private key
-    return this._crypto.subtle.decrypt(
-      {
-        name: 'RSA-OAEP',
-        modulusLength: 2048,
-        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: {name: 'SHA-256'}
-        //label: Uint8Array([...]) //optional
-      },
-      key,
-      data //ArrayBuffer of the data
-    );
-  }
-
-  encryptSigningKey(data, signingKey) {
-    // Secret key will be recipient's public key
-    return this._crypto.subtle.encrypt(
-      {
-        name: 'RSA-OAEP',
-        modulusLength: 2048,
-        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: {name: 'SHA-256'}
-      },
-      signingKey,
-      data //ArrayBuffer of data you want to encrypt
-    );
-  }
-
-  decryptSigningKey(data, key) {
-    // key will be my private key
-    return this._crypto.subtle.decrypt(
-      {
-        name: 'RSA-OAEP',
-        modulusLength: 2048,
-        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: {name: 'SHA-256'}
-        //label: Uint8Array([...]) //optional
-      },
-      key,
-      data //ArrayBuffer of the data
+      true, //whether the key is extractable (i.e. can be used in exportKey)
+      ['sign', 'verify'] //can be 'encrypt', 'decrypt', 'wrapKey', or 'unwrapKey'
     );
   }
 
@@ -150,62 +91,32 @@ export default class Crypto {
     );
   }
 
-  importSecretKey(jwkData, format) {
-    return this._crypto.subtle.importKey(
-      format || 'jwk', //can be 'jwk' or 'raw'
-      //this is an example jwk key, 'raw' would be an ArrayBuffer
-      jwkData,
-      {   //this is the algorithm options
-        name: 'AES-CBC',
-      },
-      true, //whether the key is extractable (i.e. can be used in exportKey)
-      ['encrypt', 'decrypt'] //can be 'encrypt', 'decrypt', 'wrapKey', or 'unwrapKey'
-    );
-  }
-
- importPrimaryKey(jwkData, format) {
-    // Will be someone's public key
+  importEncryptDecryptKey(jwkData, format = 'jwk', ops) {
     let hashObj = {
       name: 'RSA-OAEP'
     };
     if (!this._crypto.webkitSubtle) {
       hashObj.hash = {name: 'SHA-256'};
     }
+
     return this._crypto.subtle.importKey(
-      format || 'jwk', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
+      format, //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
       jwkData,
       hashObj,
       true, //whether the key is extractable (i.e. can be used in exportKey)
-      ['encrypt'] //'encrypt' or 'wrapKey' for public key import or
+      ops || ['encrypt', 'wrapKey'] //'encrypt' or 'wrapKey' for public key import or
                   //'decrypt' or 'unwrapKey' for private key imports
     );
   }
 
   exportKey(key, format) {
-    // Will be public primary key or public signing key
     return this._crypto.subtle.exportKey(
       format || 'jwk', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
       key //can be a publicKey or privateKey, as long as extractable was true
     );
   }
 
-  importSigningKey(jwkData) {
-    return this._crypto.subtle.importKey(
-      'raw', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
-      //this is an example jwk key, other key types are Uint8Array objects
-      jwkData,
-      {   //these are the algorithm options
-        name: 'HMAC',
-        hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
-        //length: 256, //optional, if you want your key length to differ from the hash function's block length
-      },
-      true, //whether the key is extractable (i.e. can be used in exportKey)
-      ['verify'] //'verify' for public key import, 'sign' for private key imports
-    );
-  }
-
-  signKey(data, keyToSignWith) {
-    // Will use my private key
+  signMessage(data, keyToSignWith) {
     return this._crypto.subtle.sign(
       {
         name: 'HMAC',
@@ -216,7 +127,7 @@ export default class Crypto {
     );
   }
 
-  verifyKey(signature, data, keyToVerifyWith) {
+  verifyPayload(signature, data, keyToVerifyWith) {
     // Will verify with sender's public key
     return this._crypto.subtle.verify(
       {
@@ -226,6 +137,35 @@ export default class Crypto {
       keyToVerifyWith, //from generateKey or importKey above
       signature, //ArrayBuffer of the signature
       data //ArrayBuffer of the data
+    );
+  }
+
+  wrapKey(keyToWrap, keyToWrapWith, wrapAlgo = 'RSA-OAEP', format = 'jwk') {
+    return this._crypto.subtle.wrapKey(
+      format,
+      keyToWrap,
+      keyToWrapWith,
+      wrapAlgo
+    );
+  }
+
+  unwrapKey(
+    format = 'jwk',
+    wrappedKey,
+    unwrappingKey,
+    unwrapAlgo = 'RSA-OAEP',
+    unwrappedKeyAlgo, //AES-CBC for session, HMAC for signing
+    extractable = true,
+    keyUsages//verify for signing // decrypt for session
+  ) {
+    return this._crypto.subtle.unwrapKey(
+      format,
+      wrappedKey,
+      unwrappingKey,
+      unwrapAlgo,
+      unwrappedKeyAlgo,
+      extractable,
+      keyUsages
     );
   }
 
