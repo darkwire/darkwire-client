@@ -29,10 +29,24 @@ export default class Home extends React.Component {
 
     io.on('USER_ENTER', (payload) => {
       this.props.receiveUserEnter(io, payload)
+      this.props.sendSocketMessage(this.state.io, {
+        type: 'ADD_USER',
+        payload: {
+          username: this.props.username,
+          publicKey: this.props.publicKey
+        }
+      })
     })
 
     io.on('USER_ENTER_ECHO', (payload) => {
       this.props.receiveUserEnterEcho(io, payload)
+      this.props.sendSocketMessage(this.state.io, {
+        type: 'ADD_USER',
+        payload: {
+          username: this.props.username,
+          publicKey: this.props.publicKey
+        }
+      })
     })
 
     io.on('USER_EXIT', (payload) => {
@@ -85,6 +99,14 @@ export default class Home extends React.Component {
         <form onSubmit={this.handleFormSubmit.bind(this)}>
           <input type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
         </form>
+        
+        <div>Members</div>
+        <ul>
+          {this.props.members.map((member, index) => (
+            <li key={index}>{member.username}</li>
+          ))}
+        </ul>
+
         <ul>
           {this.props.messages.map((message, index) => (
             <li key={index}>
@@ -106,5 +128,8 @@ Home.propTypes = {
   receiveUserExit: PropTypes.func.isRequired,
   receiveUserEnter: PropTypes.func.isRequired,
   receiveUserEnterEcho: PropTypes.func.isRequired,
-  messages: PropTypes.array.isRequired
+  messages: PropTypes.array.isRequired,
+  username: PropTypes.string.isRequired,
+  publicKey: PropTypes.object.isRequired,
+  members: PropTypes.array.isRequired
 }

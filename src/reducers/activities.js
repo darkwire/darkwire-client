@@ -11,7 +11,7 @@ const initialState = {
 
 const activities = (state = initialState, action) => {
   switch(action.type) {
-    case 'SEND_MESSAGE':
+    case 'SEND_SOCKET_MESSAGE_SEND_MESSAGE':
     case 'HANDLE_SOCKET_MESSAGE_SEND_MESSAGE':
       return {
         ...state,

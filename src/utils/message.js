@@ -6,7 +6,6 @@ export const process = (payload, state) => {
   return new Promise(async (resolve, reject) => {
     const username = state.user.username
     const privateKeyJson = state.user.privateKey
-
     const privateKey = await crypto.importEncryptDecryptKey(privateKeyJson, 'jwk', ['decrypt', 'unwrapKey'])
 
     let sessionKey
@@ -27,7 +26,8 @@ export const process = (payload, state) => {
             'AES-CBC',
             true,
             ['decrypt']
-          ),
+          )
+
           signingKey = await crypto.unwrapKey(
             'jwk',
             key.signingKey,
@@ -38,7 +38,8 @@ export const process = (payload, state) => {
             ['verify']
           )
           resolve()
-        } catch(e) {}
+        } catch(e) {
+        }
       })
     })
 
@@ -57,14 +58,8 @@ export const process = (payload, state) => {
     )
 
     if (verified) {
-      console.log('SUCCESS')
-      console.log(payloadJson)
-      resolve({
-        type: `HANDLE_SOCKET_MESSAGE_${payloadJson.type}`,
-        payload: payloadJson.payload
-      })
+      resolve(payloadJson)
     } else {
-      console.log('FAIL')
       reject()
     }
   })
