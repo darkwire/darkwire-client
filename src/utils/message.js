@@ -22,8 +22,11 @@ export const process = (payload, state) => {
             'jwk',
             key.sessionKey,
             privateKey,
-            'RSA-OAEP',
-            'AES-CBC',
+            {
+              name: "RSA-OAEP",
+              hash: { name: window.crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+            },
+            { name: 'AES-CBC' },
             true,
             ['decrypt']
           )
@@ -32,8 +35,11 @@ export const process = (payload, state) => {
             'jwk',
             key.signingKey,
             privateKey,
-            'RSA-OAEP',
-            { name: 'HMAC', hash: 'SHA-256' },
+            {
+              name: "RSA-OAEP",
+              hash: { name: window.crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+            },
+            { name: 'HMAC', hash: { name: 'SHA-256' } },
             true,
             ['verify']
           )

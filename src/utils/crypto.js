@@ -38,7 +38,7 @@ export default class Crypto {
         name: 'RSA-OAEP',
         modulusLength: 2048, //can be 1024, 2048, or 4096
         publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: {name: 'SHA-256'}, //can be 'SHA-1', 'SHA-256', 'SHA-384', or 'SHA-512'
+        hash: { name: this._crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
       },
       true, //whether the key is extractable (i.e. can be used in exportKey)
       ['encrypt', 'decrypt', 'wrapKey', 'unwrapKey'] //must be ['encrypt', 'decrypt'] or ['wrapKey', 'unwrapKey']
@@ -93,10 +93,8 @@ export default class Crypto {
 
   importEncryptDecryptKey(jwkData, format = 'jwk', ops) {
     let hashObj = {
-      name: 'RSA-OAEP'
-    };
-    if (!this._crypto.webkitSubtle) {
-      hashObj.hash = {name: 'SHA-256'};
+      name: 'RSA-OAEP',
+      hash: { name: this._crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
     }
 
     return this._crypto.subtle.importKey(
@@ -140,12 +138,15 @@ export default class Crypto {
     );
   }
 
-  wrapKey(keyToWrap, keyToWrapWith, wrapAlgo = 'RSA-OAEP', format = 'jwk') {
+  wrapKey(keyToWrap, keyToWrapWith, format = 'jwk') {
     return this._crypto.subtle.wrapKey(
       format,
       keyToWrap,
       keyToWrapWith,
-      wrapAlgo
+      {
+        name: "RSA-OAEP",
+        hash: { name: this._crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+      }
     )
   }
 
@@ -153,7 +154,7 @@ export default class Crypto {
     format = 'jwk',
     wrappedKey,
     unwrappingKey,
-    unwrapAlgo = 'RSA-OAEP',
+    unwrapAlgo,
     unwrappedKeyAlgo, //AES-CBC for session, HMAC for signing
     extractable = true,
     keyUsages//verify for signing // decrypt for session
