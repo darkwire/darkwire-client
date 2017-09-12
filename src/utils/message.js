@@ -6,7 +6,6 @@ export const process = (payload, state) => {
   return new Promise(async (resolve, reject) => {
     const username = state.user.username
     const privateKeyJson = state.user.privateKey
-
     const privateKey = await crypto.importEncryptDecryptKey(privateKeyJson, 'jwk', ['decrypt', 'unwrapKey'])
 
     let sessionKey
@@ -23,22 +22,30 @@ export const process = (payload, state) => {
             'jwk',
             key.sessionKey,
             privateKey,
-            'RSA-OAEP',
-            'AES-CBC',
+            {
+              name: "RSA-OAEP",
+              hash: { name: window.crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+            },
+            { name: 'AES-CBC' },
             true,
             ['decrypt']
-          ),
+          )
+
           signingKey = await crypto.unwrapKey(
             'jwk',
             key.signingKey,
             privateKey,
-            'RSA-OAEP',
-            { name: 'HMAC', hash: 'SHA-256' },
+            {
+              name: "RSA-OAEP",
+              hash: { name: window.crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+            },
+            { name: 'HMAC', hash: { name: 'SHA-256' } },
             true,
             ['verify']
           )
           resolve()
-        } catch(e) {}
+        } catch(e) {
+        }
       })
     })
 
@@ -57,14 +64,8 @@ export const process = (payload, state) => {
     )
 
     if (verified) {
-      console.log('SUCCESS')
-      console.log(payloadJson)
-      resolve({
-        type: `HANDLE_SOCKET_MESSAGE_${payloadJson.type}`,
-        payload: payloadJson.payload
-      })
+      resolve(payloadJson)
     } else {
-      console.log('FAIL')
       reject()
     }
   })

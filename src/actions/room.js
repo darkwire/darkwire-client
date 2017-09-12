@@ -19,14 +19,13 @@ export const receiveSocketMessage = (payload) => {
     dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
     const state = getState()
     const message = await processMessage(payload, state)
-    dispatch({ type: message.type, payload: message.payload })
+    dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: message.payload })
   }
 }
 
 export const createUser = (io, payload) => {
   return async (dispatch, getState) => {
     io.emit('USER_ENTER', {
-      username: payload.username,
       publicKey: payload.publicKey
     })
     dispatch({ type: 'CREATE_USER', payload })
@@ -43,33 +42,29 @@ export const receiveUserEnter = (io, payload) => {
   return async (dispatch, getState) => {
     const state = getState()
 
-    io.emit('USER_ENTER_ECHO', {
-      username: state.user.username,
-      publicKey: state.user.publicKey
-    })
+    // io.emit('USER_ENTER_ECHO', {
+    //   publicKey: state.user.publicKey
+    // })
 
     dispatch({ type: 'USER_ENTER', payload })
+    
   }
 }
+
 export const receiveUserEnterEcho = (io, payload) => {
   return async (dispatch, getState) => {
     const state = getState()
-    dispatch({ type: 'USER_ENTER', payload })
+    dispatch({ type: 'USER_ENTER_ECHO', payload })
   }
 }
 
 export const sendSocketMessage = (io, payload) => {
   return async (dispatch, getState) => {
     dispatch({ type: 'SEND_SOCKET_MESSAGE', payload })
-    try {
-      const state = getState()
-      const msg = await prepareMessage(payload, state)
-      
-      dispatch({ type: msg.original.type, payload: msg.original.payload })
-
-      io.emit('PAYLOAD', msg.toSend)
-    } catch(e) {
-    }
+    const state = getState()
+    const msg = await prepareMessage(payload, state)
+    dispatch({ type: `SEND_SOCKET_MESSAGE_${msg.original.type}`, payload: msg.original.payload })
+    io.emit('PAYLOAD', msg.toSend)
   }
 }
 

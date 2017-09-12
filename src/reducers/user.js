@@ -1,7 +1,7 @@
 const initialState = {
-//   privateKey: null,
-//   publicKey: null,
-// username: ''
+  privateKey: {},
+  publicKey: {},
+  username: ''
 }
 
 const user = (state = initialState, action) => {
