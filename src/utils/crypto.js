@@ -146,7 +146,7 @@ export default class Crypto {
       keyToWrap,
       keyToWrapWith,
       wrapAlgo
-    );
+    )
   }
 
   unwrapKey(

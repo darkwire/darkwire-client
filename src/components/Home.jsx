@@ -38,17 +38,6 @@ export default class Home extends React.Component {
       })
     })
 
-    io.on('USER_ENTER_ECHO', (payload) => {
-      this.props.receiveUserEnterEcho(io, payload)
-      this.props.sendSocketMessage(this.state.io, {
-        type: 'ADD_USER',
-        payload: {
-          username: this.props.username,
-          publicKey: this.props.publicKey
-        }
-      })
-    })
-
     io.on('USER_EXIT', (payload) => {
       this.props.receiveUserExit(payload)
     })
