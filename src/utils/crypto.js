@@ -31,12 +31,12 @@ export default class Crypto {
   }
 
   createEncryptDecryptKeys() {
-    return this._crypto.subtle.generateKey(
+    return this.crypto.subtle.generateKey(
       {
         name: 'RSA-OAEP',
         modulusLength: 2048, //can be 1024, 2048, or 4096
         publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: { name: this._crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+        hash: { name: this.crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
       },
       true, //whether the key is extractable (i.e. can be used in exportKey)
       ['encrypt', 'decrypt', 'wrapKey', 'unwrapKey'] //must be ['encrypt', 'decrypt'] or ['wrapKey', 'unwrapKey']
@@ -44,7 +44,7 @@ export default class Crypto {
   }
 
   createSecretKey() {
-    return this._crypto.subtle.generateKey(
+    return this.crypto.subtle.generateKey(
       {
         name: 'AES-CBC',
         length: 256, //can be  128, 192, or 256
@@ -55,7 +55,7 @@ export default class Crypto {
   }
 
   createSigningKey() {
-    return this._crypto.subtle.generateKey(
+    return this.crypto.subtle.generateKey(
       {
         name: 'HMAC',
         hash: {name: 'SHA-256'}
@@ -66,7 +66,7 @@ export default class Crypto {
   }
 
   encryptMessage(data, secretKey, iv) {
-    return this._crypto.subtle.encrypt(
+    return this.crypto.subtle.encrypt(
       {
         name: 'AES-CBC',
         //Don't re-use initialization vectors!
@@ -79,7 +79,7 @@ export default class Crypto {
   }
 
  decryptMessage(data, secretKey, iv) {
-    return this._crypto.subtle.decrypt(
+    return this.crypto.subtle.decrypt(
       {
         name: 'AES-CBC',
         iv: iv, //The initialization vector you used to encrypt
@@ -92,10 +92,10 @@ export default class Crypto {
   importEncryptDecryptKey(jwkData, format = 'jwk', ops) {
     let hashObj = {
       name: 'RSA-OAEP',
-      hash: { name: this._crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+      hash: { name: this.crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
     }
 
-    return this._crypto.subtle.importKey(
+    return this.crypto.subtle.importKey(
       format, //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
       jwkData,
       hashObj,
@@ -106,14 +106,14 @@ export default class Crypto {
   }
 
   exportKey(key, format) {
-    return this._crypto.subtle.exportKey(
+    return this.crypto.subtle.exportKey(
       format || 'jwk', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
       key //can be a publicKey or privateKey, as long as extractable was true
     );
   }
 
   signMessage(data, keyToSignWith) {
-    return this._crypto.subtle.sign(
+    return this.crypto.subtle.sign(
       {
         name: 'HMAC',
         hash: {name: 'SHA-256'}
@@ -125,7 +125,7 @@ export default class Crypto {
 
   verifyPayload(signature, data, keyToVerifyWith) {
     // Will verify with sender's public key
-    return this._crypto.subtle.verify(
+    return this.crypto.subtle.verify(
       {
         name: 'HMAC',
         hash: {name: 'SHA-256'}
@@ -137,13 +137,13 @@ export default class Crypto {
   }
 
   wrapKey(keyToWrap, keyToWrapWith, format = 'jwk') {
-    return this._crypto.subtle.wrapKey(
+    return this.crypto.subtle.wrapKey(
       format,
       keyToWrap,
       keyToWrapWith,
       {
         name: "RSA-OAEP",
-        hash: { name: this._crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
+        hash: { name: this.crypto.webkitSubtle ? "SHA-1" : 'SHA-256' }
       }
     )
   }
@@ -157,7 +157,7 @@ export default class Crypto {
     extractable = true,
     keyUsages//verify for signing // decrypt for session
   ) {
-    return this._crypto.subtle.unwrapKey(
+    return this.crypto.subtle.unwrapKey(
       format,
       wrappedKey,
       unwrappingKey,
