@@ -7,6 +7,14 @@ body
   background-color: $primary
   color: $body
 
+ul
+  list-style: none
+  margin: 0px
+  padding: 0px
+
+.page-header
+  height: 50px
+
 input.chat
   width: 100%
   padding: 12px
@@ -54,15 +62,18 @@ input.chat
   color: $inactive
   margin: 10px 0
 
-.chat-preflight-container
-  position: relative
-  .icon
-    height: 2.25em
-    pointer-events: none
-    position: absolute
-    top: 0
-    width: 2.25em
-    z-index: 4
-    padding: 12px
-  .is-right
-    right: 20px
+.chat-container
+  margin-top: auto
+  width: 100%
+  .chat-preflight-container
+    position: relative
+    .icon
+      height: 2.25em
+      pointer-events: none
+      position: absolute
+      top: 0
+      width: 2.25em
+      z-index: 4
+      padding: 12px
+    .is-right
+      right: 20px

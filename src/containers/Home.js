@@ -15,7 +15,8 @@ const mapStateToProps = (state) => ({
   messages: state.activities.items,
   username: state.user.username,
   publicKey: state.user.publicKey,
-  members: state.room.members.filter(m => m.username && m.publicKey)
+  members: state.room.members.filter(m => m.username && m.publicKey),
+  roomId: state.room.id
 })
 
 const mapDispatchToProps = {

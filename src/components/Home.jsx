@@ -85,7 +85,7 @@ export default class Home extends React.Component {
     return (
       <div className="row h-100">
         <div className="col-3 sidebar">
-          <div className="row bottom-border">
+          <div className="page-header row bottom-border">
             <div className="col-12">
               <div className="p-1">
                 <h2><Activity /> darkwire</h2>
@@ -95,23 +95,27 @@ export default class Home extends React.Component {
           <div className="row">
             <div className="col-12">
               <div className="online-users">
-                ONLINE - 1
+                ONLINE - {this.props.members.length}
               </div>
-              <User /> Dan
+              <ul>
+                {this.props.members.map((member, index) => (
+                  <li key={index}><User /> {member.username}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
-        <div className="col-9 offset-3 pt-3">
+        <div className="col-9 offset-3">
           <div className="row h-100">
             <div className="col-12">
-              <div className="row bottom-border" style={{marginBottom: '20px'}}>
+              <div className="page-header row bottom-border" style={{marginBottom: '20px'}}>
                 <div className="col-9">
-                  <div className="p-1">
-                    /roomId
+                  <div className="pt-3">
+                    {`/${this.props.roomId}`}
                   </div>
                 </div>
                 <div className="col-3">
-                  <div className="p-1">
+                  <div className="pt-3">
                     <div className="row">
                       <div className="col">
                         <PlusCircle />
@@ -128,36 +132,30 @@ export default class Home extends React.Component {
               </div>
               <div className="row row-eq-height">
                 <div className="col-12">
-                  <div className="chat-message">
-                    <div className="chat-meta"> 
-                      <span className="username">Dan</span> <span className="timestamp">1 min ago</span>
-                    </div>
-                    <div className="chat">
-                      <p>Hay</p>
-                    </div>
-                  </div>
-                  <div>Members</div>
-                  <ul>
-                    {this.props.members.map((member, index) => (
-                      <li key={index}>{member.username}</li>
-                    ))}
-                  </ul>
                   <ul>
                     {this.props.messages.map((message, index) => (
                       <li key={index}>
-                        <span>{message.text}</span><br/>
-                        <span>{message.sender}</span>
+                        <div className="chat-message">
+                          <div className="chat-meta"> 
+                            <span className="username">{message.sender}</span> <span className="timestamp">1 min ago</span>
+                          </div>
+                          <div className="chat">
+                            <p>{message.text}</p>
+                          </div>
+                        </div>
                       </li>
                     ))}
                   </ul>
-                  <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
-                    <input className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
-                    <div className="icon is-right">
-                      <CornerDownRight />
-                    </div>
-                  </form>
                 </div>
               </div>
+            </div>
+            <div className="chat-container">
+              <form onSubmit={this.handleFormSubmit.bind(this)} className='chat-preflight-container'>
+                <input className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
+                <div className="icon is-right">
+                  <CornerDownRight />
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -176,5 +174,6 @@ Home.propTypes = {
   messages: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,
-  members: PropTypes.array.isRequired
+  members: PropTypes.array.isRequired,
+  roomId: PropTypes.string.isRequired
 }

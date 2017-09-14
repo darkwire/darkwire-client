@@ -36,7 +36,7 @@ const renderFunc = (Component) => {
   render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <div>
+        <div className='h-100'>
           <AppContainer>
             <Route path="/" component={Component}/>
           </AppContainer>

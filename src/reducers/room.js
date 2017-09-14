@@ -7,7 +7,7 @@ const initialState = {
     //   publicKey
     // }
   ],
-  id: null
+  id: ''
 }
 
 const room = (state = initialState, action) => {
