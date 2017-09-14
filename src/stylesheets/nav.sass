@@ -1,0 +1,33 @@
+@import 'colors'
+
+.logo
+  height: 30px
+
+.nav-container
+  position: fixed
+  width: 100%
+  z-index: 10
+  background: black
+
+nav
+  border-bottom: 1px solid $inactive
+  .meta
+    display: flex
+    flex-basis: 70%
+
+ul.navbar-nav
+  li
+    position: relative
+    top: -5px
+    svg
+      width: 20px
+      position: relative
+      top: 7px
+      margin-right: 5px
+
+@media(min-width: 768px)
+  ul.navbar-nav li
+    margin-left: 25px
+
+.room-id
+  padding-top: 8px

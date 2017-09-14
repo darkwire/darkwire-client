@@ -1,5 +1,3 @@
-const uuidv4 = require('uuid/v4')
-
 export default class Crypto {
   constructor() {
     this._crypto = window.crypto || false;
@@ -168,10 +166,6 @@ export default class Crypto {
       extractable,
       keyUsages
     );
-  }
-
-  getRandomBytes() {
-    return uuidv4()
   }
 
 }
