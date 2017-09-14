@@ -8,7 +8,9 @@ import {
   userEnter,
   receiveUserExit,
   receiveUserEnter,
-  addUser
+  addUser,
+  toggleLockRoom,
+  receiveToggleLockRoom
 } from '../actions'
 
 const mapStateToProps = (state) => ({
@@ -16,7 +18,8 @@ const mapStateToProps = (state) => ({
   username: state.user.username,
   publicKey: state.user.publicKey,
   members: state.room.members.filter(m => m.username && m.publicKey),
-  roomId: state.room.id
+  roomId: state.room.id,
+  roomLocked: state.room.isLocked
 })
 
 const mapDispatchToProps = {
@@ -25,7 +28,9 @@ const mapDispatchToProps = {
   sendSocketMessage,
   receiveUserExit,
   receiveUserEnter,
-  createUser
+  createUser,
+  toggleLockRoom,
+  receiveToggleLockRoom
 }
 
 export default connect(

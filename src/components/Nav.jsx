@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { Activity, Info, Settings, PlusCircle, User, Users, CornerDownRight } from 'react-feather';
+import { Activity, Info, Settings, PlusCircle, User, Users, CornerDownRight, Lock, Unlock } from 'react-feather';
 import logoImg from '../img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import randomColor from 'randomcolor'
@@ -13,6 +13,17 @@ class Nav extends React.Component {
           <a className="navbar-brand" href="#"><img src={logoImg} alt="Darkwire" className='logo'/></a>
 
           <span className="room-id">{`/${this.props.roomId}`}</span>
+
+          <span className="lock-room-container">
+            <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain">
+              {this.props.roomLocked &&
+                <Lock/>
+              }
+              {!this.props.roomLocked &&
+                <Unlock/>
+              }
+            </button>
+          </span>
 
           <Dropdown className='members-dropdown'>
             <DropdownTrigger>
@@ -60,7 +71,9 @@ class Nav extends React.Component {
 Nav.propTypes = {
   members: PropTypes.array.isRequired,
   roomId: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired
+  username: PropTypes.string.isRequired,
+  roomLocked: PropTypes.bool.isRequired,
+  toggleLockRoom: PropTypes.func.isRequired
 }
 
 export default Nav

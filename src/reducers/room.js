@@ -7,7 +7,8 @@ const initialState = {
     //   publicKey
     // }
   ],
-  id: ''
+  id: '',
+  isLocked: false
 }
 
 const room = (state = initialState, action) => {
@@ -15,7 +16,8 @@ const room = (state = initialState, action) => {
     case 'FETCH_CREATE_HANDSHAKE_SUCCESS':
       return {
         ...state,
-        id: action.payload.json.id
+        id: action.payload.json.id,
+        isLocked: action.payload.json.isLocked
       }
     case 'USER_EXIT':
       return {
@@ -23,7 +25,7 @@ const room = (state = initialState, action) => {
         members: state.members.filter(m => !_.isEqual(m.publicKey, action.payload.publicKey))
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
-      const pubKeys = _.uniqWith(state.members.map(m => m.publicKey).concat(action.payload.publicKey), _.isEqual)
+      const pubKeys = _.uniqWith(state.members.map(m => m.publicKey).concat(action.payload.payload.publicKey), _.isEqual)
       return {
         ...state,
         members: pubKeys.map(pubKey => {
@@ -35,8 +37,8 @@ const room = (state = initialState, action) => {
             }
           }
           return {
-            publicKey: action.payload.publicKey,
-            username: action.payload.username
+            publicKey: action.payload.payload.publicKey,
+            username: action.payload.payload.username
           }
         })
       }
@@ -63,6 +65,16 @@ const room = (state = initialState, action) => {
             publicKey: pubKey
           }
         })
+      }
+    case 'TOGGLE_LOCK_ROOM':
+      return {
+        ...state,
+        isLocked: !state.isLocked
+      }
+    case 'RECEIVE_TOGGLE_LOCK_ROOM':
+      return {
+        ...state,
+        isLocked: action.payload.locked
       }
     default:
       return state

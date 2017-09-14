@@ -54,6 +54,10 @@ export default class Home extends React.Component {
       this.props.receiveSocketMessage(payload)
     })
 
+    io.on('TOGGLE_LOCK_ROOM', (payload) => {
+      this.props.receiveToggleLockRoom(payload)
+    })
+
     this.createUser()
   }
 
@@ -93,6 +97,13 @@ export default class Home extends React.Component {
             <div><Username username={activity.username}></Username> left</div>
           </Notice>
         )
+      case 'TOGGLE_LOCK_ROOM':
+        const lockedWord = activity.locked ? 'locked' : 'unlocked'
+        return (
+          <Notice>
+            <div><Username username={activity.username}></Username> {lockedWord} the room</div>
+          </Notice>
+        )
     }
   }
 
@@ -104,6 +115,8 @@ export default class Home extends React.Component {
             members={this.props.members}
             roomId={this.props.roomId}
             username={this.props.username}
+            roomLocked={this.props.roomLocked}
+            toggleLockRoom={this.props.toggleLockRoom}
           />
         </div>
         <div className="message-stream h-100">
@@ -136,5 +149,8 @@ Home.propTypes = {
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,
-  roomId: PropTypes.string.isRequired
+  roomId: PropTypes.string.isRequired,
+  roomLocked: PropTypes.bool.isRequired,
+  toggleLockRoom: PropTypes.func.isRequired,
+  receiveToggleLockRoom: PropTypes.func.isRequired
 }
