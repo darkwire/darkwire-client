@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import BootstrapCSS from 'bootstrap/dist/css/bootstrap.min.css'
-import animateStyles from 'animate.css/animate.min.css'
 import styles from '../stylesheets/app.sass'
 import { Route } from 'react-router'
 import { push } from 'react-router-redux'
