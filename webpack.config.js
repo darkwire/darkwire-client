@@ -68,8 +68,7 @@ module.exports = {
     extractCSS,
     new webpack.ProvidePlugin({
       $: 'jquery',
-      jQuery: 'jquery',
-      Tether: 'tether'
+      jQuery: 'jquery'
     }),
     new webpack.DefinePlugin({
       'process.env': {
