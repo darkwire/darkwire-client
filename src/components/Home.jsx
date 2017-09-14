@@ -38,10 +38,6 @@ export default class Home extends React.Component {
       })
     })
 
-    io.on('USER_ENTER_ECHO', (payload) => {
-      this.props.receiveUserEnterEcho(io, payload)
-    })
-
     io.on('USER_EXIT', (payload) => {
       this.props.receiveUserExit(payload)
     })
@@ -177,7 +173,6 @@ Home.propTypes = {
   createUser: PropTypes.func.isRequired,
   receiveUserExit: PropTypes.func.isRequired,
   receiveUserEnter: PropTypes.func.isRequired,
-  receiveUserEnterEcho: PropTypes.func.isRequired,
   messages: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,

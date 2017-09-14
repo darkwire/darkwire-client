@@ -8,7 +8,6 @@ import {
   userEnter,
   receiveUserExit,
   receiveUserEnter,
-  receiveUserEnterEcho,
   addUser
 } from '../actions'
 
@@ -25,7 +24,6 @@ const mapDispatchToProps = {
   sendSocketMessage,
   receiveUserExit,
   receiveUserEnter,
-  receiveUserEnterEcho,
   createUser
 }
 

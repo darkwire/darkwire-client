@@ -41,20 +41,7 @@ export const receiveUserExit = (payload) => {
 export const receiveUserEnter = (io, payload) => {
   return async (dispatch, getState) => {
     const state = getState()
-
-    // io.emit('USER_ENTER_ECHO', {
-    //   publicKey: state.user.publicKey
-    // })
-
     dispatch({ type: 'USER_ENTER', payload })
-    
-  }
-}
-
-export const receiveUserEnterEcho = (io, payload) => {
-  return async (dispatch, getState) => {
-    const state = getState()
-    dispatch({ type: 'USER_ENTER_ECHO', payload })
   }
 }
 
