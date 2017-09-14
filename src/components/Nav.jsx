@@ -15,12 +15,12 @@ class Nav extends React.Component {
           <span className="room-id">{`/${this.props.roomId}`}</span>
 
           <span className="lock-room-container">
-            <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain">
+            <button onClick={this.props.toggleLockRoom} className='lock-room btn btn-link btn-plain'>
               {this.props.roomLocked &&
                 <Lock/>
               }
               {!this.props.roomLocked &&
-                <Unlock/>
+                <Unlock className='muted'/>
               }
             </button>
           </span>

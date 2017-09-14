@@ -14,10 +14,12 @@ const initialState = {
 const room = (state = initialState, action) => {
   switch(action.type) {
     case 'FETCH_CREATE_HANDSHAKE_SUCCESS':
+      const isLocked = action.payload.json.isLocked
+      // Handle "room is locked" message for new members here
       return {
         ...state,
         id: action.payload.json.id,
-        isLocked: action.payload.json.isLocked
+        isLocked
       }
     case 'USER_EXIT':
       return {
