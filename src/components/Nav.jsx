@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Activity, Info, Settings, PlusCircle, User, CornerDownRight } from 'react-feather';
 import logoImg from '../img/logo.png'
+import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
+import randomColor from 'randomcolor'
 
 class Nav extends React.Component {
   render() {
@@ -10,15 +12,24 @@ class Nav extends React.Component {
           <a className="navbar-brand" href="#"><img src={logoImg} alt="Darkwire" className='logo'/></a>
 
           <span className="room-id">{`/${this.props.roomId}`}</span>
-          <button className="btn btn-link members-action">
-            <User/>
-          </button>
-          {/*<ul>
-            {this.props.members.map((member, index) => (
-              <li key={index}><User /> {member.username}</li>
-            ))}
-          </ul>
-          */}
+
+          <Dropdown className='members-dropdown'>
+            <DropdownTrigger>
+              <button className="btn btn-link btn-plain members-action">
+                <User/>
+              </button>
+              <span>{this.props.members.length}</span>
+            </DropdownTrigger>
+            <DropdownContent>
+              <ul>
+                {this.props.members.map((member, index) => (
+                  <li key={index} style={{color: randomColor({seed: member.username})}}>
+                    {member.username}
+                  </li>
+                ))}
+              </ul>
+            </DropdownContent>
+          </Dropdown>
         </div>
 
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +38,7 @@ class Nav extends React.Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <a className="nav-link" href="#"><PlusCircle/> New Room</a>
+              <a className="nav-link" href="/" target='blank'><PlusCircle/> New Room</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#"><Settings/> Settings</a>

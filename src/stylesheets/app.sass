@@ -12,17 +12,28 @@ ul
   margin: 0px
   padding: 0px
 
+button
+  cursor: pointer
+
+button.btn-plain
+  color: white
+  &:hover, &:focus
+    color: white
+
 .page-header
   height: 50px
 
+svg.disabled
+  color: $inactive
+
 input.chat
   width: 100%
-  padding: 12px
   background-color: $secondary
   border: 1px solid $inactive
   color: $body
   outline: 0
   font-size: 18px
+  padding: 12px 65px 12px 12px
 
 .right-border
   border-right: 1px solid $inactive
@@ -69,16 +80,14 @@ input.chat
   bottom: 0px
   .chat-preflight-container
     position: relative
-    .icon
-      height: 2.25em
-      pointer-events: none
+    .input-controls
       position: absolute
-      top: 0
-      width: 2.25em
-      z-index: 4
+      right: 0px
+      bottom: 0px
+      height: 100%
+      width: 50px
+    .icon
       padding: 12px
-    .is-right
-      right: 20px
 
 .message-stream
   padding: 70px 15px

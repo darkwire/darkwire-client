@@ -3,6 +3,7 @@ import {
   process as processMessage,
   prepare as prepareMessage
 } from '../utils/message'
+import { getIO } from '../utils/socket'
 
 export const createRoom = (id) => {
   return async (dispatch) => fetch({
@@ -23,9 +24,9 @@ export const receiveSocketMessage = (payload) => {
   }
 }
 
-export const createUser = (io, payload) => {
+export const createUser = (payload) => {
   return async (dispatch, getState) => {
-    io.emit('USER_ENTER', {
+    getIO().emit('USER_ENTER', {
       publicKey: payload.publicKey
     })
     dispatch({ type: 'CREATE_USER', payload })
@@ -38,20 +39,20 @@ export const receiveUserExit = (payload) => {
   }
 }
 
-export const receiveUserEnter = (io, payload) => {
+export const receiveUserEnter = (payload) => {
   return async (dispatch, getState) => {
     const state = getState()
     dispatch({ type: 'USER_ENTER', payload })
   }
 }
 
-export const sendSocketMessage = (io, payload) => {
+export const sendSocketMessage = (payload) => {
   return async (dispatch, getState) => {
     dispatch({ type: 'SEND_SOCKET_MESSAGE', payload })
     const state = getState()
     const msg = await prepareMessage(payload, state)
     dispatch({ type: `SEND_SOCKET_MESSAGE_${msg.original.type}`, payload: msg.original.payload })
-    io.emit('PAYLOAD', msg.toSend)
+    getIO().emit('PAYLOAD', msg.toSend)
   }
 }
 

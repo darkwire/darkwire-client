@@ -9,6 +9,7 @@ import { getPublicRoutePaths, getPreventIfAuthenticatedPaths } from '../config/r
 import Init from '../containers/Init'
 import Home from '../containers/Home'
 import io from '../utils/socket'
+require('react-simple-dropdown/styles/Dropdown.css')
 
 class App extends React.Component {
   componentWillMount() {

@@ -6,6 +6,7 @@ import { connect } from '../utils/socket'
 import Nav from './Nav.jsx'
 import logoImg from '../img/logo.png'
 import shortId from 'shortid'
+import ChatInput from '../containers/chat/Input'
 
 const crypto = new Crypto()
 
@@ -32,8 +33,8 @@ export default class Home extends React.Component {
     })
 
     io.on('USER_ENTER', (payload) => {
-      this.props.receiveUserEnter(io, payload)
-      this.props.sendSocketMessage(this.state.io, {
+      this.props.receiveUserEnter(payload)
+      this.props.sendSocketMessage({
         type: 'ADD_USER',
         payload: {
           username: this.props.username,
@@ -60,27 +61,10 @@ export default class Home extends React.Component {
     const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
     const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
 
-    this.props.createUser(this.state.io, {
+    this.props.createUser({
       username,
       publicKey: exportedEncryptDecryptPublicKey,
       privateKey: exportedEncryptDecryptPrivateKey
-    })
-  }
-
-  handleFormSubmit(evt) {
-    evt.preventDefault()
-
-    this.props.sendSocketMessage(this.state.io, {
-      type: 'SEND_MESSAGE',
-      payload: {
-        text: this.state.message
-      }
-    })
-  }
-
-  handleInputChange(evt) {
-    this.setState({
-      message: evt.target.value
     })
   }
 
@@ -110,12 +94,7 @@ export default class Home extends React.Component {
           </ul>
         </div>
         <div className="chat-container">
-          <form onSubmit={this.handleFormSubmit.bind(this)} className='chat-preflight-container'>
-            <input autoFocus='autofocus' className="chat" type="text" value={this.state.message} placeholder='Type here' onChange={this.handleInputChange.bind(this)}/>
-            <div className="icon is-right">
-              <CornerDownRight />
-            </div>
-          </form>
+          <ChatInput/>
         </div>
       </div>
     )
