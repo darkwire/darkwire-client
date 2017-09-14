@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { Activity, Info, Settings, PlusCircle, User, CornerDownRight } from 'react-feather';
+import { Activity, Info, Settings, PlusCircle, User, Users, CornerDownRight } from 'react-feather';
 import logoImg from '../img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import randomColor from 'randomcolor'
@@ -16,7 +16,7 @@ class Nav extends React.Component {
           <Dropdown className='members-dropdown'>
             <DropdownTrigger>
               <button className="btn btn-link btn-plain members-action">
-                <User/>
+                <Users className='users-icon'/>
               </button>
               <span>{this.props.members.length}</span>
             </DropdownTrigger>
@@ -25,6 +25,9 @@ class Nav extends React.Component {
                 {this.props.members.map((member, index) => (
                   <li key={index} style={{color: randomColor({seed: member.username})}}>
                     {member.username}
+                    {member.username === this.props.username &&
+                      <User className='me-icon'/>
+                    }
                   </li>
                 ))}
               </ul>
@@ -55,7 +58,8 @@ class Nav extends React.Component {
 
 Nav.propTypes = {
   members: PropTypes.array.isRequired,
-  roomId: PropTypes.string.isRequired
+  roomId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired
 }
 
 export default Nav

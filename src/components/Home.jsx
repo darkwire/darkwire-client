@@ -7,6 +7,7 @@ import Nav from './Nav.jsx'
 import logoImg from '../img/logo.png'
 import shortId from 'shortid'
 import ChatInput from '../containers/chat/Input'
+import randomColor from 'randomcolor'
 
 const crypto = new Crypto()
 
@@ -75,6 +76,7 @@ export default class Home extends React.Component {
           <Nav
             members={this.props.members}
             roomId={this.props.roomId}
+            username={this.props.username}
           />
         </div>
         <div className="message-stream h-100">
@@ -83,7 +85,10 @@ export default class Home extends React.Component {
               <li key={index}>
                 <div className="chat-message">
                   <div className="chat-meta"> 
-                    <span className="username">{message.sender}</span> <span className="timestamp">1 min ago</span>
+                    <span style={{color: randomColor({seed: message.sender})}} className="username">
+                      {message.sender}
+                    </span>
+                    <span className="muted timestamp">1 min ago</span>
                   </div>
                   <div className="chat">
                     <p>{message.text}</p>
