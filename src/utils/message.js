@@ -73,11 +73,6 @@ export const process = (payload, state) => {
 
 export const prepare = (payload, state) => {
   return new Promise(async(resolve, reject) => {
-
-    if (state.room.members < 2) {
-      return reject('No members to send message to')
-    }
-
     const myUsername = state.user.username
 
     const sessionKey = await crypto.createSecretKey()

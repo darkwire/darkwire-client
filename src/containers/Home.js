@@ -12,7 +12,7 @@ import {
 } from '../actions'
 
 const mapStateToProps = (state) => ({
-  messages: state.activities.items,
+  activities: state.activities.items,
   username: state.user.username,
   publicKey: state.user.publicKey,
   members: state.room.members.filter(m => m.username && m.publicKey),

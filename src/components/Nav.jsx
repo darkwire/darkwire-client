@@ -3,6 +3,7 @@ import { Activity, Info, Settings, PlusCircle, User, Users, CornerDownRight } fr
 import logoImg from '../img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import randomColor from 'randomcolor'
+import Username from './atoms/Username.jsx'
 
 class Nav extends React.Component {
   render() {
@@ -23,8 +24,8 @@ class Nav extends React.Component {
             <DropdownContent>
               <ul>
                 {this.props.members.map((member, index) => (
-                  <li key={index} style={{color: randomColor({seed: member.username})}}>
-                    {member.username}
+                  <li key={index}>
+                    <Username username={member.username}/>
                     {member.username === this.props.username &&
                       <User className='me-icon'/>
                     }

@@ -7,7 +7,9 @@ import Nav from './Nav.jsx'
 import logoImg from '../img/logo.png'
 import shortId from 'shortid'
 import ChatInput from '../containers/chat/Input'
-import randomColor from 'randomcolor'
+import Message from './activities/Message.jsx'
+import Username from './atoms/Username.jsx'
+import Notice from './activities/Notice.jsx'
 
 const crypto = new Crypto()
 
@@ -69,6 +71,31 @@ export default class Home extends React.Component {
     })
   }
 
+  getActivityComponent(activity) {
+    switch(activity.type) {
+      case 'SEND_MESSAGE':
+        return (
+          <Message
+            sender={activity.sender}
+            message={activity.text}
+            timestamp={activity.timestamp}
+          />
+        )
+      case 'USER_ENTER':
+        return (
+          <Notice>
+            <div><Username username={activity.username}></Username> joined</div>
+          </Notice>
+        )
+      case 'USER_EXIT':
+        return (
+          <Notice>
+            <div><Username username={activity.username}></Username> left</div>
+          </Notice>
+        )
+    }
+  }
+
   render() {
     return (
       <div className='h-100'>
@@ -81,21 +108,13 @@ export default class Home extends React.Component {
         </div>
         <div className="message-stream h-100">
           <ul>
-            {this.props.messages.map((message, index) => (
-              <li key={index}>
-                <div className="chat-message">
-                  <div className="chat-meta"> 
-                    <span style={{color: randomColor({seed: message.sender})}} className="username">
-                      {message.sender}
-                    </span>
-                    <span className="muted timestamp">1 min ago</span>
-                  </div>
-                  <div className="chat">
-                    <p>{message.text}</p>
-                  </div>
-                </div>
-              </li>
-            ))}
+            {this.props.activities.map((activity, index) => {
+              return (
+                <li key={index} className={`activity-item ${activity.type}`}>
+                  {this.getActivityComponent(activity)}
+                </li>
+              )
+            })}
           </ul>
         </div>
         <div className="chat-container">
@@ -113,7 +132,7 @@ Home.propTypes = {
   createUser: PropTypes.func.isRequired,
   receiveUserExit: PropTypes.func.isRequired,
   receiveUserEnter: PropTypes.func.isRequired,
-  messages: PropTypes.array.isRequired,
+  activities: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,

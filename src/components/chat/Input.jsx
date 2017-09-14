@@ -22,7 +22,8 @@ class ChatInput extends React.Component {
     this.props.sendSocketMessage({
       type: 'SEND_MESSAGE',
       payload: {
-        text: this.state.message
+        text: this.state.message,
+        timestamp: Date.now()
       }
     })
 

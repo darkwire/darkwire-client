@@ -4,6 +4,7 @@ import {
   prepare as prepareMessage
 } from '../utils/message'
 import { getIO } from '../utils/socket'
+import _ from 'lodash'
 
 export const createRoom = (id) => {
   return async (dispatch) => fetch({
@@ -35,7 +36,16 @@ export const createUser = (payload) => {
 
 export const receiveUserExit = (payload) => {
   return async (dispatch, getState) => {
-    dispatch({ type: 'USER_EXIT', payload })
+    const state = getState()
+    const exitingUsername = state.room.members.find(m => _.isEqual(m.publicKey, payload.publicKey)).username
+
+    dispatch({
+      type: 'USER_EXIT',
+      payload: {
+        ...payload,
+        username: exitingUsername
+      }
+    })
   }
 }
 
