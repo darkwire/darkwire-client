@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Display table when data provided. 1`] = `
+exports[`Chat Component 1`] = `
 <form
   className="chat-preflight-container"
   onSubmit={[Function]}

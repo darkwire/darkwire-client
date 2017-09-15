@@ -4,7 +4,7 @@ import Chat from './index.js'
 
 const sendSocketMessage = jest.fn()
 
-test('Display table when data provided.', () => {
+test('Chat Component', () => {
   const component = renderer.create(
     <Chat sendSocketMessage={sendSocketMessage} />
   )

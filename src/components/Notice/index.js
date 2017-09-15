@@ -1,17 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
 
-class Notice extends React.Component {
-  render() {
-    return (
-      <div className="notice">
-        {this.props.children}
-      </div>
-    )
-  }
-}
-
-Notice.propTypes = {
-}
-
-export default Notice
+export default props => (
+  <div className="notice">
+    {props.children}
+  </div>);
