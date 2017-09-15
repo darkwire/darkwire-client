@@ -8,6 +8,11 @@ import ChatInput from 'containers/Chat'
 import Message from 'components/Message'
 import Username from 'components/Username'
 import Notice from 'components/Notice'
+import Modal from 'react-modal'
+import About from 'components/About'
+import Settings from 'components/Settings'
+import Welcome from 'components/Welcome'
+import { X } from 'react-feather'
 
 const crypto = new Crypto()
 
@@ -56,6 +61,8 @@ export default class Home extends Component {
     })
 
     this.createUser()
+
+    this.props.openModal('Welcome')
   }
 
   getActivityComponent(activity) {
@@ -92,6 +99,32 @@ export default class Home extends Component {
     }
   }
 
+  getModalComponent() {
+    switch (this.props.modalComponent) {
+      case 'About':
+        return <About/>
+      case 'Settings':
+        return <Settings/>
+      case 'Welcome':
+        return <Welcome roomId={this.props.roomId}/>
+      default:
+        return null
+    }
+  }
+
+  getModalTitle() {
+    switch (this.props.modalComponent) {
+      case 'About':
+        return 'About'
+      case 'Settings':
+        return 'Settings'
+      case 'Welcome':
+        return 'Welcome to Darkwire v2'
+      default:
+        return null
+    }
+  }
+
   async createUser() {
     const username = shortId.generate()
 
@@ -116,6 +149,7 @@ export default class Home extends Component {
             username={this.props.username}
             roomLocked={this.props.roomLocked}
             toggleLockRoom={this.props.toggleLockRoom}
+            openModal={this.props.openModal}
           />
         </div>
         <div className="message-stream h-100">
@@ -130,6 +164,35 @@ export default class Home extends Component {
         <div className="chat-container">
           <ChatInput />
         </div>
+        <Modal
+          isOpen={Boolean(this.props.modalComponent)}
+          contentLabel="Modal"
+          style={{overlay: { zIndex: 10}}}
+          className={{
+            base: 'react-modal-content',
+            afterOpen: 'react-modal-content_after-open',
+            beforeClose: 'react-modal-content_before-close'
+          }}
+          overlayClassName={{
+            base: 'react-modal-overlay',
+            afterOpen: 'react-modal-overlay_after-open',
+            beforeClose: 'react-modal-overlay_before-close'
+          }}
+          shouldCloseOnOverlayClick={true}
+          onRequestClose={this.props.closeModal}
+        >
+          <div className="react-modal-header">
+            <h4 className="react-modal-title float-left">
+              {this.getModalTitle()}
+            </h4>
+            <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
+              <X></X>
+            </button>
+          </div>
+          <div className="react-modal-component">
+            {this.getModalComponent()}
+          </div>
+        </Modal>
       </div>
     )
   }
@@ -151,4 +214,7 @@ Home.propTypes = {
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
   receiveToggleLockRoom: PropTypes.func.isRequired,
+  modalComponent: PropTypes.string,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }

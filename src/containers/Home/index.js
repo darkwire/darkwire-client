@@ -9,6 +9,8 @@ import {
   receiveUserEnter,
   toggleLockRoom,
   receiveToggleLockRoom,
+  openModal,
+  closeModal,
 } from 'actions'
 
 const mapStateToProps = state => ({
@@ -18,6 +20,7 @@ const mapStateToProps = state => ({
   members: state.room.members.filter(m => m.username && m.publicKey),
   roomId: state.room.id,
   roomLocked: state.room.isLocked,
+  modalComponent: state.app.modalComponent,
 })
 
 const mapDispatchToProps = {
@@ -29,6 +32,8 @@ const mapDispatchToProps = {
   createUser,
   toggleLockRoom,
   receiveToggleLockRoom,
+  openModal,
+  closeModal,
 }
 
 export default connect(

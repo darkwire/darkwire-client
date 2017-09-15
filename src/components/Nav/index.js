@@ -63,10 +63,10 @@ class Nav extends Component {
               <a className="nav-link" href="/" target="blank"><PlusCircle /> New Room</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><Settings /> Settings</a>
+              <a onClick={() => this.props.openModal('Settings')} className="nav-link" href="#"><Settings /> Settings</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><Info /> About</a>
+              <a onClick={() => this.props.openModal('About')} className="nav-link" href="javascript:void(0)"><Info /> About</a>
             </li>
           </ul>
         </div>
@@ -81,6 +81,7 @@ Nav.propTypes = {
   username: PropTypes.string.isRequired,
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
 }
 
 export default Nav
