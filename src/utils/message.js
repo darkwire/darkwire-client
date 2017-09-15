@@ -3,7 +3,6 @@ import Crypto from './crypto'
 const crypto = new Crypto()
 
 export const process = (payload, state) => new Promise(async (resolve, reject) => {
-  // const username = state.user.username
   const privateKeyJson = state.user.privateKey
   const privateKey = await crypto.importEncryptDecryptKey(privateKeyJson, 'jwk', ['decrypt', 'unwrapKey'])
 
@@ -14,7 +13,7 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
   const signature = await crypto.convertStringToArrayBufferView(payload.signature)
   const payloadBuffer = await crypto.convertStringToArrayBufferView(payload.payload)
 
-  await new Promise((resolvePayload, rejectPayload) => {
+  await new Promise((resolvePayload) => {
     payload.keys.forEach(async (key) => {
       try {
         sessionKey = await crypto.unwrapKey(
@@ -43,9 +42,7 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
           ['verify']
         )
         resolvePayload()
-      } catch (e) {
-        rejectPayload(e)
-      }
+      } catch (e) { } // eslint-disable-line
     })
   })
 
@@ -70,7 +67,7 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
   }
 })
 
-export const prepare = (payload, state) => new Promise(async (resolvePrepare) => {
+export const prepare = (payload, state) => new Promise(async (resolve) => {
   const myUsername = state.user.username
 
   const sessionKey = await crypto.createSecretKey()
@@ -109,7 +106,7 @@ export const prepare = (payload, state) => new Promise(async (resolvePrepare) =>
   const ivString = await crypto.convertArrayBufferViewToString(new Uint8Array(iv))
   const signatureString = await crypto.convertArrayBufferViewToString(new Uint8Array(signature))
 
-  resolvePrepare({
+  resolve({
     toSend: {
       payload: payloadString,
       signature: signatureString,
