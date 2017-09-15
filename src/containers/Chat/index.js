@@ -1,14 +1,15 @@
 import { connect } from 'react-redux'
-import { checkAuth, startSequence } from '../actions'
-import App from '../components/App.jsx'
+import { sendSocketMessage } from 'actions'
+import ChatInput from 'components/Chat'
 
 const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+  sendSocketMessage
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(ChatInput)

@@ -1,20 +1,22 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './src/index.html',
+  template: 'index.html',
   filename: 'index.html',
   inject: 'body'
 })
 
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const extractCSS = new ExtractTextPlugin('styles.css');
-const extractVendorCSS = new ExtractTextPlugin('vendor.css');
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const extractCSS = new ExtractTextPlugin('styles.css')
+const extractVendorCSS = new ExtractTextPlugin('vendor.css')
 
 const getSassLoaders = () => {
   return ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
 }
+
+const sourcePath = path.join(__dirname, './src')
 
 const plugins = []
 
@@ -29,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
 const getMain = () => {
   const arr = [
     'babel-polyfill',
-    './src/index.js'
+    './index.js'
   ]
   if (process.env.NODE_ENV === 'development') {
     arr.unshift(
@@ -42,9 +44,14 @@ const getMain = () => {
 }
 
 module.exports = {
+  devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : 'source-map',
+  context: sourcePath,
+  resolve: {
+    modules: [path.resolve(__dirname, 'node_modules'), sourcePath]
+  },
   entry: {
     main: getMain(),
-    vendor: './src/vendor/vendor.js'
+    vendor: './vendor/vendor.js'
   },
   output: {
     path: path.resolve('dist'),

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import TimeAgo from 'react-timeago'
-import Username from '../atoms/Username.jsx'
+import Username from 'components/Username'
 
 class Message extends React.Component {
   render() {

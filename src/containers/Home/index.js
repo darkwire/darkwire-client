@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Home from '../components/Home.jsx'
+import Home from 'components/Home'
 import {
   createRoom,
   receiveSocketMessage,
@@ -11,7 +11,7 @@ import {
   addUser,
   toggleLockRoom,
   receiveToggleLockRoom
-} from '../actions'
+} from 'actions'
 
 const mapStateToProps = (state) => ({
   activities: state.activities.items,

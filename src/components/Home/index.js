@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router-dom'
-import Crypto from '../utils/crypto'
+import Crypto from 'utils/crypto'
 import { Activity, Info, Settings, PlusCircle, User, CornerDownRight } from 'react-feather';
-import { connect } from '../utils/socket'
-import Nav from './Nav.jsx'
-import logoImg from '../img/logo.png'
+import { connect } from 'utils/socket'
+import Nav from 'components/Nav'
+import logoImg from 'img/logo.png'
 import shortId from 'shortid'
-import ChatInput from '../containers/chat/Input'
-import Message from './activities/Message.jsx'
-import Username from './atoms/Username.jsx'
-import Notice from './activities/Notice.jsx'
+import ChatInput from 'containers/Chat'
+import Message from 'components/Message'
+import Username from 'components/Username'
+import Notice from 'components/Notice'
 
 const crypto = new Crypto()
 
