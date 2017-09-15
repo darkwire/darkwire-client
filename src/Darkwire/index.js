@@ -7,6 +7,7 @@ import {
   receiveToggleLockRoom,
 } from 'actions'
 import { connect } from 'utils/socket'
+import plugins from 'Darkwire/plugins'
 
 const crypto = new Crypto()
 
@@ -16,7 +17,31 @@ export default class Darkwire {
     this._io = connect(io)
     this.username = null
     this.publicKey = null
+    this.settings = {
+      plugins: {},
+    }
+    this.plugins = []
     this.addSocketListeners()
+    this.registerPlugins()
+  }
+
+  addPlugin(plugin) {
+    const { name, settings } = plugin
+    this.settings = {
+      ...this.settings,
+      plugins: {
+        ...this.settings.plugins,
+        [name]: settings,
+      },
+    }
+    console.log(this.settings)
+    console.log(name, settings)
+  }
+
+  registerPlugins() {
+    plugins.forEach((register) => {
+      register(this)
+    })
   }
 
   addSocketListeners() {
