@@ -1,5 +1,6 @@
 import 'react-simple-dropdown/styles/Dropdown.css'
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import BootstrapCSS from 'bootstrap/dist/css/bootstrap.min.css'
 import styles from 'stylesheets/app.sass'
 import { Redirect } from 'react-router'
