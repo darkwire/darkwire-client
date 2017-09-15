@@ -6,7 +6,6 @@ import {
   fetchSuccess,
   fetchFailure
 } from '../actions'
-import { push } from 'react-router-redux'
 import _ from 'lodash'
 import queryString from 'querystring'
 
