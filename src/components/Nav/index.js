@@ -1,11 +1,12 @@
-import React, { PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Activity, Info, Settings, PlusCircle, User, Users, CornerDownRight, Lock, Unlock } from 'react-feather';
-import logoImg from '../img/logo.png'
+import logoImg from 'img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import randomColor from 'randomcolor'
-import Username from './atoms/Username.jsx'
+import Username from 'components/Username'
 
-class Nav extends React.Component {
+class Nav extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-md navbar-dark">

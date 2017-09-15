@@ -2,8 +2,8 @@ import React from 'react'
 import { render } from 'react-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
-import App from './containers/App'
-import reducers from './reducers'
+import Root from './root'
+import reducers from 'reducers'
 import {
   BrowserRouter as Router,
   Link
@@ -11,14 +11,10 @@ import {
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory'
 import { Route } from 'react-router'
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
-import { AppContainer } from 'react-hot-loader';
-import env from './config/env'
+import { AppContainer } from 'react-hot-loader'
+import env from 'config/env'
 
 const history = createHistory()
-
-history.listen(function (location) {
-})
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -26,7 +22,6 @@ const store = createStore(
   reducers,
   composeEnhancers(
     applyMiddleware(
-      routerMiddleware(history),
       thunk
     )
   )
@@ -35,22 +30,16 @@ const store = createStore(
 const renderFunc = (Component) => {
   render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <div className='h-100'>
-          <AppContainer>
-            <Route path="/" component={Component}/>
-          </AppContainer>
-        </div>
-      </ConnectedRouter>
+      <Root component={Component} />
     </Provider>,
     document.getElementById('root')
   )
 }
 
-renderFunc(App)
+renderFunc(Root)
 
 if (module.hot) {
-  module.hot.accept('./containers/App', () => {
-    renderFunc(App)
+  module.hot.accept('./root.js', () => {
+    renderFunc(Root)
   });
 }

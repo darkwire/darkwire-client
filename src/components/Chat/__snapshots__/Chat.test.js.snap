@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chat Component 1`] = `
+<form
+  className="chat-preflight-container"
+  onSubmit={[Function]}
+>
+  <input
+    autoFocus="autofocus"
+    className="chat"
+    onChange={[Function]}
+    placeholder="Type here"
+    type="text"
+    value=""
+  />
+  <div
+    className="input-controls"
+  >
+    <button
+      className="icon is-right send btn btn-link"
+      onClick={[Function]}
+    >
+      <svg
+        className="disabled"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <polyline
+          fill="none"
+          points="15 10 20 15 15 20"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+        />
+        <path
+          d="M4 4v7a4 4 0 0 0 4 4h12"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+        />
+      </svg>
+    </button>
+  </div>
+</form>
+`;

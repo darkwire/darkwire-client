@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notice Component 1`] = `
+<div
+  className="notice"
+>
+  <div>
+    Hello world
+  </div>
+</div>
+`;

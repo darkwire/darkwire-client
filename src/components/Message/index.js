@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import TimeAgo from 'react-timeago'
-import Username from '../atoms/Username.jsx'
+import Username from 'components/Username'
 
-class Message extends React.Component {
+class Message extends Component {
   render() {
     return (
       <div>
