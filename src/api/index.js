@@ -1,15 +1,13 @@
-import { generateUrl } from './generator'
-import isoFetch from 'isomorphic-fetch';
-import { unauthorized } from '../actions'
+import isoFetch from 'isomorphic-fetch'
 import {
   fetchStart,
   fetchSuccess,
-  fetchFailure
-} from '../actions'
-import _ from 'lodash'
+  fetchFailure,
+} from 'actions'
 import queryString from 'querystring'
+import generateUrl from './generator'
 
-export const fetch = (opts, dispatch, name, meta = {}) => {
+export default (opts, dispatch, name, metaOpts = {}) => {
   const method = opts.method || 'GET'
   const resourceId = opts.resourceId
   let url = generateUrl(opts.resourceName, resourceId)
@@ -17,7 +15,7 @@ export const fetch = (opts, dispatch, name, meta = {}) => {
   const config = {
     method,
     headers: {},
-    type: 'cors'
+    type: 'cors',
   }
 
   if (opts.body) {
@@ -30,23 +28,23 @@ export const fetch = (opts, dispatch, name, meta = {}) => {
   }
 
   return new Promise((resolve, reject) => {
-    meta = { ...meta, timestamp: Date.now() }
+    const meta = { ...metaOpts, timestamp: Date.now() }
     dispatch(fetchStart(name, method, resourceId, meta))
     return isoFetch(url, config)
       .then(async (response) => {
-
         let json = {}
 
         try {
           json = await response.json()
-        } catch(e) {
+        } catch (e) {
+          throw new Error(e)
         }
 
         const dispatchOps = {
           response,
           json,
           resourceId,
-          meta
+          meta,
         }
 
         if (response.ok) {
@@ -56,8 +54,7 @@ export const fetch = (opts, dispatch, name, meta = {}) => {
 
         dispatch(fetchFailure(name, method, dispatchOps))
 
-        reject(dispatchOps)
-
+        return reject(dispatchOps)
       })
   })
 }

@@ -1,23 +1,39 @@
 {
   "parser": "babel-eslint",
   "env": {
-    "browser": true
+    "browser": true,
+    "jest/globals": true
   },
+  "plugins": [
+    "jest"
+  ],
   "extends": "airbnb",
   "rules": {
+    "jsx-a11y/no-autofocus": 0,
     "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/href-no-hash": 0,
     "no-return-assign": 0,
     "no-console": 0,
+    "class-methods-use-this": 0,
     "quotes": [2, "single"],
     "no-unexpected-multiline": 2,
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": 0,
     "import/extensions": 0,
     "no-underscore-dangle": 0,
+    "semi": [2,"never"],
     "max-len": ["error", 200],
+    "no-case-declarations": 0,
+    "no-plusplus": 0,
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/valid-expect": "error",
+    "react/jsx-closing-bracket-location": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prefer-stateless-function": 0,
     "react/prop-types": [1, { "ignore": ["dispatch"] }],
+    "react/no-array-index-key": 0,
     "react/jsx-no-bind": 0,
     "react/forbid-prop-types": 0,
     "comma-dangle": ["error", {

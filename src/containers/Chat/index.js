@@ -2,11 +2,11 @@ import { connect } from 'react-redux'
 import { sendSocketMessage } from 'actions'
 import ChatInput from 'components/Chat'
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 })
 
 const mapDispatchToProps = {
-  sendSocketMessage
+  sendSocketMessage,
 }
 
 export default connect(

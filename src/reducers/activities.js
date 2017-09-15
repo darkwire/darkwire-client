@@ -6,11 +6,11 @@ const initialState = {
     // username,
     // timestamp
     // }
-  ]
+  ],
 }
 
 const activities = (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'SEND_SOCKET_MESSAGE_SEND_MESSAGE':
       return {
         ...state,
@@ -18,9 +18,9 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             ...action.payload,
-            type: 'SEND_MESSAGE'
-          }
-        ]
+            type: 'SEND_MESSAGE',
+          },
+        ],
       }
     case 'HANDLE_SOCKET_MESSAGE_SEND_MESSAGE':
       return {
@@ -29,9 +29,9 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             ...action.payload.payload,
-            type: 'SEND_MESSAGE'
-          }
-        ]
+            type: 'SEND_MESSAGE',
+          },
+        ],
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
       const newUsername = action.payload.payload.username
@@ -45,9 +45,9 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             username: newUsername,
-            type: 'USER_ENTER'
-          }
-        ]
+            type: 'USER_ENTER',
+          },
+        ],
       }
     case 'USER_EXIT':
       if (!action.payload.username) {
@@ -59,9 +59,9 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             username: action.payload.username,
-            type: 'USER_EXIT'
-          }
-        ]
+            type: 'USER_EXIT',
+          },
+        ],
       }
     case 'TOGGLE_LOCK_ROOM':
       return {
@@ -71,9 +71,9 @@ const activities = (state = initialState, action) => {
           {
             username: action.payload.username,
             type: 'TOGGLE_LOCK_ROOM',
-            locked: action.payload.locked
-          }
-        ]
+            locked: action.payload.locked,
+          },
+        ],
       }
     case 'RECEIVE_TOGGLE_LOCK_ROOM':
       return {
@@ -83,9 +83,9 @@ const activities = (state = initialState, action) => {
           {
             username: action.payload.username,
             type: 'TOGGLE_LOCK_ROOM',
-            locked: action.payload.locked
-          }
-        ]
+            locked: action.payload.locked,
+          },
+        ],
       }
     default:
       return state

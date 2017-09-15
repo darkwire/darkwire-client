@@ -11,8 +11,6 @@ const appReducer = combineReducers({
   activities,
 })
 
-const rootReducer = (state, action) => {
-  return appReducer(state, action)
-}
+const rootReducer = (state, action) => appReducer(state, action)
 
 export default rootReducer

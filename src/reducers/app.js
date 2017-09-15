@@ -1,8 +1,5 @@
-const initialState = {
-}
+const initialState = {}
 
-const app = (state = initialState, action) => {
-  return state
-}
+const app = (state = initialState) => state
 
 export default app

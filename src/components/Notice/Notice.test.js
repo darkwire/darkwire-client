@@ -2,8 +2,6 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import Notice from './index.js'
 
-const sendSocketMessage = jest.fn()
-
 test('Notice Component', () => {
   const component = renderer.create(
     <Notice>
@@ -16,5 +14,4 @@ test('Notice Component', () => {
   expect(componentJSON.children.length).toBe(1)
   expect(componentJSON.children[0].type).toBe('div')
   expect(componentJSON.children[0].children[0]).toContain('Hello world')
-
 })
