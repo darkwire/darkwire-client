@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types';
 import { Activity, Info, Settings, PlusCircle, User, CornerDownRight } from 'react-feather';
 
-class ChatInput extends React.Component {
+export default class Chat extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -56,9 +57,6 @@ class ChatInput extends React.Component {
   }
 }
 
-ChatInput.propTypes = {
+Chat.propTypes = {
   sendSocketMessage: PropTypes.func.isRequired
 }
-
-
-export default ChatInput
