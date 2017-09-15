@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { Activity, Info, Settings, PlusCircle, User, CornerDownRight } from 'react-feather';
 
-export default class Chat extends React.Component {
+export default class Chat extends Component {
   constructor(props) {
     super(props)
     this.state = {

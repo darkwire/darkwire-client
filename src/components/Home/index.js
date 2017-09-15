@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Crypto from 'utils/crypto'
@@ -14,7 +14,7 @@ import Notice from 'components/Notice'
 
 const crypto = new Crypto()
 
-export default class Home extends React.Component {
+export default class Home extends Component {
 
   constructor(props) {
     super(props)
