@@ -1,6 +1,12 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-export default props => (
-  <div className="notice">
-    {props.children}
-  </div>);
+const Notice = props => (<div>
+  {props.children}
+</div>)
+
+Notice.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
+export default Notice

@@ -12,5 +12,4 @@ test('Chat Component', () => {
 
   expect(component).toMatchSnapshot()
   expect(componentJSON.children.length).toBe(2)
-
 })

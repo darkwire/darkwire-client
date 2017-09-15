@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import Crypto from 'utils/crypto'
-import { Activity, Info, Settings, PlusCircle, User, CornerDownRight } from 'react-feather';
 import { connect } from 'utils/socket'
 import Nav from 'components/Nav'
-import logoImg from 'img/logo.png'
 import shortId from 'shortid'
 import ChatInput from 'containers/Chat'
 import Message from 'components/Message'
@@ -15,13 +12,12 @@ import Notice from 'components/Notice'
 const crypto = new Crypto()
 
 export default class Home extends Component {
-
   constructor(props) {
     super(props)
 
     this.state = {
       message: '',
-      io: null
+      io: null,
     }
   }
 
@@ -33,7 +29,7 @@ export default class Home extends Component {
     const io = connect(roomId)
 
     this.setState({
-      io
+      io,
     })
 
     io.on('USER_ENTER', (payload) => {
@@ -42,8 +38,8 @@ export default class Home extends Component {
         type: 'ADD_USER',
         payload: {
           username: this.props.username,
-          publicKey: this.props.publicKey
-        }
+          publicKey: this.props.publicKey,
+        },
       })
     })
 
@@ -62,22 +58,8 @@ export default class Home extends Component {
     this.createUser()
   }
 
-  async createUser() {
-    const username = shortId.generate()
-
-    const encryptDecryptKeys = await crypto.createEncryptDecryptKeys()
-    const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
-    const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
-
-    this.props.createUser({
-      username,
-      publicKey: exportedEncryptDecryptPublicKey,
-      privateKey: exportedEncryptDecryptPrivateKey
-    })
-  }
-
   getActivityComponent(activity) {
-    switch(activity.type) {
+    switch (activity.type) {
       case 'SEND_MESSAGE':
         return (
           <Message
@@ -89,28 +71,44 @@ export default class Home extends Component {
       case 'USER_ENTER':
         return (
           <Notice>
-            <div><Username username={activity.username}></Username> joined</div>
+            <div><Username username={activity.username} /> joined</div>
           </Notice>
         )
       case 'USER_EXIT':
         return (
           <Notice>
-            <div><Username username={activity.username}></Username> left</div>
+            <div><Username username={activity.username} /> left</div>
           </Notice>
         )
       case 'TOGGLE_LOCK_ROOM':
         const lockedWord = activity.locked ? 'locked' : 'unlocked'
         return (
           <Notice>
-            <div><Username username={activity.username}></Username> {lockedWord} the room</div>
+            <div><Username username={activity.username} /> {lockedWord} the room</div>
           </Notice>
         )
+      default:
+        return false
     }
+  }
+
+  async createUser() {
+    const username = shortId.generate()
+
+    const encryptDecryptKeys = await crypto.createEncryptDecryptKeys()
+    const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
+    const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
+
+    this.props.createUser({
+      username,
+      publicKey: exportedEncryptDecryptPublicKey,
+      privateKey: exportedEncryptDecryptPrivateKey,
+    })
   }
 
   render() {
     return (
-      <div className='h-100'>
+      <div className="h-100">
         <div className="nav-container">
           <Nav
             members={this.props.members}
@@ -122,17 +120,15 @@ export default class Home extends Component {
         </div>
         <div className="message-stream h-100">
           <ul>
-            {this.props.activities.map((activity, index) => {
-              return (
-                <li key={index} className={`activity-item ${activity.type}`}>
-                  {this.getActivityComponent(activity)}
-                </li>
-              )
-            })}
+            {this.props.activities.map((activity, index) => (
+              <li key={index} className={`activity-item ${activity.type}`}>
+                {this.getActivityComponent(activity)}
+              </li>
+            ))}
           </ul>
         </div>
         <div className="chat-container">
-          <ChatInput/>
+          <ChatInput />
         </div>
       </div>
     )
@@ -150,8 +146,9 @@ Home.propTypes = {
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,
+  match: PropTypes.object.isRequired,
   roomId: PropTypes.string.isRequired,
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
-  receiveToggleLockRoom: PropTypes.func.isRequired
+  receiveToggleLockRoom: PropTypes.func.isRequired,
 }

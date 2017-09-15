@@ -5,21 +5,19 @@ import {
   receiveSocketMessage,
   sendSocketMessage,
   createUser,
-  userEnter,
   receiveUserExit,
   receiveUserEnter,
-  addUser,
   toggleLockRoom,
-  receiveToggleLockRoom
+  receiveToggleLockRoom,
 } from 'actions'
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   activities: state.activities.items,
   username: state.user.username,
   publicKey: state.user.publicKey,
   members: state.room.members.filter(m => m.username && m.publicKey),
   roomId: state.room.id,
-  roomLocked: state.room.isLocked
+  roomLocked: state.room.isLocked,
 })
 
 const mapDispatchToProps = {
@@ -30,10 +28,11 @@ const mapDispatchToProps = {
   receiveUserEnter,
   createUser,
   toggleLockRoom,
-  receiveToggleLockRoom
+  receiveToggleLockRoom,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Home)
+

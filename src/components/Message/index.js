@@ -7,16 +7,19 @@ class Message extends Component {
   render() {
     return (
       <div>
-        <div className="chat-meta"> 
-          <Username username={this.props.sender}/>
+        <div className="chat-meta">
+          <Username username={this.props.sender} />
           <span className="muted timestamp">
-            <TimeAgo date={this.props.timestamp} minPeriod={60} formatter={(value, unit, suffix) => {
-              if (unit === 'second') {
-                return 'just now'
-              } else {
+            <TimeAgo
+              date={this.props.timestamp}
+              minPeriod={60}
+              formatter={(value, unit, suffix) => {
+                if (unit === 'second') {
+                  return 'just now'
+                }
                 return `${value} ${unit}${value > 1 ? 's' : ''} ${suffix}`
-              }
-          }} />
+              }}
+            />
           </span>
         </div>
         <div className="chat">
@@ -30,7 +33,7 @@ class Message extends Component {
 Message.propTypes = {
   sender: PropTypes.string.isRequired,
   timestamp: PropTypes.number.isRequired,
-  message: PropTypes.string.isRequired
+  message: PropTypes.string.isRequired,
 }
 
 export default Message
