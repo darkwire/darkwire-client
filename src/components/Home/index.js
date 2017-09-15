@@ -102,11 +102,11 @@ export default class Home extends Component {
   getModalComponent() {
     switch (this.props.modalComponent) {
       case 'About':
-        return <About/>
+        return <About />
       case 'Settings':
-        return <Settings/>
+        return <Settings />
       case 'Welcome':
-        return <Welcome roomId={this.props.roomId}/>
+        return <Welcome roomId={this.props.roomId} />
       default:
         return null
     }
@@ -167,18 +167,18 @@ export default class Home extends Component {
         <Modal
           isOpen={Boolean(this.props.modalComponent)}
           contentLabel="Modal"
-          style={{overlay: { zIndex: 10}}}
+          style={{ overlay: { zIndex: 10 } }}
           className={{
             base: 'react-modal-content',
             afterOpen: 'react-modal-content_after-open',
-            beforeClose: 'react-modal-content_before-close'
+            beforeClose: 'react-modal-content_before-close',
           }}
           overlayClassName={{
             base: 'react-modal-overlay',
             afterOpen: 'react-modal-overlay_after-open',
-            beforeClose: 'react-modal-overlay_before-close'
+            beforeClose: 'react-modal-overlay_before-close',
           }}
-          shouldCloseOnOverlayClick={true}
+          shouldCloseOnOverlayClick
           onRequestClose={this.props.closeModal}
         >
           <div className="react-modal-header">
@@ -186,7 +186,7 @@ export default class Home extends Component {
               {this.getModalTitle()}
             </h4>
             <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
-              <X></X>
+              <X />
             </button>
           </div>
           <div className="react-modal-component">
@@ -196,6 +196,10 @@ export default class Home extends Component {
       </div>
     )
   }
+}
+
+Home.defaultProps = {
+  modalComponent: null,
 }
 
 Home.propTypes = {

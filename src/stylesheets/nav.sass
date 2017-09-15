@@ -9,6 +9,11 @@
   z-index: 5
   background: black
 
+.nav-item
+  height: 100%
+  a
+    height: 100%
+
 nav
   border-bottom: 1px solid $inactive
   .meta
@@ -18,10 +23,14 @@ nav
 .navbar-toggler
   border: 0px
 
+.navbar
+  padding-top: 0px
+  padding-bottom: 0px
+  height: 55px
+
 ul.navbar-nav
+  height: 100%
   li
-    position: relative
-    top: -5px
     svg
       width: 20px
       position: relative
@@ -39,6 +48,9 @@ ul.navbar-nav
   color: $md-gray !important
   &:hover
     color: white !important
+
+.navbar-collapse
+  padding: 0px 0px
 
 .members-dropdown
   margin-left: 10px
