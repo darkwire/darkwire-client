@@ -77,10 +77,14 @@ export default class Home extends Component {
 
       const scrolledToBottom = (activitiesListHeight + activitiesListYPos + 70) === messageStreamHeight
 
-      if (scrolledToBottom && !this.props.scrolledToBottom) {
-        this.props.setScrolledToBottom(true)
-      } else if (this.props.scrolledToBottom) {
-        this.props.setScrolledToBottom(false)
+      if (scrolledToBottom) {
+        if (!this.props.scrolledToBottom) {
+          this.props.setScrolledToBottom(true)
+        }
+      } else {
+        if (this.props.scrolledToBottom) {
+          this.props.setScrolledToBottom(false)
+        }
       }
     })
   }
