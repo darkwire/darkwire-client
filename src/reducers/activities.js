@@ -11,6 +11,17 @@ const initialState = {
 
 const activities = (state = initialState, action) => {
   switch (action.type) {
+    case 'SEND_SOCKET_MESSAGE_SLASH_COMMAND':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            ...action.payload,
+            type: 'SLASH_COMMAND',
+          },
+        ],
+      }    
     case 'SEND_SOCKET_MESSAGE_SEND_MESSAGE':
       return {
         ...state,

@@ -5,6 +5,7 @@ import { connect } from 'utils/socket'
 import Nav from 'components/Nav'
 import shortId from 'shortid'
 import ChatInput from 'containers/Chat'
+import Commands from 'components/Commands'
 import Message from 'components/Message'
 import Username from 'components/Username'
 import Notice from 'components/Notice'
@@ -21,8 +22,7 @@ export default class Home extends Component {
     super(props)
 
     this.state = {
-      message: '',
-      io: null,
+      ready: false,
     }
   }
 
@@ -34,35 +34,36 @@ export default class Home extends Component {
     const io = connect(roomId)
 
     this.setState({
-      io,
-    })
-
-    io.on('USER_ENTER', (payload) => {
-      this.props.receiveUserEnter(payload)
-      this.props.sendSocketMessage({
-        type: 'ADD_USER',
-        payload: {
-          username: this.props.username,
-          publicKey: this.props.publicKey,
-        },
+      ready: true,
+    }, () => {
+      io.on('USER_ENTER', (payload) => {
+        this.props.receiveUserEnter(payload)
+        this.props.sendSocketMessage({
+          type: 'ADD_USER',
+          payload: {
+            username: this.props.username,
+            publicKey: this.props.publicKey,
+          },
+        })
       })
+
+      io.on('USER_EXIT', (payload) => {
+        this.props.receiveUserExit(payload)
+      })
+
+      io.on('PAYLOAD', (payload) => {
+        this.props.receiveSocketMessage(payload)
+      })
+
+      io.on('TOGGLE_LOCK_ROOM', (payload) => {
+        this.props.receiveToggleLockRoom(payload)
+      })
+
+      this.createUser()
+
+      this.props.openModal('Welcome')
     })
 
-    io.on('USER_EXIT', (payload) => {
-      this.props.receiveUserExit(payload)
-    })
-
-    io.on('PAYLOAD', (payload) => {
-      this.props.receiveSocketMessage(payload)
-    })
-
-    io.on('TOGGLE_LOCK_ROOM', (payload) => {
-      this.props.receiveToggleLockRoom(payload)
-    })
-
-    this.createUser()
-
-    this.props.openModal('Welcome')
   }
 
   getActivityComponent(activity) {
@@ -72,6 +73,14 @@ export default class Home extends Component {
           <Message
             sender={activity.sender}
             message={activity.text}
+            timestamp={activity.timestamp}
+          />
+        )
+      case 'SLASH_COMMAND':
+        return (
+          <Commands
+            sender={activity.sender}
+            trigger={activity.trigger}
             timestamp={activity.timestamp}
           />
         )
@@ -92,6 +101,12 @@ export default class Home extends Component {
         return (
           <Notice>
             <div><Username username={activity.username} /> {lockedWord} the room</div>
+          </Notice>
+        )
+      case 'SYSTEM_NOTICE':
+        return (
+          <Notice>
+            <div>{activity.message}</div>
           </Notice>
         )
       default:
@@ -140,6 +155,8 @@ export default class Home extends Component {
   }
 
   render() {
+    const { ready } = this.state
+
     return (
       <div className="h-100">
         <div className="nav-container">
@@ -153,6 +170,12 @@ export default class Home extends Component {
           />
         </div>
         <div className="message-stream h-100">
+          {ready ? (
+            <Notice level="warning">
+              <div className="activity-item">
+                Establishing a secure connection...
+              </div>
+            </Notice>) : null}
           <ul>
             {this.props.activities.map((activity, index) => (
               <li key={index} className={`activity-item ${activity.type}`}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import sanitizeHtml from 'sanitize-html'
 import { CornerDownRight } from 'react-feather'
 
 export default class Chat extends Component {
@@ -15,18 +16,54 @@ export default class Chat extends Component {
     this.sendMessage()
   }
 
+  parseCommand(message) {
+    const trigger = {
+      command: null,
+      params: [],
+    }
+
+    if (message.indexOf('/') === 0) {
+      const parsedCommand = message.replace('/', '').split(' ')
+      trigger.command = sanitizeHtml(parsedCommand[0]) || null
+      // Get params
+      if (parsedCommand.length >= 2) {
+        for (let i = 1; i < parsedCommand.length; i++) {
+          trigger.params.push(parsedCommand[i])
+        }
+      }
+
+      return trigger
+    }
+
+    return false
+  }
+
   sendMessage() {
     if (!this.canSend()) {
       return
     }
 
-    this.props.sendSocketMessage({
-      type: 'SEND_MESSAGE',
-      payload: {
-        text: this.state.message,
-        timestamp: Date.now(),
-      },
-    })
+    const { message } = this.state
+    const isCommand = this.parseCommand(message)
+
+    if (isCommand) {
+      this.props.sendSocketMessage({
+        type: 'SLASH_COMMAND',
+        payload: {
+          trigger: isCommand,
+          timestamp: Date.now(),
+        },
+      })
+    } else {    
+      this.props.sendSocketMessage({
+        type: 'SEND_MESSAGE',
+        payload: {
+          text: message,
+          timestamp: Date.now(),
+        },
+      })
+    }
+
 
     this.setState({
       message: '',
