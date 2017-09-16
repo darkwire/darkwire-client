@@ -81,10 +81,8 @@ export default class Home extends Component {
         if (!this.props.scrolledToBottom) {
           this.props.setScrolledToBottom(true)
         }
-      } else {
-        if (this.props.scrolledToBottom) {
-          this.props.setScrolledToBottom(false)
-        }
+      } else if (this.props.scrolledToBottom) {
+        this.props.setScrolledToBottom(false)
       }
     })
   }
