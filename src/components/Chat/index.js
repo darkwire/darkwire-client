@@ -54,7 +54,7 @@ export default class Chat extends Component {
           timestamp: Date.now(),
         },
       })
-    } else {    
+    } else {
       this.props.sendSocketMessage({
         type: 'SEND_MESSAGE',
         payload: {

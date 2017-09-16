@@ -11,6 +11,7 @@ import {
   receiveToggleLockRoom,
   openModal,
   closeModal,
+  setScrolledToBottom,
 } from 'actions'
 
 const mapStateToProps = state => ({
@@ -21,6 +22,7 @@ const mapStateToProps = state => ({
   roomId: state.room.id,
   roomLocked: state.room.isLocked,
   modalComponent: state.app.modalComponent,
+  scrolledToBottom: state.app.scrolledToBottom,
 })
 
 const mapDispatchToProps = {
@@ -34,6 +36,7 @@ const mapDispatchToProps = {
   receiveToggleLockRoom,
   openModal,
   closeModal,
+  setScrolledToBottom,
 }
 
 export default connect(

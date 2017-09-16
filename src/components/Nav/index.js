@@ -10,7 +10,7 @@ class Nav extends Component {
   newRoom() {
     window.open(`/${shortId.generate()}`)
   }
-  
+
   render() {
     return (
       <nav className="navbar navbar-expand-md navbar-dark">

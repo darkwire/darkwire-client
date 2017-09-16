@@ -63,7 +63,34 @@ export default class Home extends Component {
 
       this.props.openModal('Welcome')
     })
+  }
 
+  componentDidMount() {
+    this.messageStream.addEventListener('scroll', () => {
+      const messageStreamHeight = this.messageStream.clientHeight
+      const activitiesListHeight = this.activitiesList.clientHeight
+
+      const bodyRect = document.body.getBoundingClientRect()
+      const elemRect = this.activitiesList.getBoundingClientRect()
+      const offset = elemRect.top - bodyRect.top
+      const activitiesListYPos = offset
+
+      const scrolledToBottom = (activitiesListHeight + activitiesListYPos + 70) === messageStreamHeight
+
+      if (scrolledToBottom && !this.props.scrolledToBottom) {
+        this.props.setScrolledToBottom(true)
+      } else if (this.props.scrolledToBottom) {
+        this.props.setScrolledToBottom(false)
+      }
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.activities.length < this.props.activities.length) {
+      if (this.props.scrolledToBottom) {
+        this.messageStream.scrollTop = this.messageStream.scrollHeight
+      }
+    }
   }
 
   getActivityComponent(activity) {
@@ -169,14 +196,14 @@ export default class Home extends Component {
             openModal={this.props.openModal}
           />
         </div>
-        <div className="message-stream h-100">
-          {ready ? (
+        <div className="message-stream h-100" ref={el => this.messageStream = el}>
+          {!ready ? (
             <Notice level="warning">
               <div className="activity-item">
                 Establishing a secure connection...
               </div>
             </Notice>) : null}
-          <ul>
+          <ul ref={el => this.activitiesList = el}>
             {this.props.activities.map((activity, index) => (
               <li key={index} className={`activity-item ${activity.type}`}>
                 {this.getActivityComponent(activity)}
@@ -244,4 +271,6 @@ Home.propTypes = {
   modalComponent: PropTypes.string,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  setScrolledToBottom: PropTypes.func.isRequired,
+  scrolledToBottom: PropTypes.bool.isRequired,
 }

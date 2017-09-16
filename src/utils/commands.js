@@ -17,7 +17,6 @@ const triggerCommands = [{
     if (!newUsername.match(/^[A-Z]/i)) {
       return this.log('Username must start with a letter.', { error: true })
     }
-    
   },
 }, {
   command: 'help',

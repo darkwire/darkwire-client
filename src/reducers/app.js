@@ -1,5 +1,6 @@
 const initialState = {
   modalComponent: null,
+  scrolledToBottom: true,
 }
 
 const app = (state = initialState, action) => {
@@ -13,6 +14,11 @@ const app = (state = initialState, action) => {
       return {
         ...state,
         modalComponent: null,
+      }
+    case 'SET_SCROLLED_TO_BOTTOM':
+      return {
+        ...state,
+        scrolledToBottom: action.payload,
       }
     default:
       return state

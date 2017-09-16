@@ -21,7 +21,7 @@ const activities = (state = initialState, action) => {
             type: 'SLASH_COMMAND',
           },
         ],
-      }    
+      }
     case 'SEND_SOCKET_MESSAGE_SEND_MESSAGE':
       return {
         ...state,
