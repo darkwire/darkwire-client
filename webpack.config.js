@@ -14,7 +14,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const extractCSS = new ExtractTextPlugin('styles.css')
 const extractVendorCSS = new ExtractTextPlugin('vendor.css')
 
-const getSassLoaders = () => ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+const getSassLoaders = () => ['style-loader', 'css-loader?sourceMap=true&localIdentName=[path][name]--[local]&importLoaders=1', 'postcss-loader', 'sass-loader']
 
 const sourcePath = path.join(__dirname, './src')
 
@@ -70,6 +70,7 @@ module.exports = {
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     HtmlWebpackPluginConfig,
     extractVendorCSS,
     extractCSS,

@@ -1,10 +1,10 @@
-const triggerCommands = [{
+export default [{
   command: 'nick',
   description: 'Changes nickname.',
   paramaters: ['{username}'],
   multiple: false,
   usage: '/nick {username}',
-  action: () => {
+  action: (trigger) => {
     let newUsername = trigger.params[0] || false
 
     if (newUsername.toString().length > 16) {
@@ -25,9 +25,9 @@ const triggerCommands = [{
   multiple: false,
   usage: '/help',
   action: () => {
-    validCommands = validCommands.map(command => `/${command}`)
+    const commands = this.map(command => `/${command}`)
 
-    this.log(`Valid commands: ${validCommands.sort().join(', ')}`, { notice: true })
+    this.log(`Valid commands: ${commands.sort().join(', ')}`, { notice: true })
   },
 }, {
   command: 'me',
@@ -35,8 +35,7 @@ const triggerCommands = [{
   paramaters: ['{action}'],
   multiple: true,
   usage: '/me {action}',
-  action: () => {
-    expectedParams = 100
+  action: (trigger) => {
 
     const actionMessage = trigger.params.join(' ')
 
@@ -57,7 +56,7 @@ const triggerCommands = [{
   paramaters: [],
   multiple: true,
   usage: '/clear',
-  action: () => {
+  action: (trigger) => {
     this.clear()
   },
 }]
