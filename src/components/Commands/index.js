@@ -5,6 +5,15 @@ import Username from 'components/Username'
 import validCommands from 'utils/commands'
 
 class Commands extends Component {
+
+  async componentWillMount() {
+    const { trigger } = this.props
+    const command = validCommands.find((cmnd) => cmnd.command === trigger.command)
+
+    console.log('requested command:', command);
+
+  }
+
   render() {
     return (
       <div>

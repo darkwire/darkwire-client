@@ -1,8 +1,19 @@
+/**
+ * Commands;
+ *
+ *  {
+ *    command: '', - The command (eg /nick)
+ *    description: '', - Description of command
+ *    paramaters: [], - Paramaters after command
+ *    usage: '', - For /help
+ *    action: (trigger) => {}, - Will dispatch actions based on command, trigger holds paramaters from the command
+ *  }
+ */
+
 export default [{
   command: 'nick',
   description: 'Changes nickname.',
   paramaters: ['{username}'],
-  multiple: false,
   usage: '/nick {username}',
   action: (trigger) => {
     let newUsername = trigger.params[0] || false
@@ -22,7 +33,6 @@ export default [{
   command: 'help',
   description: 'Shows a list of commands.',
   paramaters: [],
-  multiple: false,
   usage: '/help',
   action: () => {
     const commands = this.map(command => `/${command}`)
@@ -33,7 +43,6 @@ export default [{
   command: 'me',
   description: 'Invoke virtual action',
   paramaters: ['{action}'],
-  multiple: true,
   usage: '/me {action}',
   action: (trigger) => {
 
@@ -54,7 +63,6 @@ export default [{
   command: 'clear',
   description: 'Clears the chat screen',
   paramaters: [],
-  multiple: true,
   usage: '/clear',
   action: (trigger) => {
     this.clear()
