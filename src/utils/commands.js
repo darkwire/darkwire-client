@@ -7,10 +7,15 @@
  *    paramaters: [], - Paramaters after command
  *    usage: '', - For /help
  *    action: (trigger) => {}, - Will dispatch actions based on command, trigger holds paramaters from the command
+ *
+ *    RETURN ACTIONS:
+ *    message - messages that is sent to the chat room
+ *    level - highlighted in different colors (null / notice / warning / error)
+ *    scope - scope of message (local / global) - local is sent to user only, global is dispatched to server
  *  }
  */
 
-export default [{
+const commands = [{
   command: 'nick',
   description: 'Changes nickname.',
   paramaters: ['{username}'],
@@ -35,9 +40,12 @@ export default [{
   paramaters: [],
   usage: '/help',
   action: () => {
-    const commands = this.map(command => `/${command}`)
-
-    this.log(`Valid commands: ${commands.sort().join(', ')}`, { notice: true })
+    const validCommands = commands.map(command => `/${command.command}`)
+    return {
+      message: `Valid commands: ${validCommands.sort().join(', ')}`,
+      level: 'notice',
+      scope: 'local',
+    }
   },
 }, {
   command: 'me',
@@ -68,3 +76,5 @@ export default [{
     this.clear()
   },
 }]
+
+export default commands;

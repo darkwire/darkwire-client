@@ -5,26 +5,34 @@ import Username from 'components/Username'
 import validCommands from 'utils/commands'
 
 class Commands extends Component {
-
-  async componentWillMount() {
+  parseCommand() {
     const { trigger } = this.props
-    const command = validCommands.find((cmnd) => cmnd.command === trigger.command)
+    const command = validCommands.find(cmnd => cmnd.command === trigger.command)
 
-    console.log('requested command:', command);
+    console.log('requested command:', command)
+    if (command) {
+      // pass dispatch here
+      const commandResult = command.action()
 
+      return commandResult
+    }
+
+    return null
   }
 
   render() {
+    const command = this.parseCommand()
+
+    if (!command) {
+      return <div>Not a valid command</div>
+    }
+
     return (
       <div>
         <div className="chat-meta">
-          <Username username={this.props.sender} />
           <span className="muted timestamp">
-            THIS IS A COMMAND
+            {command.message}            
           </span>
-        </div>
-        <div className="chat">
-          <p>{this.props.message}</p>
         </div>
       </div>
     )
