@@ -109,7 +109,8 @@ export default class Home extends Component {
         return (
           <Commands
             sender={activity.sender}
-            trigger={activity.trigger}
+            command={activity.command}
+            triggerCommand={this.props.triggerCommand}
             timestamp={activity.timestamp}
           />
         )
@@ -185,7 +186,7 @@ export default class Home extends Component {
 
   render() {
     const { ready } = this.state
-
+    console.log(this.props)
     return (
       <div className="h-100">
         <div className="nav-container">
@@ -269,6 +270,7 @@ Home.propTypes = {
   roomId: PropTypes.string.isRequired,
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
+  triggerCommand: PropTypes.func.isRequired,
   receiveToggleLockRoom: PropTypes.func.isRequired,
   modalComponent: PropTypes.string,
   openModal: PropTypes.func.isRequired,

@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import TimeAgo from 'react-timeago'
 import Username from 'components/Username'
 import validCommands from 'utils/commands'
 
 class Commands extends Component {
-  parseCommand() {
-    const { trigger } = this.props
-    const command = validCommands.find(cmnd => cmnd.command === trigger.command)
+  getCommand() {
+    const { command } = this.props
+    const commandToExecute = validCommands.find(cmnd => cmnd.command === command.command)
 
-    console.log('requested command:', command)
-    if (command) {
+
+    console.log('requested command:', commandToExecute)
+    if (commandToExecute) {
       // pass dispatch here
-      const commandResult = command.action()
+      const commandResult = commandToExecute.action()
 
+      // Scope of command is to user only
+      if (commandResult.scope === 'local') {
+        return commandResult
+      }
+
+      // No? Dispatch something here...
+      console.log(this.props.triggerCommand)
       return commandResult
     }
 
@@ -21,7 +28,7 @@ class Commands extends Component {
   }
 
   render() {
-    const command = this.parseCommand()
+    const command = this.getCommand()
 
     if (!command) {
       return <div>Not a valid command</div>
@@ -42,7 +49,8 @@ class Commands extends Component {
 Commands.propTypes = {
   sender: PropTypes.string.isRequired,
   timestamp: PropTypes.number.isRequired,
-  trigger: PropTypes.object.isRequired,
+  command: PropTypes.object.isRequired,
+  triggerCommand: PropTypes.func.isRequired,
 }
 
 export default Commands

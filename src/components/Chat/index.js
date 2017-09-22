@@ -17,22 +17,22 @@ export default class Chat extends Component {
   }
 
   parseCommand(message) {
-    const trigger = {
+    const commandTrigger = {
       command: null,
       params: [],
     }
 
-    if (message.indexOf('/') === 0) {
+    if (message.charAt(0) === '/') {
       const parsedCommand = message.replace('/', '').split(' ')
-      trigger.command = sanitizeHtml(parsedCommand[0]) || null
+      commandTrigger.command = sanitizeHtml(parsedCommand[0]) || null
       // Get params
       if (parsedCommand.length >= 2) {
         for (let i = 1; i < parsedCommand.length; i++) {
-          trigger.params.push(parsedCommand[i])
+          commandTrigger.params.push(parsedCommand[i])
         }
       }
 
-      return trigger
+      return commandTrigger
     }
 
     return false
@@ -50,7 +50,7 @@ export default class Chat extends Component {
       this.props.sendSocketMessage({
         type: 'SLASH_COMMAND',
         payload: {
-          trigger: isCommand,
+          command: isCommand,
           timestamp: Date.now(),
         },
       })
