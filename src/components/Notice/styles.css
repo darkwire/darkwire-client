@@ -1,0 +1,12 @@
+:local(.styles) {
+  .info { 
+    color: blue
+  }
+  .warning {
+    color: yellow
+  }
+
+  .danger {
+    color: gold
+  }
+}

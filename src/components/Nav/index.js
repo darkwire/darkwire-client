@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import shortId from 'shortid'
 import { Info, Settings, PlusCircle, User, Users, Lock, Unlock } from 'react-feather'
 import logoImg from 'img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import Username from 'components/Username'
 
 class Nav extends Component {
+  newRoom() {
+    window.open(`/${shortId.generate()}`)
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-md navbar-dark">
@@ -60,7 +65,7 @@ class Nav extends Component {
         <div className="collapse navbar-collapse h-100" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto h-100">
             <li className="nav-item">
-              <a className="nav-link" href="/" target="blank"><PlusCircle /> New Room</a>
+              <a className="nav-link" onClick={this.newRoom.bind(this)}target="blank"><PlusCircle /> New Room</a>
             </li>
             <li className="nav-item">
               <a onClick={() => this.props.openModal('Settings')} className="nav-link" href="#"><Settings /> Settings</a>

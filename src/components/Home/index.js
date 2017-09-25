@@ -5,6 +5,7 @@ import { connect } from 'utils/socket'
 import Nav from 'components/Nav'
 import shortId from 'shortid'
 import ChatInput from 'containers/Chat'
+import Commands from 'components/Commands'
 import Message from 'components/Message'
 import Username from 'components/Username'
 import Notice from 'components/Notice'
@@ -21,8 +22,7 @@ export default class Home extends Component {
     super(props)
 
     this.state = {
-      message: '',
-      io: null,
+      ready: false,
     }
   }
 
@@ -34,35 +34,67 @@ export default class Home extends Component {
     const io = connect(roomId)
 
     this.setState({
-      io,
-    })
-
-    io.on('USER_ENTER', (payload) => {
-      this.props.receiveUserEnter(payload)
-      this.props.sendSocketMessage({
-        type: 'ADD_USER',
-        payload: {
-          username: this.props.username,
-          publicKey: this.props.publicKey,
-        },
+      ready: true,
+    }, () => {
+      io.on('USER_ENTER', (payload) => {
+        this.props.receiveUserEnter(payload)
+        this.props.sendSocketMessage({
+          type: 'ADD_USER',
+          payload: {
+            username: this.props.username,
+            publicKey: this.props.publicKey,
+          },
+        })
       })
+
+      io.on('USER_EXIT', (payload) => {
+        this.props.receiveUserExit(payload)
+      })
+
+      io.on('PAYLOAD', (payload) => {
+        this.props.receiveSocketMessage(payload)
+      })
+
+      io.on('TOGGLE_LOCK_ROOM', (payload) => {
+        this.props.receiveToggleLockRoom(payload)
+      })
+
+      this.createUser()
+
+      this.props.openModal('Welcome')
     })
+  }
 
-    io.on('USER_EXIT', (payload) => {
-      this.props.receiveUserExit(payload)
-    })
+  componentDidMount() {
+    this.bindEvents()
+  }
 
-    io.on('PAYLOAD', (payload) => {
-      this.props.receiveSocketMessage(payload)
-    })
+  componentDidUpdate(prevProps) {
+    if (prevProps.activities.length < this.props.activities.length) {
+      if (this.props.scrolledToBottom) {
+        this.messageStream.scrollTop = this.messageStream.scrollHeight
+      }
+    }
+  }
 
-    io.on('TOGGLE_LOCK_ROOM', (payload) => {
-      this.props.receiveToggleLockRoom(payload)
-    })
+  onScroll() {
+    const messageStreamHeight = this.messageStream.clientHeight
+    const activitiesListHeight = this.activitiesList.clientHeight
 
-    this.createUser()
+    const bodyRect = document.body.getBoundingClientRect()
+    const elemRect = this.activitiesList.getBoundingClientRect()
+    const offset = elemRect.top - bodyRect.top
+    const activitiesListYPos = offset
 
-    this.props.openModal('Welcome')
+    const scrolledToBottom = (activitiesListHeight + activitiesListYPos + 70) === messageStreamHeight
+
+    if (scrolledToBottom) {
+      if (!this.props.scrolledToBottom) {
+        this.props.setScrolledToBottom(true)
+      }
+    } else if (this.props.scrolledToBottom) {
+      this.props.setScrolledToBottom(false)
+    }
   }
 
   getActivityComponent(activity) {
@@ -72,6 +104,15 @@ export default class Home extends Component {
           <Message
             sender={activity.sender}
             message={activity.text}
+            timestamp={activity.timestamp}
+          />
+        )
+      case 'SLASH_COMMAND':
+        return (
+          <Commands
+            sender={activity.sender}
+            command={activity.command}
+            triggerCommand={this.props.triggerCommand}
             timestamp={activity.timestamp}
           />
         )
@@ -92,6 +133,12 @@ export default class Home extends Component {
         return (
           <Notice>
             <div><Username username={activity.username} /> {lockedWord} the room</div>
+          </Notice>
+        )
+      case 'SYSTEM_NOTICE':
+        return (
+          <Notice>
+            <div>{activity.message}</div>
           </Notice>
         )
       default:
@@ -125,6 +172,10 @@ export default class Home extends Component {
     }
   }
 
+  bindEvents() {
+    this.messageStream.addEventListener('scroll', this.onScroll.bind(this))
+  }
+
   async createUser() {
     const username = shortId.generate()
 
@@ -140,6 +191,8 @@ export default class Home extends Component {
   }
 
   render() {
+    const { ready } = this.state
+    console.log(this.props)
     return (
       <div className="h-100">
         <div className="nav-container">
@@ -152,8 +205,14 @@ export default class Home extends Component {
             openModal={this.props.openModal}
           />
         </div>
-        <div className="message-stream h-100">
-          <ul>
+        <div className="message-stream h-100" ref={el => this.messageStream = el}>
+          {!ready ? (
+            <Notice level="warning">
+              <div className="activity-item">
+                Establishing a secure connection...
+              </div>
+            </Notice>) : null}
+          <ul ref={el => this.activitiesList = el}>
             {this.props.activities.map((activity, index) => (
               <li key={index} className={`activity-item ${activity.type}`}>
                 {this.getActivityComponent(activity)}
@@ -217,8 +276,11 @@ Home.propTypes = {
   roomId: PropTypes.string.isRequired,
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
+  triggerCommand: PropTypes.func.isRequired,
   receiveToggleLockRoom: PropTypes.func.isRequired,
   modalComponent: PropTypes.string,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  setScrolledToBottom: PropTypes.func.isRequired,
+  scrolledToBottom: PropTypes.bool.isRequired,
 }

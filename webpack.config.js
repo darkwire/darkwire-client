@@ -14,7 +14,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const extractCSS = new ExtractTextPlugin('styles.css')
 const extractVendorCSS = new ExtractTextPlugin('vendor.css')
 
-const getSassLoaders = () => ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+const getSassLoaders = () => ['style-loader', 'css-loader?sourceMap=true&localIdentName=[path][name]--[local]&importLoaders=1', 'postcss-loader', 'sass-loader']
 
 const sourcePath = path.join(__dirname, './src')
 
@@ -62,7 +62,7 @@ module.exports = {
     loaders: [
       { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
       { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.css$/, loaders: ['style-loader', 'css-loader'] },
+      { test: /\.css$/, loaders: ['style-loader', 'css-loader?sourceMap=true&localIdentName=[path][name]--[local]&importLoaders=1', 'postcss-loader'] },
       { test: /\.sass$/, loaders: getSassLoaders() },
       { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader' },
       { test: /\.(eot|svg|ttf|woff|woff2)$/i, loader: 'file-loader' },
@@ -70,6 +70,7 @@ module.exports = {
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     HtmlWebpackPluginConfig,
     extractVendorCSS,
     extractCSS,
