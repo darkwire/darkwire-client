@@ -14,5 +14,4 @@ test('Notice Component', () => {
   expect(componentJSON.children.length).toBe(1)
   expect(componentJSON.children[0].type).toBe('div')
   // expect(componentJSON.children[0].children[0]).toContain('<div>Hello world</div>')
-
 })
