@@ -39,7 +39,8 @@ const commands = [{
   description: 'Shows a list of commands.',
   paramaters: [],
   usage: '/help',
-  action: () => {
+  action: (params, dispatch) => {
+    console.log('PARAMS:', params)
     const validCommands = commands.map(command => `/${command.command}`)
     return {
       message: `Valid commands: ${validCommands.sort().join(', ')}`,

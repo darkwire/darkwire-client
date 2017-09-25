@@ -1,25 +1,27 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Username from 'components/Username'
 import validCommands from 'utils/commands'
 
+const mapStateToProps = () => ({
+})
 class Commands extends Component {
   getCommand() {
-    const { command } = this.props
+    const { command, dispatch } = this.props
     const commandToExecute = validCommands.find(cmnd => cmnd.command === command.command)
-
-
+    
     console.log('requested command:', commandToExecute)
     if (commandToExecute) {
-      // pass dispatch here
-      const commandResult = commandToExecute.action()
+      const { params } = command
+      const commandResult = commandToExecute.action(params, dispatch)
 
       // Scope of command is to user only
       if (commandResult.scope === 'local') {
         return commandResult
       }
 
-      // No? Dispatch something here...
+      // No? Dispatch global command here
       console.log(this.props.triggerCommand)
       return commandResult
     }
@@ -53,4 +55,4 @@ Commands.propTypes = {
   triggerCommand: PropTypes.func.isRequired,
 }
 
-export default Commands
+export default connect(mapStateToProps)(Commands);
