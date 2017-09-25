@@ -11,6 +11,11 @@ const initialState = {
 
 const activities = (state = initialState, action) => {
   switch (action.type) {
+    case 'CLEAR_ACTIVITIES':
+      return {
+        ...state,
+        items: [],
+      }
     case 'SEND_SOCKET_MESSAGE_SLASH_COMMAND':
       return {
         ...state,

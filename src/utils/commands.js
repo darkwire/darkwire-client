@@ -1,27 +1,11 @@
-/**
- * Commands;
- *
- *  {
- *    command: '', - The command (eg /nick)
- *    description: '', - Description of command
- *    paramaters: [], - Paramaters after command
- *    usage: '', - For /help
- *    action: (trigger) => {}, - Will dispatch actions based on command, trigger holds paramaters from the command
- *
- *    RETURN ACTIONS:
- *    message - messages that is sent to the chat room
- *    level - highlighted in different colors (null / notice / warning / error)
- *    scope - scope of message (local / global) - local is sent to user only, global is dispatched to server
- *  }
- */
-
 const commands = [{
   command: 'nick',
   description: 'Changes nickname.',
   paramaters: ['{username}'],
   usage: '/nick {username}',
-  action: (trigger) => {
-    let newUsername = trigger.params[0] || false
+  scope: 'global',
+  action: (params, dispatch) => { // eslint-disable-line
+    let newUsername = trigger.params[0] || false // eslint-disable-line
 
     if (newUsername.toString().length > 16) {
       return this.log('Username cannot be greater than 16 characters.', { error: true })
@@ -39,13 +23,13 @@ const commands = [{
   description: 'Shows a list of commands.',
   paramaters: [],
   usage: '/help',
-  action: (params, dispatch) => {
+  scope: 'local',
+  action: (params, dispatch) => { // eslint-disable-line
     console.log('PARAMS:', params)
     const validCommands = commands.map(command => `/${command.command}`)
     return {
       message: `Valid commands: ${validCommands.sort().join(', ')}`,
       level: 'notice',
-      scope: 'local',
     }
   },
 }, {
@@ -53,29 +37,33 @@ const commands = [{
   description: 'Invoke virtual action',
   paramaters: ['{action}'],
   usage: '/me {action}',
-  action: (trigger) => {
+  scope: 'global',
+  action: (params, dispatch) => { // eslint-disable-line
 
-    const actionMessage = trigger.params.join(' ')
+    // const actionMessage = trigger.params.join(' ')
 
-    this.darkwire.encodeMessage(actionMessage, 'action').then((socketData) => {
-      this.addChatMessage({
-        username,
-        message: actionMessage,
-        messageType: 'action',
-      })
-      this.socket.emit('new message', socketData)
-    }).catch((err) => {
-      console.log(err)
-    })
+    // this.darkwire.encodeMessage(actionMessage, 'action').then((socketData) => {
+    //   this.addChatMessage({
+    //     username,
+    //     message: actionMessage,
+    //     messageType: 'action',
+    //   })
+    //   this.socket.emit('new message', socketData)
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
   },
 }, {
   command: 'clear',
   description: 'Clears the chat screen',
   paramaters: [],
   usage: '/clear',
-  action: (trigger) => {
-    this.clear()
+  scope: 'local',
+  action: (params = null, dispatch) => { // eslint-disable-line
+    dispatch({
+      type: 'CLEAR_ACTIVITIES',
+    })
   },
 }]
 
-export default commands;
+export default commands

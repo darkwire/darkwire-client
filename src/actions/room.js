@@ -89,5 +89,5 @@ export const triggerCommand = payload => async (dispatch, getState) => {
       ...payload,
       username: user.username,
     },
-  }) 
+  })
 }

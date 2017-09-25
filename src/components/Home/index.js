@@ -66,25 +66,7 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    this.messageStream.addEventListener('scroll', () => {
-      const messageStreamHeight = this.messageStream.clientHeight
-      const activitiesListHeight = this.activitiesList.clientHeight
-
-      const bodyRect = document.body.getBoundingClientRect()
-      const elemRect = this.activitiesList.getBoundingClientRect()
-      const offset = elemRect.top - bodyRect.top
-      const activitiesListYPos = offset
-
-      const scrolledToBottom = (activitiesListHeight + activitiesListYPos + 70) === messageStreamHeight
-
-      if (scrolledToBottom) {
-        if (!this.props.scrolledToBottom) {
-          this.props.setScrolledToBottom(true)
-        }
-      } else if (this.props.scrolledToBottom) {
-        this.props.setScrolledToBottom(false)
-      }
-    })
+    this.bindEvents()
   }
 
   componentDidUpdate(prevProps) {
@@ -92,6 +74,26 @@ export default class Home extends Component {
       if (this.props.scrolledToBottom) {
         this.messageStream.scrollTop = this.messageStream.scrollHeight
       }
+    }
+  }
+
+  onScroll() {
+    const messageStreamHeight = this.messageStream.clientHeight
+    const activitiesListHeight = this.activitiesList.clientHeight
+
+    const bodyRect = document.body.getBoundingClientRect()
+    const elemRect = this.activitiesList.getBoundingClientRect()
+    const offset = elemRect.top - bodyRect.top
+    const activitiesListYPos = offset
+
+    const scrolledToBottom = (activitiesListHeight + activitiesListYPos + 70) === messageStreamHeight
+
+    if (scrolledToBottom) {
+      if (!this.props.scrolledToBottom) {
+        this.props.setScrolledToBottom(true)
+      }
+    } else if (this.props.scrolledToBottom) {
+      this.props.setScrolledToBottom(false)
     }
   }
 
@@ -168,6 +170,10 @@ export default class Home extends Component {
       default:
         return null
     }
+  }
+
+  bindEvents() {
+    this.messageStream.addEventListener('scroll', this.onScroll.bind(this))
   }
 
   async createUser() {
