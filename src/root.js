@@ -4,12 +4,12 @@ import 'stylesheets/app.sass'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import { Provider } from 'react-redux'
-import configureStore from 'store';
+import configureStore from 'store'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import shortId from 'shortid'
 import Home from 'containers/Home'
 
-const store = configureStore();
+const store = configureStore()
 
 export default class Root extends Component {
   componentWillMount() {

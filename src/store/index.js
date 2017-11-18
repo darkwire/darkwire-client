@@ -12,6 +12,6 @@ export default function configureStore(preloadedState) {
   return createStore(
     reducers,
     preloadedState,
-    composeEnhancers(middlewares),
+    composeEnhancers(middlewares)
   )
 }

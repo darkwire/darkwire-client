@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 import Root from './root'
 
-const renderApp = Component => {
+const renderApp = (Component) => {
   render(
     <AppContainer>
       <Component />
@@ -16,6 +16,8 @@ renderApp(Root)
 
 if (module.hot) {
   module.hot.accept('./root.js', () => {
-    renderApp(Root)
+    // eslint-disable-next-line global-require
+    const rootComponent = require('./root').default
+    renderApp(rootComponent)
   })
 }
