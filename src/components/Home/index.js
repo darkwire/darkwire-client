@@ -5,6 +5,7 @@ import { connect } from 'utils/socket'
 import Nav from 'components/Nav'
 import shortId from 'shortid'
 import ChatInput from 'containers/Chat'
+import Connecting from 'components/Connecting'
 import Commands from 'components/Commands'
 import Message from 'components/Message'
 import Username from 'components/Username'
@@ -61,7 +62,7 @@ export default class Home extends Component {
 
       this.createUser()
 
-      this.props.openModal('Welcome')
+      this.props.openModal('Connecting')
     })
   }
 
@@ -148,6 +149,8 @@ export default class Home extends Component {
 
   getModalComponent() {
     switch (this.props.modalComponent) {
+      case 'Connecting':
+        return <Connecting />
       case 'About':
         return <About />
       case 'Settings':
@@ -161,6 +164,8 @@ export default class Home extends Component {
 
   getModalTitle() {
     switch (this.props.modalComponent) {
+      case 'Connecting':
+        return 'Connecting...'
       case 'About':
         return 'About'
       case 'Settings':

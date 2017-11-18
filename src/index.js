@@ -1,28 +1,21 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { createStore, applyMiddleware, compose } from 'redux'
-import { Provider } from 'react-redux'
-import reducers from 'reducers'
-import thunk from 'redux-thunk'
+import { AppContainer } from 'react-hot-loader'
 import Root from './root'
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-
-const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
-
-const renderFunc = (Component) => {
+const renderApp = Component => {
   render(
-    <Provider store={store}>
-      <Root component={Component} />
-    </Provider>,
+    <AppContainer>
+      <Component />
+    </AppContainer>,
     document.getElementById('root')
   )
 }
 
-renderFunc(Root)
+renderApp(Root)
 
 if (module.hot) {
   module.hot.accept('./root.js', () => {
-    renderFunc(Root)
+    renderApp(Root)
   })
 }

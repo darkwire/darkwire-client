@@ -1,6 +1,6 @@
 {
   "presets":[["es2015", { "modules": false } ], "react"],
-  "plugins": ["transform-object-rest-spread", "transform-async-to-generator", "react-hot-loader/babel"],
+  "plugins": ["react-hot-loader/babel", "transform-object-rest-spread", "transform-async-to-generator"],
   "env": {
     "test": {
       "presets": [["es2015"], "react"]
