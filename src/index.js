@@ -23,6 +23,7 @@ renderFunc(Root)
 
 if (module.hot) {
   module.hot.accept('./root.js', () => {
-    renderFunc(Root)
+    const rootComponent = require('./root').default
+    renderFunc(rootComponent)
   })
 }
