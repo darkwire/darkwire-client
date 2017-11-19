@@ -9,9 +9,17 @@ const enabledMiddlewares = [thunk]
 const middlewares = applyMiddleware(...enabledMiddlewares)
 
 export default function configureStore(preloadedState) {
-  return createStore(
+  const store = createStore(
     reducers,
     preloadedState,
     composeEnhancers(middlewares)
   )
+
+  module.hot.accept('../reducers', () => {
+    // eslint-disable-next-line global-require
+    const nextRootReducer = require('../reducers/index')
+    store.replaceReducer(nextRootReducer)
+  })
+
+  return store
 }
