@@ -62,16 +62,16 @@ class Nav extends Component {
           aria-label="Toggle navigation">
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse h-100" id="navbarSupportedContent">
-          <ul className="navbar-nav ml-auto h-100">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <a className="nav-link" onClick={this.newRoom.bind(this)}target="blank"><PlusCircle /> New Room</a>
+              <a className="nav-link" onClick={this.newRoom.bind(this)}target="blank"><PlusCircle /> <span>New Room</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={() => this.props.openModal('Settings')} className="nav-link" href="#"><Settings /> Settings</a>
+              <a onClick={() => this.props.openModal('Settings')} className="nav-link" href="#"><Settings /> <span>Settings</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={() => this.props.openModal('About')} className="nav-link" href="#"><Info /> About</a>
+              <a onClick={() => this.props.openModal('About')} className="nav-link" href="#"><Info /> <span>About</span></a>
             </li>
           </ul>
         </div>
