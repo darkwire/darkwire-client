@@ -26,9 +26,18 @@ const room = (state = initialState, action) => {
         joining: !(action.payload.json.size === 1),
       }
     case 'USER_EXIT':
+      const memberPubKeys = action.payload.members.map(m => JSON.stringify(m.publicKey))
       return {
         ...state,
-        members: state.members.filter(m => !_.isEqual(m.publicKey, action.payload.publicKey)),
+        members: state.members
+          .filter(m => memberPubKeys.includes(JSON.stringify(m.publicKey)))
+          .map(m => {
+            const payloadMember = action.payload.members.find(member => _.isEqual(m.publicKey, member.publicKey))
+            return {
+              ...m,
+              ...payloadMember,
+            }
+          })
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
       const pubKeys = _.uniqWith(state.members.map(m => m.publicKey).concat(action.payload.payload.publicKey), _.isEqual)
@@ -40,14 +49,11 @@ const room = (state = initialState, action) => {
         members: pubKeys.map((pubKey) => {
           const exists = state.members.find(m => _.isEqual(m.publicKey, pubKey))
           if (exists && exists.username) {
-            return {
-              username: exists.username,
-              publicKey: exists.publicKey,
-            }
+            return exists
           }
           return {
-            publicKey: action.payload.payload.publicKey,
             username: action.payload.payload.username,
+            ...exists,
           }
         }),
         joining,
@@ -66,13 +72,17 @@ const room = (state = initialState, action) => {
     case 'USER_ENTER':
       return {
         ...state,
-        members: action.payload.map((pubKey) => {
-          const exists = state.members.find(m => _.isEqual(m.publicKey, pubKey))
+        members: action.payload.map((user) => {
+          const exists = state.members.find(m => _.isEqual(m.publicKey, user.publicKey))
           if (exists) {
-            return exists
+            return {
+              ...user,
+              ...exists,
+            }
           }
           return {
-            publicKey: pubKey,
+            publicKey: user.publicKey,
+            isOwner: user.isOwner,
           }
         }),
       }

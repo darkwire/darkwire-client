@@ -30,12 +30,13 @@ export const createUser = payload => async (dispatch) => {
 
 export const receiveUserExit = payload => async (dispatch, getState) => {
   const state = getState()
-  const exitingUsername = state.room.members.find(m => isEqual(m.publicKey, payload.publicKey)).username
+  const exitingUser = state.room.members.find(m => !payload.map(p => JSON.stringify(p.publicKey)).includes(JSON.stringify(m.publicKey)))
+  const exitingUsername = exitingUser.username
 
   dispatch({
     type: 'USER_EXIT',
     payload: {
-      ...payload,
+      members: payload,
       username: exitingUsername,
     },
   })
