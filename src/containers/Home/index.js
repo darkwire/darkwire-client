@@ -18,6 +18,8 @@ import {
 const mapStateToProps = (state) => {
   const initialModal = state.room.members.length === 1 ? 'Welcome' : null
 
+  const me = state.room.members.find(m => m.username === state.user.username)
+
   return {
     activities: state.activities.items,
     username: state.user.username,
@@ -25,8 +27,9 @@ const mapStateToProps = (state) => {
     members: state.room.members.filter(m => m.username && m.publicKey),
     roomId: state.room.id,
     roomLocked: state.room.isLocked,
-    modalComponent: state.room.joining ? 'Connecting' : initialModal,
+    modalComponent: state.room.joining ? 'Connecting' : null,
     scrolledToBottom: state.app.scrolledToBottom,
+    iAmOwner: Boolean(me && me.isOwner),
   }
 }
 

@@ -205,6 +205,7 @@ export default class Home extends Component {
             roomLocked={this.props.roomLocked}
             toggleLockRoom={this.props.toggleLockRoom}
             openModal={this.props.openModal}
+            iAmOwner={this.props.iAmOwner}
           />
         </div>
         <div className="message-stream h-100" ref={el => this.messageStream = el}>
@@ -285,4 +286,5 @@ Home.propTypes = {
   closeModal: PropTypes.func.isRequired,
   setScrolledToBottom: PropTypes.func.isRequired,
   scrolledToBottom: PropTypes.bool.isRequired,
+  iAmOwner: PropTypes.bool.isRequired,
 }

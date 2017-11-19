@@ -20,7 +20,7 @@ class Nav extends Component {
           <span className="room-id">{`/${this.props.roomId}`}</span>
 
           <span className="lock-room-container">
-            <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain">
+            <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain" disabled={!this.props.iAmOwner}>
               {this.props.roomLocked &&
                 <Lock />
               }
@@ -87,6 +87,7 @@ Nav.propTypes = {
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
+  iAmOwner: PropTypes.bool.isRequired,
 }
 
 export default Nav
