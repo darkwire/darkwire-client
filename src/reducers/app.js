@@ -1,5 +1,5 @@
 const initialState = {
-  modalComponent: null,
+  modalComponent: 'Connecting',
   scrolledToBottom: true,
 }
 
