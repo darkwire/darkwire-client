@@ -30,15 +30,20 @@ nav
 
 ul.navbar-nav
   li
+    padding-bottom: 10px
     svg
       width: 20px
       margin-right: 10px
     span
       width: auto
 
+button.lock-room
+  display: flex
+
 @media(min-width: 768px)
   ul.navbar-nav li
     margin-left: 25px
+    padding-bottom: 0px
 
 .nav-link
   display: flex
@@ -49,9 +54,13 @@ ul.navbar-nav
 
 .navbar-collapse
   padding: 0px 1rem
+  background: black
 
 .members-dropdown
   margin-left: 10px
+  .dropdown__trigger
+    position: relative
+    top: 3px
   .dropdown__content 
     background: black
     border-radius: 3px
