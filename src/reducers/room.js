@@ -9,6 +9,8 @@ const initialState = {
   ],
   id: '',
   isLocked: false,
+  joining: true,
+  size: 0,
 }
 
 const room = (state = initialState, action) => {
@@ -20,6 +22,8 @@ const room = (state = initialState, action) => {
         ...state,
         id: action.payload.json.id,
         isLocked,
+        size: action.payload.json.size,
+        joining: action.payload.json.size === 1 ? false : true,
       }
     case 'USER_EXIT':
       return {
@@ -28,6 +32,9 @@ const room = (state = initialState, action) => {
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
       const pubKeys = _.uniqWith(state.members.map(m => m.publicKey).concat(action.payload.payload.publicKey), _.isEqual)
+      
+      const joining = state.joining ? state.members.length !== state.size : false
+
       return {
         ...state,
         members: pubKeys.map((pubKey) => {
@@ -43,6 +50,7 @@ const room = (state = initialState, action) => {
             username: action.payload.payload.username,
           }
         }),
+        joining,
       }
     case 'CREATE_USER':
       return {

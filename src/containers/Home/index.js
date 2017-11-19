@@ -22,7 +22,7 @@ const mapStateToProps = state => ({
   members: state.room.members.filter(m => m.username && m.publicKey),
   roomId: state.room.id,
   roomLocked: state.room.isLocked,
-  modalComponent: state.app.modalComponent,
+  modalComponent: state.room.joining ? 'Connecting' : state.app.modalComponent,
   scrolledToBottom: state.app.scrolledToBottom,
 })
 
