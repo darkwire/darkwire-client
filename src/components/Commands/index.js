@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import validCommands from 'utils/commands'
+import validCommands from 'commands'
 
 const mapStateToProps = () => ({
 })
