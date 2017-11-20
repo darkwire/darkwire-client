@@ -42,10 +42,12 @@ class Nav extends Component {
                 {this.props.members.map((member, index) => (
                   <li key={`user-${index}`}>
                     <Username username={member.username} />
-                    {member.username === this.props.username &&
-                      <User className="me-icon" />
-                    }
-                    {member.isOwner && <Star className="owner-icon" /> }
+                    <span className="icon-container">
+                      {member.username === this.props.username &&
+                        <User className="me-icon" />
+                      }
+                      {member.isOwner && <Star className="owner-icon" /> }
+                    </span>
                   </li>
                 ))}
               </ul>
