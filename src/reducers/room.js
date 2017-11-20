@@ -31,21 +31,20 @@ const room = (state = initialState, action) => {
         ...state,
         members: state.members
           .filter(m => memberPubKeys.includes(JSON.stringify(m.publicKey)))
-          .map(m => {
+          .map((m) => {
             const payloadMember = action.payload.members.find(member => _.isEqual(m.publicKey, member.publicKey))
             return {
               ...m,
               ...payloadMember,
             }
-          })
+          }),
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
-      const pubKeys = _.uniqWith(state.members.map(m => m.publicKey).concat(action.payload.payload.publicKey), _.isEqual)
       const joining = state.joining ? state.members.length < state.size : false
 
       return {
         ...state,
-        members: state.members.map(member => {
+        members: state.members.map((member) => {
           if (_.isEqual(member.publicKey, action.payload.payload.publicKey)) {
             return {
               ...member,

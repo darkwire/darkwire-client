@@ -25,7 +25,7 @@ export const createUser = payload => async (dispatch) => {
   dispatch({ type: 'CREATE_USER', payload })
 }
 
-export const sendUserEnter = payload => async (dispatch) => {
+export const sendUserEnter = payload => async () => {
   getIO().emit('USER_ENTER', {
     publicKey: payload.publicKey,
   })
