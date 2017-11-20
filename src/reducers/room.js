@@ -41,20 +41,19 @@ const room = (state = initialState, action) => {
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
       const pubKeys = _.uniqWith(state.members.map(m => m.publicKey).concat(action.payload.payload.publicKey), _.isEqual)
-
-      const joining = state.joining ? state.members.length !== state.size : false
+      const joining = state.joining ? state.members.length < state.size : false
 
       return {
         ...state,
-        members: pubKeys.map((pubKey) => {
-          const exists = state.members.find(m => _.isEqual(m.publicKey, pubKey))
-          if (exists && exists.username) {
-            return exists
+        members: state.members.map(member => {
+          if (_.isEqual(member.publicKey, action.payload.payload.publicKey)) {
+            return {
+              ...member,
+              username: action.payload.payload.username,
+              isOwner: action.payload.payload.isOwner,
+            }
           }
-          return {
-            username: action.payload.payload.username,
-            ...exists,
-          }
+          return member
         }),
         joining,
       }

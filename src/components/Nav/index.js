@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import shortId from 'shortid'
-import { Info, Settings, PlusCircle, User, Users, Lock, Unlock } from 'react-feather'
+import { Info, Settings, PlusCircle, User, Users, Lock, Unlock, Star } from 'react-feather'
 import logoImg from 'img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import Username from 'components/Username'
@@ -45,6 +45,7 @@ class Nav extends Component {
                     {member.username === this.props.username &&
                       <User className="me-icon" />
                     }
+                    {member.isOwner && <Star className="owner-icon" /> }
                   </li>
                 ))}
               </ul>

@@ -13,6 +13,7 @@ import {
   openModal,
   closeModal,
   setScrolledToBottom,
+  sendUserEnter,
 } from 'actions'
 
 const mapStateToProps = (state) => {
@@ -23,6 +24,7 @@ const mapStateToProps = (state) => {
     activities: state.activities.items,
     username: state.user.username,
     publicKey: state.user.publicKey,
+    privateKey: state.user.privateKey,
     members: state.room.members.filter(m => m.username && m.publicKey),
     roomId: state.room.id,
     roomLocked: state.room.isLocked,
@@ -45,6 +47,7 @@ const mapDispatchToProps = {
   openModal,
   closeModal,
   setScrolledToBottom,
+  sendUserEnter,
 }
 
 export default connect(

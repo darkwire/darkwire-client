@@ -18,14 +18,17 @@ export const receiveSocketMessage = payload => async (dispatch, getState) => {
   dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
   const state = getState()
   const message = await processMessage(payload, state)
-  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload, state } })
+  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload } })
 }
 
 export const createUser = payload => async (dispatch) => {
+  dispatch({ type: 'CREATE_USER', payload })
+}
+
+export const sendUserEnter = payload => async (dispatch) => {
   getIO().emit('USER_ENTER', {
     publicKey: payload.publicKey,
   })
-  dispatch({ type: 'CREATE_USER', payload })
 }
 
 export const receiveUserExit = payload => async (dispatch, getState) => {

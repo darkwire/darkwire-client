@@ -51,8 +51,8 @@ const activities = (state = initialState, action) => {
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
       const newUsername = action.payload.payload.username
-      const userExists = action.payload.state.room.members.find(m => m.username === newUsername)
-      if (userExists) {
+      const activityExists = state.items.find(m => m.username === newUsername)
+      if (activityExists) {
         return state
       }
       return {

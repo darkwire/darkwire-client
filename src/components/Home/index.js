@@ -34,6 +34,8 @@ export default class Home extends Component {
 
     const io = connect(roomId)
 
+    await this.createUser()
+
     this.setState({
       ready: true,
     }, () => {
@@ -44,6 +46,7 @@ export default class Home extends Component {
           payload: {
             username: this.props.username,
             publicKey: this.props.publicKey,
+            isOwner: this.props.iAmOwner,
           },
         })
       })
@@ -60,7 +63,13 @@ export default class Home extends Component {
         this.props.receiveToggleLockRoom(payload)
       })
 
-      this.createUser()
+      const { username, publicKey, privateKey } = this.props
+
+      this.props.sendUserEnter({
+        username,
+        publicKey,
+        privateKey,
+      })
     })
   }
 
@@ -274,6 +283,7 @@ Home.propTypes = {
   activities: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,
+  privateKey: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,
   match: PropTypes.object.isRequired,
   roomId: PropTypes.string.isRequired,
@@ -287,4 +297,5 @@ Home.propTypes = {
   setScrolledToBottom: PropTypes.func.isRequired,
   scrolledToBottom: PropTypes.bool.isRequired,
   iAmOwner: PropTypes.bool.isRequired,
+  sendUserEnter: PropTypes.func.isRequired,
 }
