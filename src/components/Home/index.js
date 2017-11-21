@@ -47,6 +47,7 @@ export default class Home extends Component {
             username: this.props.username,
             publicKey: this.props.publicKey,
             isOwner: this.props.iAmOwner,
+            id: this.props.userId,
           },
         })
       })
@@ -110,7 +111,7 @@ export default class Home extends Component {
       case 'SEND_MESSAGE':
         return (
           <Message
-            sender={activity.sender}
+            sender={activity.username}
             message={activity.text}
             timestamp={activity.timestamp}
           />
@@ -118,7 +119,7 @@ export default class Home extends Component {
       case 'SLASH_COMMAND':
         return (
           <Commands
-            sender={activity.sender}
+            sender={activity.username}
             command={activity.command}
             triggerCommand={this.props.triggerCommand}
             timestamp={activity.timestamp}
@@ -298,4 +299,5 @@ Home.propTypes = {
   scrolledToBottom: PropTypes.bool.isRequired,
   iAmOwner: PropTypes.bool.isRequired,
   sendUserEnter: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
 }

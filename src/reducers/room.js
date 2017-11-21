@@ -50,6 +50,7 @@ const room = (state = initialState, action) => {
               ...member,
               username: action.payload.payload.username,
               isOwner: action.payload.payload.isOwner,
+              id: action.payload.payload.publicKey.n,
             }
           }
           return member
@@ -64,6 +65,7 @@ const room = (state = initialState, action) => {
           {
             username: action.payload.username,
             publicKey: action.payload.publicKey,
+            id: action.payload.publicKey.n,
           },
         ],
       }
@@ -81,6 +83,7 @@ const room = (state = initialState, action) => {
           return {
             publicKey: user.publicKey,
             isOwner: user.isOwner,
+            id: user.id,
           }
         }),
       }

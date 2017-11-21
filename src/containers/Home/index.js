@@ -18,10 +18,10 @@ import {
 
 const mapStateToProps = (state) => {
   const me = state.room.members.find(m => m.username === state.user.username)
-  console.log(state.room.joining)
 
   return {
     activities: state.activities.items,
+    userId: state.user.id,
     username: state.user.username,
     publicKey: state.user.publicKey,
     privateKey: state.user.privateKey,
