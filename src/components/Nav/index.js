@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import shortId from 'shortid'
-import { Info, Settings, PlusCircle, User, Users, Lock, Unlock } from 'react-feather'
+import { Info, Settings, PlusCircle, User, Users, Lock, Unlock, Star } from 'react-feather'
 import logoImg from 'img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import Username from 'components/Username'
@@ -20,7 +20,7 @@ class Nav extends Component {
           <span className="room-id">{`/${this.props.roomId}`}</span>
 
           <span className="lock-room-container">
-            <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain">
+            <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain" disabled={!this.props.iAmOwner}>
               {this.props.roomLocked &&
                 <Lock />
               }
@@ -42,9 +42,12 @@ class Nav extends Component {
                 {this.props.members.map((member, index) => (
                   <li key={`user-${index}`}>
                     <Username username={member.username} />
-                    {member.username === this.props.username &&
-                      <User className="me-icon" />
-                    }
+                    <span className="icon-container">
+                      {member.username === this.props.username &&
+                        <User className="me-icon" />
+                      }
+                      {member.isOwner && <Star className="owner-icon" /> }
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -62,16 +65,16 @@ class Nav extends Component {
           aria-label="Toggle navigation">
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse h-100" id="navbarSupportedContent">
-          <ul className="navbar-nav ml-auto h-100">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <a className="nav-link" onClick={this.newRoom.bind(this)}target="blank"><PlusCircle /> New Room</a>
+              <a className="nav-link" onClick={this.newRoom.bind(this)}target="blank"><PlusCircle /> <span>New Room</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={() => this.props.openModal('Settings')} className="nav-link" href="#"><Settings /> Settings</a>
+              <a onClick={() => this.props.openModal('Settings')} className="nav-link" href="#"><Settings /> <span>Settings</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={() => this.props.openModal('About')} className="nav-link" href="#"><Info /> About</a>
+              <a onClick={() => this.props.openModal('About')} className="nav-link" href="#"><Info /> <span>About</span></a>
             </li>
           </ul>
         </div>
@@ -87,6 +90,7 @@ Nav.propTypes = {
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
+  iAmOwner: PropTypes.bool.isRequired,
 }
 
 export default Nav

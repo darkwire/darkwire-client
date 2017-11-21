@@ -13,18 +13,26 @@ import {
   openModal,
   closeModal,
   setScrolledToBottom,
+  sendUserEnter,
 } from 'actions'
 
-const mapStateToProps = state => ({
-  activities: state.activities.items,
-  username: state.user.username,
-  publicKey: state.user.publicKey,
-  members: state.room.members.filter(m => m.username && m.publicKey),
-  roomId: state.room.id,
-  roomLocked: state.room.isLocked,
-  modalComponent: state.app.modalComponent,
-  scrolledToBottom: state.app.scrolledToBottom,
-})
+const mapStateToProps = (state) => {
+  const me = state.room.members.find(m => m.username === state.user.username)
+
+  return {
+    activities: state.activities.items,
+    userId: state.user.id,
+    username: state.user.username,
+    publicKey: state.user.publicKey,
+    privateKey: state.user.privateKey,
+    members: state.room.members.filter(m => m.username && m.publicKey),
+    roomId: state.room.id,
+    roomLocked: state.room.isLocked,
+    modalComponent: state.room.joining ? 'Connecting' : state.app.modalComponent,
+    scrolledToBottom: state.app.scrolledToBottom,
+    iAmOwner: Boolean(me && me.isOwner),
+  }
+}
 
 const mapDispatchToProps = {
   createRoom,
@@ -39,6 +47,7 @@ const mapDispatchToProps = {
   openModal,
   closeModal,
   setScrolledToBottom,
+  sendUserEnter,
 }
 
 export default connect(

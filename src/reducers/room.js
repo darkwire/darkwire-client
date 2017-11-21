@@ -9,6 +9,8 @@ const initialState = {
   ],
   id: '',
   isLocked: false,
+  joining: true,
+  size: 0,
 }
 
 const room = (state = initialState, action) => {
@@ -20,29 +22,40 @@ const room = (state = initialState, action) => {
         ...state,
         id: action.payload.json.id,
         isLocked,
+        size: action.payload.json.size,
+        joining: !(action.payload.json.size === 1),
       }
     case 'USER_EXIT':
+      const memberPubKeys = action.payload.members.map(m => JSON.stringify(m.publicKey))
       return {
         ...state,
-        members: state.members.filter(m => !_.isEqual(m.publicKey, action.payload.publicKey)),
+        members: state.members
+          .filter(m => memberPubKeys.includes(JSON.stringify(m.publicKey)))
+          .map((m) => {
+            const payloadMember = action.payload.members.find(member => _.isEqual(m.publicKey, member.publicKey))
+            return {
+              ...m,
+              ...payloadMember,
+            }
+          }),
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
-      const pubKeys = _.uniqWith(state.members.map(m => m.publicKey).concat(action.payload.payload.publicKey), _.isEqual)
+      const joining = state.joining ? state.members.length < state.size : false
+
       return {
         ...state,
-        members: pubKeys.map((pubKey) => {
-          const exists = state.members.find(m => _.isEqual(m.publicKey, pubKey))
-          if (exists && exists.username) {
+        members: state.members.map((member) => {
+          if (_.isEqual(member.publicKey, action.payload.payload.publicKey)) {
             return {
-              username: exists.username,
-              publicKey: exists.publicKey,
+              ...member,
+              username: action.payload.payload.username,
+              isOwner: action.payload.payload.isOwner,
+              id: action.payload.payload.publicKey.n,
             }
           }
-          return {
-            publicKey: action.payload.payload.publicKey,
-            username: action.payload.payload.username,
-          }
+          return member
         }),
+        joining,
       }
     case 'CREATE_USER':
       return {
@@ -52,19 +65,25 @@ const room = (state = initialState, action) => {
           {
             username: action.payload.username,
             publicKey: action.payload.publicKey,
+            id: action.payload.publicKey.n,
           },
         ],
       }
     case 'USER_ENTER':
       return {
         ...state,
-        members: action.payload.map((pubKey) => {
-          const exists = state.members.find(m => _.isEqual(m.publicKey, pubKey))
+        members: action.payload.map((user) => {
+          const exists = state.members.find(m => _.isEqual(m.publicKey, user.publicKey))
           if (exists) {
-            return exists
+            return {
+              ...user,
+              ...exists,
+            }
           }
           return {
-            publicKey: pubKey,
+            publicKey: user.publicKey,
+            isOwner: user.isOwner,
+            id: user.id,
           }
         }),
       }

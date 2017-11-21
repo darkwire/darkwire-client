@@ -50,9 +50,9 @@ const activities = (state = initialState, action) => {
         ],
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
-      const newUsername = action.payload.payload.username
-      const userExists = action.payload.state.room.members.find(m => m.username === newUsername)
-      if (userExists) {
+      const newUserId = action.payload.payload.id
+      const activityExists = state.items.find(m => m.userId === newUserId)
+      if (activityExists) {
         return state
       }
       return {
@@ -60,13 +60,14 @@ const activities = (state = initialState, action) => {
         items: [
           ...state.items,
           {
-            username: newUsername,
+            userId: newUserId,
             type: 'USER_ENTER',
+            username: action.payload.payload.username,
           },
         ],
       }
     case 'USER_EXIT':
-      if (!action.payload.username) {
+      if (!action.payload.id) {
         return state
       }
       return {
@@ -74,8 +75,9 @@ const activities = (state = initialState, action) => {
         items: [
           ...state.items,
           {
-            username: action.payload.username,
+            userId: action.payload.id,
             type: 'USER_EXIT',
+            username: action.payload.username,
           },
         ],
       }
@@ -86,6 +88,7 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             username: action.payload.username,
+            userId: action.payload.id,
             type: 'TOGGLE_LOCK_ROOM',
             locked: action.payload.locked,
           },
@@ -98,6 +101,7 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             username: action.payload.username,
+            userId: action.payload.id,
             type: 'TOGGLE_LOCK_ROOM',
             locked: action.payload.locked,
           },

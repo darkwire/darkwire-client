@@ -5,6 +5,7 @@ import { connect } from 'utils/socket'
 import Nav from 'components/Nav'
 import shortId from 'shortid'
 import ChatInput from 'containers/Chat'
+import Connecting from 'components/Connecting'
 import Commands from 'components/Commands'
 import Message from 'components/Message'
 import Username from 'components/Username'
@@ -33,6 +34,8 @@ export default class Home extends Component {
 
     const io = connect(roomId)
 
+    await this.createUser()
+
     this.setState({
       ready: true,
     }, () => {
@@ -43,6 +46,8 @@ export default class Home extends Component {
           payload: {
             username: this.props.username,
             publicKey: this.props.publicKey,
+            isOwner: this.props.iAmOwner,
+            id: this.props.userId,
           },
         })
       })
@@ -59,9 +64,13 @@ export default class Home extends Component {
         this.props.receiveToggleLockRoom(payload)
       })
 
-      this.createUser()
+      const { username, publicKey, privateKey } = this.props
 
-      this.props.openModal('Welcome')
+      this.props.sendUserEnter({
+        username,
+        publicKey,
+        privateKey,
+      })
     })
   }
 
@@ -102,7 +111,7 @@ export default class Home extends Component {
       case 'SEND_MESSAGE':
         return (
           <Message
-            sender={activity.sender}
+            sender={activity.username}
             message={activity.text}
             timestamp={activity.timestamp}
           />
@@ -110,7 +119,7 @@ export default class Home extends Component {
       case 'SLASH_COMMAND':
         return (
           <Commands
-            sender={activity.sender}
+            sender={activity.username}
             command={activity.command}
             triggerCommand={this.props.triggerCommand}
             timestamp={activity.timestamp}
@@ -148,6 +157,8 @@ export default class Home extends Component {
 
   getModalComponent() {
     switch (this.props.modalComponent) {
+      case 'Connecting':
+        return <Connecting />
       case 'About':
         return <About />
       case 'Settings':
@@ -161,6 +172,8 @@ export default class Home extends Component {
 
   getModalTitle() {
     switch (this.props.modalComponent) {
+      case 'Connecting':
+        return 'Connecting...'
       case 'About':
         return 'About'
       case 'Settings':
@@ -192,7 +205,6 @@ export default class Home extends Component {
 
   render() {
     const { ready } = this.state
-    console.log(this.props)
     return (
       <div className="h-100">
         <div className="nav-container">
@@ -203,6 +215,7 @@ export default class Home extends Component {
             roomLocked={this.props.roomLocked}
             toggleLockRoom={this.props.toggleLockRoom}
             openModal={this.props.openModal}
+            iAmOwner={this.props.iAmOwner}
           />
         </div>
         <div className="message-stream h-100" ref={el => this.messageStream = el}>
@@ -271,6 +284,7 @@ Home.propTypes = {
   activities: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,
+  privateKey: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,
   match: PropTypes.object.isRequired,
   roomId: PropTypes.string.isRequired,
@@ -283,4 +297,7 @@ Home.propTypes = {
   closeModal: PropTypes.func.isRequired,
   setScrolledToBottom: PropTypes.func.isRequired,
   scrolledToBottom: PropTypes.bool.isRequired,
+  iAmOwner: PropTypes.bool.isRequired,
+  sendUserEnter: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
 }

@@ -9,51 +9,58 @@
   z-index: 5
   background: black
 
-.nav-item
-  height: 100%
-  a
-    height: 100%
-
 nav
   border-bottom: 1px solid $inactive
   .meta
+    padding-left: 1rem
+    height: 100%
+    align-items: center
     display: flex
-    flex-basis: 70%
+    flex-basis: 50%
 
 .navbar-toggler
   border: 0px
 
 .navbar
+  padding-left: 0
+  padding-right: 0
   padding-top: 0px
   padding-bottom: 0px
   height: 55px
 
 ul.navbar-nav
-  height: 100%
   li
+    padding-bottom: 10px
     svg
       width: 20px
-      position: relative
-      top: 7px
-      margin-right: 5px
+      margin-right: 10px
+    span
+      width: auto
+
+button.lock-room
+  display: flex
 
 @media(min-width: 768px)
   ul.navbar-nav li
     margin-left: 25px
-
-.room-id
-  padding-top: 8px
+    padding-bottom: 0px
 
 .nav-link
+  display: flex
+  align-items: center
   color: $md-gray !important
   &:hover
     color: white !important
 
 .navbar-collapse
-  padding: 0px 0px
+  padding: 0px 1rem
+  background: black
 
 .members-dropdown
   margin-left: 10px
+  .dropdown__trigger
+    position: relative
+    top: 3px
   .dropdown__content 
     background: black
     border-radius: 3px
@@ -62,8 +69,8 @@ ul.navbar-nav
     width: 150px
   ul
     li
-      .me-icon
+      height: 25px
+      .icon-container
+        float: right
+      .me-icon, .owner-icon
         width: 15px
-        position: relative
-        top: 6px
-        left: 8px

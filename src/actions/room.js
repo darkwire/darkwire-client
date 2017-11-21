@@ -18,24 +18,30 @@ export const receiveSocketMessage = payload => async (dispatch, getState) => {
   dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
   const state = getState()
   const message = await processMessage(payload, state)
-  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload, state } })
+  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload } })
 }
 
 export const createUser = payload => async (dispatch) => {
+  dispatch({ type: 'CREATE_USER', payload })
+}
+
+export const sendUserEnter = payload => async () => {
   getIO().emit('USER_ENTER', {
     publicKey: payload.publicKey,
   })
-  dispatch({ type: 'CREATE_USER', payload })
 }
 
 export const receiveUserExit = payload => async (dispatch, getState) => {
   const state = getState()
-  const exitingUsername = state.room.members.find(m => isEqual(m.publicKey, payload.publicKey)).username
+  const exitingUser = state.room.members.find(m => !payload.map(p => JSON.stringify(p.publicKey)).includes(JSON.stringify(m.publicKey)))
+  const exitingUserId = exitingUser.id
+  const exitingUsername = exitingUser.username
 
   dispatch({
     type: 'USER_EXIT',
     payload: {
-      ...payload,
+      members: payload,
+      id: exitingUserId,
       username: exitingUsername,
     },
   })
@@ -61,6 +67,7 @@ export const toggleLockRoom = () => async (dispatch, getState) => {
     payload: {
       locked: !state.room.isLocked,
       username: state.user.username,
+      id: state.user.id,
     },
   })
 }
@@ -68,13 +75,16 @@ export const toggleLockRoom = () => async (dispatch, getState) => {
 export const receiveToggleLockRoom = payload => async (dispatch, getState) => {
   const state = getState()
 
-  const lockedByUsername = state.room.members.find(m => isEqual(m.publicKey, payload.publicKey)).username
+  const lockedByUser = state.room.members.find(m => isEqual(m.publicKey, payload.publicKey))
+  const lockedByUsername = lockedByUser.username
+  const lockedByUserId = lockedByUser.id
 
   dispatch({
     type: 'RECEIVE_TOGGLE_LOCK_ROOM',
     payload: {
       username: lockedByUsername,
       locked: payload.locked,
+      id: lockedByUserId,
     },
   })
 }
