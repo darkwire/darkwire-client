@@ -68,6 +68,7 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
 })
 
 export const prepare = (payload, state) => new Promise(async (resolve) => {
+  const myUsername = state.user.username
   const myId = state.user.id
 
   const sessionKey = await crypto.createSecretKey()
@@ -79,6 +80,7 @@ export const prepare = (payload, state) => new Promise(async (resolve) => {
     payload: {
       ...payload.payload,
       sender: myId,
+      username: myUsername,
     },
   }
 
