@@ -145,12 +145,15 @@ const activities = (state = initialState, action) => {
             currentUsername: action.payload.payload.currentUsername,
             newUsername: action.payload.payload.newUsername,
           },
-        ].map(item => (
-          item.type === 'SEND_MESSAGE' && item.sender === action.payload.payload.sender ? {
-            ...item,
-            username: action.payload.payload.newUsername,
-          } : item
-        )),
+        ].map((item) => {
+          if (['SEND_MESSAGE', 'USER_ACTION'].includes(item.type) && item.sender === action.payload.payload.sender) {
+            return {
+              ...item,
+              username: action.payload.payload.newUsername,
+            }
+          }
+          return item
+        }),
       }
     case 'SEND_SOCKET_MESSAGE_USER_ACTION':
       return {
