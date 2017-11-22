@@ -1,0 +1,14 @@
+:local(.styles) {
+  position: absolute;
+  top: 0;
+  right: 53px;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 6px;
+  direction: ltr;
+  cursor: pointer;
+  left: 0;
+  max-width: 43px;
+  height: 50px;
+}
