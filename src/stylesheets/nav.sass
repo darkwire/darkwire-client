@@ -66,10 +66,16 @@ button.lock-room
     border-radius: 3px
     border: 1px solid $inactive
     padding: 15px
-    width: 150px
+    width: 175px
   ul
     li
       height: 25px
+      .username
+        overflow: hidden
+        text-overflow: ellipsis
+        display: inline-block
+        width: 100px
+        white-space: nowrap
       .icon-container
         float: right
       .me-icon, .owner-icon
