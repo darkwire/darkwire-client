@@ -19,7 +19,7 @@ export class Chat extends Component {
       usage: '/nick {username}',
       scope: 'global',
       action: (params) => { // eslint-disable-line
-        let newUsername = params[0] || '' // eslint-disable-line
+        let newUsername = params.join(' ') || '' // eslint-disable-line
 
         // Remove things that arent digits or chars
         newUsername = newUsername.replace(/[^A-Za-z0-9]/g, '-')
