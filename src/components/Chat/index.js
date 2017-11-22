@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import sanitizeHtml from 'sanitize-html'
-import { CornerDownRight } from 'react-feather'
+import { CornerDownRight, File } from 'react-feather'
 
 export default class Chat extends Component {
   constructor(props) {
@@ -85,6 +85,9 @@ export default class Chat extends Component {
       <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
         <input autoFocus="autofocus" className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
         <div className="input-controls">
+          <button className="icon is-right send btn btn-link">
+            <File className={this.canSend() ? '' : 'disabled'} />
+          </button>
           <button onClick={this.sendMessage.bind(this)} className="icon is-right send btn btn-link">
             <CornerDownRight className={this.canSend() ? '' : 'disabled'} />
           </button>
