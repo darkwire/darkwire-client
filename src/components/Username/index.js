@@ -5,7 +5,7 @@ import randomColor from 'randomcolor'
 class Username extends Component {
   render() {
     return (
-      <span className="username" style={{ color: randomColor({ seed: this.props.username }) }}>
+      <span className="username" style={{ color: randomColor({ seed: this.props.username, luminosity: 'light' }) }}>
         {this.props.username}
       </span>
     )

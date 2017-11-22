@@ -15,7 +15,6 @@ export const createRoom = id => async dispatch => fetch({
 }, dispatch, 'handshake')
 
 export const receiveSocketMessage = payload => async (dispatch, getState) => {
-  dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
   const state = getState()
   const message = await processMessage(payload, state)
   dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload } })
@@ -52,7 +51,6 @@ export const receiveUserEnter = payload => async (dispatch) => {
 }
 
 export const sendSocketMessage = payload => async (dispatch, getState) => {
-  dispatch({ type: 'SEND_SOCKET_MESSAGE', payload })
   const state = getState()
   const msg = await prepareMessage(payload, state)
   dispatch({ type: `SEND_SOCKET_MESSAGE_${msg.original.type}`, payload: msg.original.payload })
@@ -100,4 +98,8 @@ export const triggerCommand = payload => async (dispatch, getState) => {
       username: user.username,
     },
   })
+}
+
+export const clearActivities = () => async (dispatch) => {
+  dispatch({ type: 'CLEAR_ACTIVITIES' })
 }

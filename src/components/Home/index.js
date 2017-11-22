@@ -144,10 +144,16 @@ export default class Home extends Component {
             <div><Username username={activity.username} /> {lockedWord} the room</div>
           </Notice>
         )
-      case 'SYSTEM_NOTICE':
+      case 'NOTICE':
         return (
           <Notice>
             <div>{activity.message}</div>
+          </Notice>
+        )
+      case 'CHANGE_USERNAME':
+        return (
+          <Notice>
+            <div><Username username={activity.currentUsername} /> changed their name to <Username username={activity.newUsername} /></div>
           </Notice>
         )
       default:
@@ -234,7 +240,7 @@ export default class Home extends Component {
           </ul>
         </div>
         <div className="chat-container">
-          <ChatInput />
+          <ChatInput/>
         </div>
         <Modal
           isOpen={Boolean(this.props.modalComponent)}

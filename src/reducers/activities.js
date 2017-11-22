@@ -107,6 +107,41 @@ const activities = (state = initialState, action) => {
           },
         ],
       }
+    case 'SHOW_NOTICE':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            type: 'NOTICE',
+            message: action.payload.message,
+          },
+        ],
+      }
+    case 'SEND_SOCKET_MESSAGE_CHANGE_USERNAME':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            type: 'CHANGE_USERNAME',
+            currentUsername: action.payload.currentUsername,
+            newUsername: action.payload.newUsername,
+          },
+        ],
+      }
+    case 'HANDLE_SOCKET_MESSAGE_CHANGE_USERNAME':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            type: 'CHANGE_USERNAME',
+            currentUsername: action.payload.currentUsername,
+            newUsername: action.payload.newUsername,
+          },
+        ],
+      }
     default:
       return state
   }
