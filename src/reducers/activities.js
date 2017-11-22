@@ -137,8 +137,8 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             type: 'CHANGE_USERNAME',
-            currentUsername: action.payload.currentUsername,
-            newUsername: action.payload.newUsername,
+            currentUsername: action.payload.payload.currentUsername,
+            newUsername: action.payload.payload.newUsername,
           },
         ],
       }
