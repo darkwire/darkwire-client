@@ -128,7 +128,12 @@ const activities = (state = initialState, action) => {
             currentUsername: action.payload.currentUsername,
             newUsername: action.payload.newUsername,
           },
-        ],
+        ].map(item => (
+          item.type === 'SEND_MESSAGE' && item.sender === action.payload.sender ? {
+            ...item,
+            username: action.payload.newUsername,
+          } : item
+        )),
       }
     case 'HANDLE_SOCKET_MESSAGE_CHANGE_USERNAME':
       return {
@@ -140,7 +145,12 @@ const activities = (state = initialState, action) => {
             currentUsername: action.payload.payload.currentUsername,
             newUsername: action.payload.payload.newUsername,
           },
-        ],
+        ].map(item => (
+          item.type === 'SEND_MESSAGE' && item.sender === action.payload.payload.sender ? {
+            ...item,
+            username: action.payload.payload.newUsername,
+          } : item
+        )),
       }
     default:
       return state
