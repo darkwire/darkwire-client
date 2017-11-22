@@ -76,9 +76,11 @@ export class Chat extends Component {
       action: (params) => { // eslint-disable-line
         const actionMessage = params.join(' ')
 
-        this.props.showNotice({
-          message: `${this.props.username} ${actionMessage}`,
-          level: 'info',
+        this.props.sendSocketMessage({
+          type: 'USER_ACTION',
+          payload: {
+            action: actionMessage,
+          },
         })
       },
     }, {

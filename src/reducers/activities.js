@@ -152,6 +152,28 @@ const activities = (state = initialState, action) => {
           } : item
         )),
       }
+    case 'SEND_SOCKET_MESSAGE_USER_ACTION':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            type: 'USER_ACTION',
+            ...action.payload,
+          },
+        ],
+      }
+    case 'HANDLE_SOCKET_MESSAGE_USER_ACTION':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            type: 'USER_ACTION',
+            ...action.payload.payload,
+          },
+        ],
+      }
     default:
       return state
   }

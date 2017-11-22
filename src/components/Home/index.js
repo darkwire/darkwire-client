@@ -156,6 +156,12 @@ export default class Home extends Component {
             <div><Username username={activity.currentUsername} /> changed their name to <Username username={activity.newUsername} /></div>
           </Notice>
         )
+      case 'USER_ACTION':
+        return (
+          <Notice>
+            <div><Username username={activity.username} /> {activity.action}</div>
+          </Notice>
+        )
       default:
         return false
     }
