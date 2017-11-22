@@ -5,7 +5,7 @@ import { CornerDownRight } from 'react-feather'
 import { connect } from 'react-redux'
 import { clearActivities, showNotice } from '../../actions'
 
-class Chat extends Component {
+export class Chat extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -200,7 +200,6 @@ const mapDispatchToProps = {
   clearActivities,
   showNotice,
 }
-
 
 export default connect(
   mapStateToProps,

@@ -1,12 +1,12 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import Chat from './index.js'
+import { Chat } from './index.js'
 
 const sendSocketMessage = jest.fn()
 
 test('Chat Component', () => {
   const component = renderer.create(
-    <Chat sendSocketMessage={sendSocketMessage} />
+    <Chat userId="foo" username="user" showNotice={() => {}} clearActivities={() => {}} sendSocketMessage={sendSocketMessage} />
   )
   const componentJSON = component.toJSON()
 
