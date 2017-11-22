@@ -24,7 +24,7 @@ class Chat extends Component {
         // Remove things that arent digits or chars
         newUsername = newUsername.replace(/[^A-Za-z0-9]/g, '-')
 
-        let errors = []
+        const errors = []
 
         if (!newUsername.trim().length) {
           errors.push('Username cannot be blank')
@@ -51,7 +51,7 @@ class Chat extends Component {
             id: this.props.userId,
             newUsername,
             currentUsername: this.props.username,
-          }
+          },
         })
       },
     }, {
@@ -185,14 +185,16 @@ class Chat extends Component {
 
 Chat.propTypes = {
   sendSocketMessage: PropTypes.func.isRequired,
+  showNotice: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  clearActivities: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = (state) => {
-  return {
-    username: state.user.username,
-    userId: state.user.id,
-  }
-}
+const mapStateToProps = state => ({
+  username: state.user.username,
+  userId: state.user.id,
+})
 
 const mapDispatchToProps = {
   clearActivities,

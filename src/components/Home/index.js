@@ -240,7 +240,7 @@ export default class Home extends Component {
           </ul>
         </div>
         <div className="chat-container">
-          <ChatInput/>
+          <ChatInput />
         </div>
         <Modal
           isOpen={Boolean(this.props.modalComponent)}

@@ -102,26 +102,26 @@ const room = (state = initialState, action) => {
       const userId = action.payload.id
       return {
         ...state,
-        members: state.members.map(member => {
-          return member.id === userId
-            ? {
+        members: state.members.map(member => (
+          member.id === userId ?
+            {
               ...member,
               username: newUsername,
             } : member
-        }),
+        )),
       }
     case 'HANDLE_SOCKET_MESSAGE_CHANGE_USERNAME':
       const newUsername2 = action.payload.payload.newUsername
       const userId2 = action.payload.payload.id
       return {
         ...state,
-        members: state.members.map(member => {
-          return member.id === userId2
-            ? {
+        members: state.members.map(member => (
+          member.id === userId2 ?
+            {
               ...member,
               username: newUsername2,
             } : member
-        }),
+        )),
       }
     default:
       return state
