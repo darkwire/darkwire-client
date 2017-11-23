@@ -27,6 +27,17 @@ const activities = (state = initialState, action) => {
           },
         ],
       }
+    case 'SEND_SOCKET_MESSAGE_FILE_TRANSFER':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            ...action.payload,
+            type: 'FILE',
+          },
+        ],
+      }
     case 'SEND_SOCKET_MESSAGE_SEND_MESSAGE':
       return {
         ...state,
