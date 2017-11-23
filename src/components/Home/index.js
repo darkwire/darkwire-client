@@ -115,15 +115,6 @@ export default class Home extends Component {
             timestamp={activity.timestamp}
           />
         )
-      case 'SLASH_COMMAND':
-        return (
-          <Commands
-            sender={activity.username}
-            command={activity.command}
-            triggerCommand={this.props.triggerCommand}
-            timestamp={activity.timestamp}
-          />
-        )
       case 'USER_ENTER':
         return (
           <Notice>
@@ -301,7 +292,6 @@ Home.propTypes = {
   roomId: PropTypes.string.isRequired,
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
-  triggerCommand: PropTypes.func.isRequired,
   receiveToggleLockRoom: PropTypes.func.isRequired,
   modalComponent: PropTypes.string,
   openModal: PropTypes.func.isRequired,

@@ -87,19 +87,6 @@ export const receiveToggleLockRoom = payload => async (dispatch, getState) => {
   })
 }
 
-export const triggerCommand = payload => async (dispatch, getState) => {
-  const state = getState()
-  const { user } = state
-
-  dispatch({
-    type: 'SLASH_COMMAND',
-    payload: {
-      ...payload,
-      username: user.username,
-    },
-  })
-}
-
 export const clearActivities = () => async (dispatch) => {
   dispatch({ type: 'CLEAR_ACTIVITIES' })
 }
