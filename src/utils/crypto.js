@@ -35,7 +35,7 @@ export default class Crypto {
         name: 'RSA-OAEP',
         modulusLength: 2048, // can be 1024, 2048, or 4096
         publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: { name: this.crypto.webkitSubtle ? 'SHA-1' : 'SHA-256' },
+        hash: { name: 'SHA-1' },
       },
       true, // whether the key is extractable (i.e. can be used in exportKey)
       ['encrypt', 'decrypt', 'wrapKey', 'unwrapKey'] // must be ['encrypt', 'decrypt'] or ['wrapKey', 'unwrapKey']
@@ -91,7 +91,7 @@ export default class Crypto {
   importEncryptDecryptKey(jwkData, format = 'jwk', ops) {
     const hashObj = {
       name: 'RSA-OAEP',
-      hash: { name: this.crypto.webkitSubtle ? 'SHA-1' : 'SHA-256' },
+      hash: { name: 'SHA-1' },
     }
 
     return this.crypto.subtle.importKey(
@@ -142,7 +142,7 @@ export default class Crypto {
       keyToWrapWith,
       {
         name: 'RSA-OAEP',
-        hash: { name: this.crypto.webkitSubtle ? 'SHA-1' : 'SHA-256' },
+        hash: { name: 'SHA-1' },
       }
     )
   }
