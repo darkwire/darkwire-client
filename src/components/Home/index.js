@@ -83,17 +83,17 @@ export default class Home extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.joining && !nextProps.joining) {
+      this.props.closeModal()
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.activities.length < this.props.activities.length) {
       if (this.props.scrolledToBottom) {
         this.messageStream.scrollTop = this.messageStream.scrollHeight
       }
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.joining && !nextProps.joining) {
-      this.props.closeModal()
     }
   }
 
