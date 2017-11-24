@@ -96,6 +96,14 @@ export class Chat extends Component {
     }]
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.focusChat) {
+      if (!getSelectedText()) {
+        this.textInput.focus()
+      }
+    }
+  }
+
   executeCommand(command) {
     const commandToExecute = this.commands.find(cmnd => cmnd.command === command.command)
 
@@ -107,14 +115,6 @@ export class Chat extends Component {
     }
 
     return null
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.focusChat) {
-      if (!getSelectedText()) {
-        this.textInput.focus();
-      }
-    }
   }
 
   handleFormSubmit(evt) {
@@ -183,7 +183,7 @@ export class Chat extends Component {
   render() {
     return (
       <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
-        <input ref={(input) => { this.textInput = input; }} autoFocus className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
+        <input ref={(input) => { this.textInput = input }} autoFocus className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
         <div className="input-controls">
           <button onClick={this.sendMessage.bind(this)} className="icon is-right send btn btn-link">
             <CornerDownRight className={this.canSend() ? '' : 'disabled'} />
@@ -215,5 +215,5 @@ const mapDispatchToProps = {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Chat)

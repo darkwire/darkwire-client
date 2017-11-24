@@ -208,8 +208,8 @@ export default class Home extends Component {
   }
 
   handleChatClick() {
-    this.setState({focusChat: true})
-    defer(() => this.setState({focusChat: false}))
+    this.setState({ focusChat: true })
+    defer(() => this.setState({ focusChat: false }))
   }
 
   render() {
@@ -243,7 +243,7 @@ export default class Home extends Component {
           </ul>
         </div>
         <div className="chat-container">
-          <ChatInput focusChat={this.state.focusChat}/>
+          <ChatInput focusChat={this.state.focusChat} />
         </div>
         <Modal
           isOpen={Boolean(this.props.modalComponent)}
