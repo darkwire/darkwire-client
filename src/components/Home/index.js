@@ -13,6 +13,7 @@ import Modal from 'react-modal'
 import About from 'components/About'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
+import RoomLocked from 'components/RoomLocked'
 import { X } from 'react-feather'
 import { defer } from 'lodash'
 
@@ -23,7 +24,6 @@ export default class Home extends Component {
     super(props)
 
     this.state = {
-      ready: false,
       focusChat: false,
     }
   }
@@ -31,47 +31,47 @@ export default class Home extends Component {
   async componentWillMount() {
     const roomId = this.props.match.params.roomId
 
-    await this.props.createRoom(roomId)
+    const res = await this.props.createRoom(roomId)
+
+    if (res.json.isLocked) {
+      return this.props.openModal('Room Locked')
+    }
 
     const io = connect(roomId)
 
     await this.createUser()
 
-    this.setState({
-      ready: true,
-    }, () => {
-      io.on('USER_ENTER', (payload) => {
-        this.props.receiveUserEnter(payload)
-        this.props.sendSocketMessage({
-          type: 'ADD_USER',
-          payload: {
-            username: this.props.username,
-            publicKey: this.props.publicKey,
-            isOwner: this.props.iAmOwner,
-            id: this.props.userId,
-          },
-        })
+    io.on('USER_ENTER', (payload) => {
+      this.props.receiveUserEnter(payload)
+      this.props.sendSocketMessage({
+        type: 'ADD_USER',
+        payload: {
+          username: this.props.username,
+          publicKey: this.props.publicKey,
+          isOwner: this.props.iAmOwner,
+          id: this.props.userId,
+        },
       })
+    })
 
-      io.on('USER_EXIT', (payload) => {
-        this.props.receiveUserExit(payload)
-      })
+    io.on('USER_EXIT', (payload) => {
+      this.props.receiveUserExit(payload)
+    })
 
-      io.on('PAYLOAD', (payload) => {
-        this.props.receiveSocketMessage(payload)
-      })
+    io.on('PAYLOAD', (payload) => {
+      this.props.receiveSocketMessage(payload)
+    })
 
-      io.on('TOGGLE_LOCK_ROOM', (payload) => {
-        this.props.receiveToggleLockRoom(payload)
-      })
+    io.on('TOGGLE_LOCK_ROOM', (payload) => {
+      this.props.receiveToggleLockRoom(payload)
+    })
 
-      const { username, publicKey, privateKey } = this.props
+    const { username, publicKey, privateKey } = this.props
 
-      this.props.sendUserEnter({
-        username,
-        publicKey,
-        privateKey,
-      })
+    this.props.sendUserEnter({
+      username,
+      publicKey,
+      privateKey,
     })
   }
 
@@ -169,33 +169,40 @@ export default class Home extends Component {
     }
   }
 
-  getModalComponent() {
+  getModal() {
     switch (this.props.modalComponent) {
       case 'Connecting':
-        return <Connecting />
+        return {
+          component: <Connecting />,
+          title: 'Connecting...',
+          preventClose: true,
+        }
       case 'About':
-        return <About />
+        return {
+          component: <About />,
+          title: 'About',
+        }
       case 'Settings':
-        return <Settings />
+        return {
+          component: <Settings />,
+          title: 'Settings',
+        }
       case 'Welcome':
-        return <Welcome roomId={this.props.roomId} />
+        return {
+          component: <Welcome roomId={this.props.roomId} />,
+          title: 'Welcome to Darkwire v2',
+        }
+      case 'Room Locked':
+        return {
+          component: <RoomLocked />,
+          title: 'This room is locked',
+          preventClose: true,
+        }
       default:
-        return null
-    }
-  }
-
-  getModalTitle() {
-    switch (this.props.modalComponent) {
-      case 'Connecting':
-        return 'Connecting...'
-      case 'About':
-        return 'About'
-      case 'Settings':
-        return 'Settings'
-      case 'Welcome':
-        return 'Welcome to Darkwire v2'
-      default:
-        return null
+        return {
+          component: null,
+          title: null
+        }
     }
   }
 
@@ -223,7 +230,7 @@ export default class Home extends Component {
   }
 
   render() {
-    const { ready } = this.state
+    const modalOpts = this.getModal()
     return (
       <div className="h-100">
         <div className="nav-container">
@@ -238,12 +245,6 @@ export default class Home extends Component {
           />
         </div>
         <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
-          {!ready ? (
-            <Notice level="warning">
-              <div className="activity-item">
-                Establishing a secure connection...
-              </div>
-            </Notice>) : null}
           <ul ref={el => this.activitiesList = el}>
             {this.props.activities.map((activity, index) => (
               <li key={index} className={`activity-item ${activity.type}`}>
@@ -269,19 +270,21 @@ export default class Home extends Component {
             afterOpen: 'react-modal-overlay_after-open',
             beforeClose: 'react-modal-overlay_before-close',
           }}
-          shouldCloseOnOverlayClick
+          shouldCloseOnOverlayClick={!modalOpts.preventClose}
           onRequestClose={this.props.closeModal}
         >
           <div className="react-modal-header">
             <h4 className="react-modal-title float-left">
-              {this.getModalTitle()}
+              {modalOpts.title}
             </h4>
-            <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
-              <X />
-            </button>
+            {!modalOpts.preventClose && 
+              <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
+                <X />
+              </button>
+            }
           </div>
           <div className="react-modal-component">
-            {this.getModalComponent()}
+            {modalOpts.component}
           </div>
         </Modal>
       </div>
