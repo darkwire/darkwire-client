@@ -14,6 +14,7 @@ import About from 'components/About'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
 import { X } from 'react-feather'
+import { defer } from 'lodash'
 
 const crypto = new Crypto()
 
@@ -23,6 +24,7 @@ export default class Home extends Component {
 
     this.state = {
       ready: false,
+      focusChat: false,
     }
   }
 
@@ -205,6 +207,11 @@ export default class Home extends Component {
     })
   }
 
+  handleChatClick() {
+    this.setState({focusChat: true})
+    defer(() => this.setState({focusChat: false}))
+  }
+
   render() {
     const { ready } = this.state
     return (
@@ -220,7 +227,7 @@ export default class Home extends Component {
             iAmOwner={this.props.iAmOwner}
           />
         </div>
-        <div className="message-stream h-100" ref={el => this.messageStream = el}>
+        <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
           {!ready ? (
             <Notice level="warning">
               <div className="activity-item">
@@ -236,7 +243,7 @@ export default class Home extends Component {
           </ul>
         </div>
         <div className="chat-container">
-          <ChatInput />
+          <ChatInput focusChat={this.state.focusChat}/>
         </div>
         <Modal
           isOpen={Boolean(this.props.modalComponent)}
