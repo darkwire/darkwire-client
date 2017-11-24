@@ -77,6 +77,10 @@ export default class Home extends Component {
 
   componentDidMount() {
     this.bindEvents()
+
+    if (this.props.joining) {
+      this.props.openModal('Connecting')
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -84,6 +88,12 @@ export default class Home extends Component {
       if (this.props.scrolledToBottom) {
         this.messageStream.scrollTop = this.messageStream.scrollHeight
       }
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.joining && !nextProps.joining) {
+      this.props.closeModal()
     }
   }
 
@@ -308,4 +318,5 @@ Home.propTypes = {
   iAmOwner: PropTypes.bool.isRequired,
   sendUserEnter: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
+  joining: PropTypes.bool.isRequired,
 }
