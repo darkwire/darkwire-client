@@ -16,8 +16,7 @@ class Welcome extends Component {
           <div>TOR Mirror: <a href="http://darkwirevqhjfmla.onion" target="_blank" rel="noopener noreferrer">http://darkwirevqhjfmla.onion</a></div>
           <br />
           <div>
-            This software uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto" target="_blank" rel="noopener noreferrer">Web Cryptography API</a>
-             to encrypt data which is transferred using <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener noreferrer">secure WebSockets</a>.
+            This software uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto" target="_blank" rel="noopener noreferrer">Web Cryptography API</a> to encrypt data which is transferred using <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener noreferrer">secure WebSockets</a>.
             Messages are never stored on a server or sent over the wire in plain-text.
           </div>
           <br />

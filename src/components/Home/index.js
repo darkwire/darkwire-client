@@ -38,6 +38,10 @@ export default class Home extends Component {
       return
     }
 
+    if (res.json.size === 1) {
+      this.props.openModal('Welcome')
+    }
+
     const io = connect(roomId)
 
     await this.createUser()
