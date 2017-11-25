@@ -83,6 +83,7 @@ module.exports = {
       { test: /\.sass$/, loaders: getSassLoaders() },
       { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader' },
       { test: /\.(eot|svg|ttf|woff|woff2)$/i, loader: 'file-loader' },
+      { test: /\.(mp3)$/i, loader: 'file-loader' },
     ],
   },
   plugins: [

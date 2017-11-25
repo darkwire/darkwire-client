@@ -14,6 +14,7 @@ import {
   setScrolledToBottom,
   sendUserEnter,
   toggleWindowFocus,
+  toggleSoundEnabled,
 } from 'actions'
 
 const mapStateToProps = (state) => {
@@ -33,6 +34,7 @@ const mapStateToProps = (state) => {
     iAmOwner: Boolean(me && me.isOwner),
     joining: state.room.joining,
     faviconCount: state.app.unreadMessageCount,
+    soundIsEnabled: state.app.soundIsEnabled,
   }
 }
 
@@ -50,6 +52,7 @@ const mapDispatchToProps = {
   setScrolledToBottom,
   sendUserEnter,
   toggleWindowFocus,
+  toggleSoundEnabled,
 }
 
 export default connect(

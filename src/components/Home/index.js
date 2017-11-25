@@ -17,6 +17,7 @@ import RoomLocked from 'components/RoomLocked'
 import { X } from 'react-feather'
 import { defer } from 'lodash'
 import Tinycon from 'tinycon'
+import beepFile from 'audio/beep.mp3'
 
 const crypto = new Crypto()
 
@@ -87,6 +88,8 @@ export default class Home extends Component {
     if (this.props.joining) {
       this.props.openModal('Connecting')
     }
+
+    this.beep = window.Audio && new window.Audio(beepFile)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,6 +98,10 @@ export default class Home extends Component {
     }
 
     Tinycon.setBubble(nextProps.faviconCount)
+
+    if (nextProps.faviconCount !== 0 && this.props.soundIsEnabled) {
+      this.beep.play()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -192,7 +199,7 @@ export default class Home extends Component {
         }
       case 'Settings':
         return {
-          component: <Settings />,
+          component: <Settings toggleSoundEnabled={this.props.toggleSoundEnabled} soundIsEnabled={this.props.soundIsEnabled} />,
           title: 'Settings',
         }
       case 'Welcome':
@@ -340,4 +347,6 @@ Home.propTypes = {
   joining: PropTypes.bool.isRequired,
   toggleWindowFocus: PropTypes.func.isRequired,
   faviconCount: PropTypes.number.isRequired,
+  soundIsEnabled: PropTypes.bool.isRequired,
+  toggleSoundEnabled: PropTypes.func.isRequired,
 }

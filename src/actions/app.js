@@ -10,3 +10,7 @@ export const showNotice = payload => async (dispatch) => {
 export const toggleWindowFocus = payload => async (dispatch) => {
   dispatch({ type: 'TOGGLE_WINDOW_FOCUS', payload })
 }
+
+export const toggleSoundEnabled = payload => async (dispatch) => {
+  dispatch({ type: 'TOGGLE_SOUND_ENABLED', payload })
+}
