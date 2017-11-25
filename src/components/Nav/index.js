@@ -57,7 +57,6 @@ class Nav extends Component {
             data-toggle="tooltip"
             data-placement="bottom"
             title="Copied"
-            onClick={() => console.log('click')}
             data-clipboard-text={`https://darkwire.io/${this.props.roomId}`}
             className="btn btn-plain btn-link clipboard-trigger room-id ellipsis">
             {`/${this.props.roomId}`}

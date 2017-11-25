@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Copy } from 'react-feather'
+import Clipboard from 'clipboard'
 
 class Welcome extends Component {
   constructor(props) {
@@ -7,6 +9,23 @@ class Welcome extends Component {
     this.state = {
       roomUrl: `https://darkwire.io/${props.roomId}`,
     }
+  }
+
+  componentDidMount() {
+    const clip = new Clipboard('.copy-room')
+
+    clip.on('success', () => {
+      $('.copy-room').tooltip('show')
+      setTimeout(() => {
+        $('.copy-room').tooltip('hide')
+      }, 3000)
+    })
+
+    $(() => {
+      $('.copy-room').tooltip({
+        trigger: 'manual',
+      })
+    })
   }
 
   render() {
@@ -27,7 +46,21 @@ class Welcome extends Component {
         <form>
           <div className="form-group">
             <label htmlFor="room-url">Invite people to this room</label>
-            <input id="room-url" className="form-control" type="text" readOnly placeholder={this.state.roomUrl} />
+            <div className="input-group">
+              <input id="room-url" className="form-control" type="text" readOnly placeholder={this.state.roomUrl} />
+              <span className="input-group-btn">
+                <button
+                  className="copy-room btn btn-secondary"
+                  type="button"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  data-clipboard-text={this.state.roomUrl}
+                  title='Copied!'
+                >
+                  <Copy className='mt-1'/>
+                </button>
+              </span>
+            </div>
           </div>
         </form>
       </div>
