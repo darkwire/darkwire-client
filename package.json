@@ -13,6 +13,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server",
+    "dev:mobile": "NODE_ENV=development webpack-dev-server --host 0.0.0.0",
     "build": "NODE_ENV=development webpack",
     "build:staging": "NODE_ENV=staging webpack",
     "build:production": "NODE_ENV=production webpack",
