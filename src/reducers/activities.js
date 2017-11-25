@@ -51,10 +51,16 @@ const activities = (state = initialState, action) => {
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
       const newUserId = action.payload.payload.id
-      const activityExists = state.items.find(m => m.userId === newUserId)
-      if (activityExists) {
+
+      const haveUser = action.payload.state.room.members.find(m => m.id === newUserId)
+      if (haveUser) {
         return state
       }
+
+      if (action.payload.state.room.joining) {
+        return state
+      }
+
       return {
         ...state,
         items: [

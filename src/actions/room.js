@@ -17,7 +17,8 @@ export const createRoom = id => async dispatch => fetch({
 export const receiveSocketMessage = payload => async (dispatch, getState) => {
   const state = getState()
   const message = await processMessage(payload, state)
-  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload } })
+  // Pass current state to all HANDLE_SOCKET_MESSAGE reducers for convenience, since each may have different needs
+  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload, state } })
 }
 
 export const createUser = payload => async (dispatch) => {
