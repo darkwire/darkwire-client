@@ -15,7 +15,10 @@ ul
 button
   cursor: pointer
 
-button.btn-plain
+button.btn-link.btn-plain
+  padding: 0px
+  color: white
+  text-decoration: none
   color: white
   &:hover, &:focus
     color: white
@@ -25,6 +28,15 @@ button.btn-plain
 
 svg.disabled
   color: $inactive
+
+svg text
+  user-select: none
+
+svg:hover
+  background: none
+
+svg text::selection
+  background: none
 
 input.chat
   width: 100%
@@ -124,3 +136,8 @@ input.chat
   .react-modal-header
     overflow: auto
     margin-bottom: 20px
+
+.ellipsis
+  text-overflow: ellipsis
+  overflow: hidden
+  white-space: nowrap

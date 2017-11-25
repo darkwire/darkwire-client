@@ -34,7 +34,8 @@ export default class Home extends Component {
     const res = await this.props.createRoom(roomId)
 
     if (res.json.isLocked) {
-      return this.props.openModal('Room Locked')
+      this.props.openModal('Room Locked')
+      return
     }
 
     const io = connect(roomId)
@@ -201,7 +202,7 @@ export default class Home extends Component {
       default:
         return {
           component: null,
-          title: null
+          title: null,
         }
     }
   }
@@ -277,7 +278,7 @@ export default class Home extends Component {
             <h4 className="react-modal-title float-left">
               {modalOpts.title}
             </h4>
-            {!modalOpts.preventClose && 
+            {!modalOpts.preventClose &&
               <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
                 <X />
               </button>

@@ -5,10 +5,46 @@ import { Info, Settings, PlusCircle, User, Users, Lock, Unlock, Star } from 'rea
 import logoImg from 'img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import Username from 'components/Username'
+import Clipboard from 'clipboard'
 
 class Nav extends Component {
+  componentDidMount() {
+    const clip = new Clipboard('.clipboard-trigger')
+
+    clip.on('success', () => {
+      $('.room-id').tooltip('show')
+      setTimeout(() => {
+        $('.room-id').tooltip('hide')
+      }, 3000)
+    })
+
+    $(() => {
+      $('.room-id').tooltip({
+        trigger: 'manual',
+      })
+    })
+  }
+
+  componentDidUpdate() {
+    $(() => {
+      $('.me-icon-wrap').tooltip()
+      $('.owner-icon-wrap').tooltip()
+    })
+  }
+
   newRoom() {
+    $('.navbar-collapse').collapse('hide')
     window.open(`/${shortId.generate()}`)
+  }
+
+  handleSettingsClick() {
+    $('.navbar-collapse').collapse('hide')
+    this.props.openModal('Settings')
+  }
+
+  handleAboutClick() {
+    $('.navbar-collapse').collapse('hide')
+    this.props.openModal('About')
   }
 
   render() {
@@ -17,7 +53,15 @@ class Nav extends Component {
         <div className="meta">
           <a className="navbar-brand" href="#"><img src={logoImg} alt="Darkwire" className="logo" /></a>
 
-          <span className="room-id">{`/${this.props.roomId}`}</span>
+          <button
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title="Copied"
+            onClick={() => console.log('click')}
+            data-clipboard-text={`https://darkwire.io/${this.props.roomId}`}
+            className="btn btn-plain btn-link clipboard-trigger room-id ellipsis">
+            {`/${this.props.roomId}`}
+          </button>
 
           <span className="lock-room-container">
             <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain" disabled={!this.props.iAmOwner}>
@@ -44,9 +88,15 @@ class Nav extends Component {
                     <Username username={member.username} />
                     <span className="icon-container">
                       {member.username === this.props.username &&
-                        <User className="me-icon" />
+                        <span data-toggle="tooltip" data-placement="bottom" title="Me" className="me-icon-wrap">
+                          <User className="me-icon" />
+                        </span>
                       }
-                      {member.isOwner && <Star className="owner-icon" /> }
+                      {member.isOwner &&
+                        <span data-toggle="tooltip" data-placement="bottom" title="Owner" className="owner-icon-wrap">
+                          <Star className="owner-icon" />
+                        </span>
+                      }
                     </span>
                   </li>
                 ))}
@@ -71,10 +121,10 @@ class Nav extends Component {
               <a className="nav-link" onClick={this.newRoom.bind(this)}target="blank"><PlusCircle /> <span>New Room</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={() => this.props.openModal('Settings')} className="nav-link" href="#"><Settings /> <span>Settings</span></a>
+              <a onClick={this.handleSettingsClick.bind(this)} className="nav-link" href="#"><Settings /> <span>Settings</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={() => this.props.openModal('About')} className="nav-link" href="#"><Info /> <span>About</span></a>
+              <a onClick={this.handleAboutClick.bind(this)} className="nav-link" href="#"><Info /> <span>About</span></a>
             </li>
           </ul>
         </div>

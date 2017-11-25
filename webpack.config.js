@@ -51,7 +51,6 @@ module.exports = {
   },
   entry: {
     main: getMain(),
-    vendor: ['bootstrap','webcrypto-shim/webcrypto-shim.js'],
   },
   output: {
     path: path.resolve('dist'),
