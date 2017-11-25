@@ -65,7 +65,7 @@ export const toggleLockRoom = () => async (dispatch, getState) => {
     payload: {
       locked: !state.room.isLocked,
       username: state.user.username,
-      id: state.user.id,
+      sender: state.user.id,
     },
   })
 }

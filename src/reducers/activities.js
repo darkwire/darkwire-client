@@ -91,6 +91,7 @@ const activities = (state = initialState, action) => {
             userId: action.payload.id,
             type: 'TOGGLE_LOCK_ROOM',
             locked: action.payload.locked,
+            sender: action.payload.sender,
           },
         ],
       }
@@ -104,6 +105,7 @@ const activities = (state = initialState, action) => {
             userId: action.payload.id,
             type: 'TOGGLE_LOCK_ROOM',
             locked: action.payload.locked,
+            sender: action.payload.sender,
           },
         ],
       }
@@ -129,7 +131,7 @@ const activities = (state = initialState, action) => {
             newUsername: action.payload.newUsername,
           },
         ].map((item) => {
-          if (['SEND_MESSAGE', 'USER_ACTION'].includes(item.type) && item.sender === action.payload.sender) {
+          if (item.sender === action.payload.sender && item.type !== 'CHANGE_USERNAME') {
             return {
               ...item,
               username: action.payload.newUsername,
