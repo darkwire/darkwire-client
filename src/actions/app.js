@@ -6,3 +6,7 @@ export const setScrolledToBottom = payload => ({ type: 'SET_SCROLLED_TO_BOTTOM',
 export const showNotice = payload => async (dispatch) => {
   dispatch({ type: 'SHOW_NOTICE', payload })
 }
+
+export const toggleWindowFocus = payload => async (dispatch) => {
+  dispatch({ type: 'TOGGLE_WINDOW_FOCUS', payload })
+}

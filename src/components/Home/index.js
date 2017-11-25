@@ -16,6 +16,7 @@ import Welcome from 'components/Welcome'
 import RoomLocked from 'components/RoomLocked'
 import { X } from 'react-feather'
 import { defer } from 'lodash'
+import Tinycon from 'tinycon'
 
 const crypto = new Crypto()
 
@@ -92,6 +93,8 @@ export default class Home extends Component {
     if (this.props.joining && !nextProps.joining) {
       this.props.closeModal()
     }
+
+    Tinycon.setBubble(nextProps.faviconCount)
   }
 
   componentDidUpdate(prevProps) {
@@ -213,6 +216,14 @@ export default class Home extends Component {
 
   bindEvents() {
     this.messageStream.addEventListener('scroll', this.onScroll.bind(this))
+
+    window.onfocus = () => {
+      this.props.toggleWindowFocus(true)
+    }
+
+    window.onblur = () => {
+      this.props.toggleWindowFocus(false)
+    }
   }
 
   async createUser() {
@@ -327,4 +338,6 @@ Home.propTypes = {
   sendUserEnter: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   joining: PropTypes.bool.isRequired,
+  toggleWindowFocus: PropTypes.func.isRequired,
+  faviconCount: PropTypes.number.isRequired,
 }

@@ -13,6 +13,7 @@ import {
   closeModal,
   setScrolledToBottom,
   sendUserEnter,
+  toggleWindowFocus,
 } from 'actions'
 
 const mapStateToProps = (state) => {
@@ -31,6 +32,7 @@ const mapStateToProps = (state) => {
     scrolledToBottom: state.app.scrolledToBottom,
     iAmOwner: Boolean(me && me.isOwner),
     joining: state.room.joining,
+    faviconCount: state.app.unreadMessageCount,
   }
 }
 
@@ -47,6 +49,7 @@ const mapDispatchToProps = {
   closeModal,
   setScrolledToBottom,
   sendUserEnter,
+  toggleWindowFocus,
 }
 
 export default connect(
