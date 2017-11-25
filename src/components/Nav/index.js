@@ -22,6 +22,9 @@ class Nav extends Component {
       $('.room-id').tooltip({
         trigger: 'manual',
       })
+      $('.lock-room').tooltip({
+        trigger: 'manual',
+      })
     })
   }
 
@@ -47,6 +50,15 @@ class Nav extends Component {
     this.props.openModal('About')
   }
 
+  handleToggleLock() {
+    if (!this.props.iAmOwner) {
+      $('.lock-room').tooltip('show')
+      setTimeout(() => $('.lock-room').tooltip('hide'), 3000)
+      return
+    }
+    this.props.toggleLockRoom()
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-md navbar-dark">
@@ -63,7 +75,13 @@ class Nav extends Component {
           </button>
 
           <span className="lock-room-container">
-            <button onClick={this.props.toggleLockRoom} className="lock-room btn btn-link btn-plain" disabled={!this.props.iAmOwner}>
+            <button
+              onClick={this.handleToggleLock.bind(this)}
+              className="lock-room btn btn-link btn-plain"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="You must be the owner to lock or unlock the room"
+            >
               {this.props.roomLocked &&
                 <Lock />
               }
