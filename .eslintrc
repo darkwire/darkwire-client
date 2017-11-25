@@ -44,5 +44,8 @@
       "exports": "always-multiline", 
       "functions": "never" 
     }]
+  },
+  "globals": {
+    "$": false
   }
 }

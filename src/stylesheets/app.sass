@@ -15,7 +15,10 @@ ul
 button
   cursor: pointer
 
-button.btn-plain
+button.btn-link.btn-plain
+  padding: 0px
+  color: white
+  text-decoration: none
   color: white
   &:hover, &:focus
     color: white
@@ -26,10 +29,22 @@ button.btn-plain
 svg.disabled
   color: $inactive
 
+svg text
+  user-select: none
+
+svg:hover
+  background: none
+
+svg text::selection
+  background: none
+
 input.chat
   width: 100%
   background-color: $secondary
-  border: 1px solid $inactive
+  border-top: 1px solid $inactive
+  border-left: 0px
+  border-right: 0px
+  border-bottom: 0px
   color: $body
   outline: 0
   font-size: 18px
@@ -78,6 +93,8 @@ input.chat
   display: flex
   padding: 70px 15px
   overflow: auto
+  overflow-y: scroll
+  -webkit-overflow-scrolling: touch
   ul
     width: 100%
     margin-top: auto
@@ -113,7 +130,7 @@ input.chat
     outline: none
     padding: 20px
     max-width: 500px
-    width: 100%
+    width: calc(100% - 30px)
     margin: 50px auto 0px auto
     .close-modal
       float: right
@@ -121,3 +138,8 @@ input.chat
   .react-modal-header
     overflow: auto
     margin-bottom: 20px
+
+.ellipsis
+  text-overflow: ellipsis
+  overflow: hidden
+  white-space: nowrap

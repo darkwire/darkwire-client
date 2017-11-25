@@ -18,7 +18,25 @@ const getSassLoaders = () => ['style-loader', 'css-loader?sourceMap=true&localId
 
 const sourcePath = path.join(__dirname, './src')
 
-const plugins = []
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+
+const plugins = [
+  new FaviconsWebpackPlugin({
+    logo: `${sourcePath}/img/logo-dark.png`,
+    icons: {
+      android: false,
+      appleIcon: false,
+      appleStartup: false,
+      coast: false,
+      favicons: true,
+      firefox: false,
+      opengraph: false,
+      twitter: false,
+      yandex: false,
+      windows: false
+    }
+  }),
+]
 
 if (process.env.NODE_ENV === 'production') {
   plugins.push(new webpack.optimize.UglifyJsPlugin())
@@ -51,7 +69,6 @@ module.exports = {
   },
   entry: {
     main: getMain(),
-    vendor: ['bootstrap','webcrypto-shim/webcrypto-shim.js'],
   },
   output: {
     path: path.resolve('dist'),
@@ -66,6 +83,7 @@ module.exports = {
       { test: /\.sass$/, loaders: getSassLoaders() },
       { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader' },
       { test: /\.(eot|svg|ttf|woff|woff2)$/i, loader: 'file-loader' },
+      { test: /\.(mp3)$/i, loader: 'file-loader' },
     ],
   },
   plugins: [

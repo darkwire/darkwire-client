@@ -15,10 +15,10 @@ export const createRoom = id => async dispatch => fetch({
 }, dispatch, 'handshake')
 
 export const receiveSocketMessage = payload => async (dispatch, getState) => {
-  dispatch({ type: 'RECEIVE_SOCKET_MESSAGE', payload })
   const state = getState()
   const message = await processMessage(payload, state)
-  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload } })
+  // Pass current state to all HANDLE_SOCKET_MESSAGE reducers for convenience, since each may have different needs
+  dispatch({ type: `HANDLE_SOCKET_MESSAGE_${message.type}`, payload: { payload: message.payload, state } })
 }
 
 export const createUser = payload => async (dispatch) => {
@@ -52,7 +52,6 @@ export const receiveUserEnter = payload => async (dispatch) => {
 }
 
 export const sendSocketMessage = payload => async (dispatch, getState) => {
-  dispatch({ type: 'SEND_SOCKET_MESSAGE', payload })
   const state = getState()
   const msg = await prepareMessage(payload, state)
   dispatch({ type: `SEND_SOCKET_MESSAGE_${msg.original.type}`, payload: msg.original.payload })
@@ -67,7 +66,7 @@ export const toggleLockRoom = () => async (dispatch, getState) => {
     payload: {
       locked: !state.room.isLocked,
       username: state.user.username,
-      id: state.user.id,
+      sender: state.user.id,
     },
   })
 }
@@ -89,15 +88,6 @@ export const receiveToggleLockRoom = payload => async (dispatch, getState) => {
   })
 }
 
-export const triggerCommand = payload => async (dispatch, getState) => {
-  const state = getState()
-  const { user } = state
-
-  dispatch({
-    type: 'SLASH_COMMAND',
-    payload: {
-      ...payload,
-      username: user.username,
-    },
-  })
+export const clearActivities = () => async (dispatch) => {
+  dispatch({ type: 'CLEAR_ACTIVITIES' })
 }

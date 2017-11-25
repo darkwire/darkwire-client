@@ -6,7 +6,7 @@ exports[`Chat Component 1`] = `
   onSubmit={[Function]}
 >
   <input
-    autoFocus="autofocus"
+    autoFocus={true}
     className="chat"
     onChange={[Function]}
     placeholder="Type here"

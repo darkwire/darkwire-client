@@ -16,6 +16,9 @@ nav
     height: 100%
     align-items: center
     display: flex
+    flex-basis: 80%
+@media(min-width: 768px)
+  nav .meta
     flex-basis: 50%
 
 .navbar-toggler
@@ -27,6 +30,9 @@ nav
   padding-top: 0px
   padding-bottom: 0px
   height: 55px
+  .room-id
+    margin-right: 15px
+    max-width: 95px
 
 ul.navbar-nav
   li
@@ -38,6 +44,7 @@ ul.navbar-nav
       width: auto
 
 button.lock-room
+  margin-right: 15px
   display: flex
 
 @media(min-width: 768px)
@@ -61,15 +68,25 @@ button.lock-room
   .dropdown__trigger
     position: relative
     top: 3px
+    .members-action
+      margin-right: 5px
   .dropdown__content 
     background: black
     border-radius: 3px
     border: 1px solid $inactive
     padding: 15px
-    width: 150px
+    width: 175px
+    left: -110px
   ul
     li
+      overflow: auto
       height: 25px
+      .username
+        overflow: hidden
+        text-overflow: ellipsis
+        display: inline-block
+        width: 100px
+        white-space: nowrap
       .icon-container
         float: right
       .me-icon, .owner-icon
