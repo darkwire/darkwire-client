@@ -6,7 +6,7 @@ const sendSocketMessage = jest.fn()
 
 test('Chat Component', () => {
   const component = renderer.create(
-    <Chat userId="foo" username="user" showNotice={() => {}} clearActivities={() => {}} sendSocketMessage={sendSocketMessage} />
+    <Chat focusChat={false} userId="foo" username="user" showNotice={() => {}} clearActivities={() => {}} sendSocketMessage={sendSocketMessage} />
   )
   const componentJSON = component.toJSON()
 

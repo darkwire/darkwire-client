@@ -35,7 +35,8 @@ class Welcome extends Component {
           <div>TOR Mirror: <a href="http://darkwirevqhjfmla.onion" target="_blank" rel="noopener noreferrer">http://darkwirevqhjfmla.onion</a></div>
           <br />
           <div>
-            This software uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto" target="_blank" rel="noopener noreferrer">Web Cryptography API</a> to encrypt data which is transferred using <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener noreferrer">secure WebSockets</a>.
+            This software uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto" target="_blank" rel="noopener noreferrer">Web Cryptography API</a>
+             to encrypt data which is transferred using <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener noreferrer">secure WebSockets</a>.
             Messages are never stored on a server or sent over the wire in plain-text.
           </div>
           <br />
@@ -55,9 +56,9 @@ class Welcome extends Component {
                   data-toggle="tooltip"
                   data-placement="bottom"
                   data-clipboard-text={this.state.roomUrl}
-                  title='Copied!'
+                  title="Copied!"
                 >
-                  <Copy className='mt-1'/>
+                  <Copy className="mt-1" />
                 </button>
               </span>
             </div>
