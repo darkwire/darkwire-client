@@ -63,7 +63,7 @@ class Nav extends Component {
     return (
       <nav className="navbar navbar-expand-md navbar-dark">
         <div className="meta">
-          <a className="navbar-brand" href="#"><img src={logoImg} alt="Darkwire" className="logo" /></a>
+          <a className="navbar-brand"><img src={logoImg} alt="Darkwire" className="logo" /></a>
 
           <button
             data-toggle="tooltip"
@@ -138,10 +138,10 @@ class Nav extends Component {
               <a className="nav-link" onClick={this.newRoom.bind(this)}target="blank"><PlusCircle /> <span>New Room</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={this.handleSettingsClick.bind(this)} className="nav-link" href="#"><Settings /> <span>Settings</span></a>
+              <a onClick={this.handleSettingsClick.bind(this)} className="nav-link"><Settings /> <span>Settings</span></a>
             </li>
             <li className="nav-item">
-              <a onClick={this.handleAboutClick.bind(this)} className="nav-link" href="#"><Info /> <span>About</span></a>
+              <a onClick={this.handleAboutClick.bind(this)} className="nav-link"><Info /> <span>About</span></a>
             </li>
           </ul>
         </div>
