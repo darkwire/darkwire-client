@@ -13,9 +13,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server",
-    "build": "NODE_ENV=development webpack",
-    "build:staging": "NODE_ENV=staging webpack",
-    "build:production": "NODE_ENV=production webpack",
+    "dev:mobile": "NODE_ENV=development webpack-dev-server --host 0.0.0.0",
+    "build": "rm -rf dist && NODE_ENV=development webpack",
+    "build:staging": "rm -rf dist && NODE_ENV=staging webpack",
+    "build:production": "rm -rf dist && NODE_ENV=production webpack",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
     "test": "BABEL_DISABLE_CACHE=1 NODE_ENV=test jest --u",
