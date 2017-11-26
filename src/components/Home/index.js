@@ -14,6 +14,7 @@ import About from 'components/About'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
 import RoomLocked from 'components/RoomLocked'
+import FileDownload from 'components/FileDownload'
 import { X } from 'react-feather'
 import { defer } from 'lodash'
 import Tinycon from 'tinycon'
@@ -177,6 +178,18 @@ export default class Home extends Component {
         return (
           <Notice>
             <div><Username username={activity.username} /> {activity.action}</div>
+          </Notice>
+        )
+      case 'RECEIVE_FILE':
+        return (
+          <div>
+            <Username username={activity.username} /> sent you a file. <FileDownload fileName={activity.fileName} encodedFile={activity.encodedFile} fileType={activity.fileType}></FileDownload>
+          </div>
+        )
+      case 'SEND_FILE':
+        return (
+          <Notice>
+            <div>You sent {activity.fileName}</div>
           </Notice>
         )
       default:

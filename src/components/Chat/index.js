@@ -186,7 +186,7 @@ export class Chat extends Component {
       <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
         <input ref={(input) => { this.textInput = input }} autoFocus className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
         <div className="input-controls">
-          <FileTransfer sendSockMessage={this.props.sendSocketMessage} />
+          <FileTransfer sendSocketMessage={this.props.sendSocketMessage} />
           <button onClick={this.sendMessage.bind(this)} className="icon is-right send btn btn-link">
             <CornerDownRight className={this.canSend() ? '' : 'disabled'} />
           </button>

@@ -60,6 +60,31 @@ const activities = (state = initialState, action) => {
           },
         ],
       }
+    case 'SEND_SOCKET_MESSAGE_SEND_FILE':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            fileName: action.payload.fileName,
+            type: 'SEND_FILE',
+          },
+        ],
+      }
+    case 'HANDLE_SOCKET_MESSAGE_SEND_FILE':
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          {
+            encodedFile: action.payload.payload.encodedFile,
+            fileType: action.payload.payload.fileType,
+            fileName: action.payload.payload.fileName,
+            username: action.payload.payload.username,
+            type: 'RECEIVE_FILE',
+          },
+        ],
+      }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
       const newUserId = action.payload.payload.id
 

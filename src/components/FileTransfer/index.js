@@ -65,7 +65,6 @@ export default class FileTransfer extends Component {
       }
 
       const fileId = uuid.v4()
-      // const base64 = window.btoa()
       const fileData = {
         id: fileId,
         file,
@@ -78,45 +77,23 @@ export default class FileTransfer extends Component {
 
       this.setState({
         localFileQueue,
-      }, () => {
-        // confirm file transfer...
-        console.log(fileData)
+      }, async () => {
+        this.props.sendSocketMessage({
+          type: 'SEND_FILE',
+          payload: {
+            fileName: fileData.fileName,
+            encodedFile: fileData.encodedFile,
+            fileType: fileData.fileType,
+          },
+        })
       })
     }
 
     return false
   }
 
-  async createBlob(base64, fileType) {
-    const b64 = unescape(base64)
-    return new Promise((resolve, reject) => {
-      const sliceSize = 1024
-      const byteCharacters = window.atob(b64)
-      const byteArrays = []
-
-      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        const slice = byteCharacters.slice(offset, offset + sliceSize)
-
-        const byteNumbers = new Array(slice.length)
-        for (let i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i)
-        }
-
-        const byteArray = new Uint8Array(byteNumbers)
-
-        byteArrays.push(byteArray)
-      }
-
-      if (byteArrays.length <= 0) {
-        return reject()
-      }
-
-      return resolve(new window.Blob(byteArrays, { type: fileType }))
-    })
-  }
-
-  createUrlFromBlob(blob) {
-    return window.URL.createObjectURL(blob)
+  canSend() {
+    return false
   }
 
   render() {
@@ -125,7 +102,7 @@ export default class FileTransfer extends Component {
     }
     return (
       <button className="icon is-right send btn btn-link">
-        <File />
+        <File className={this.canSend() ? '' : 'disabled'} />
         <input className={styles} type="file" name="fileUploader" id="fileInput" ref={c => this._fileInput = c} />
       </button>
     )
