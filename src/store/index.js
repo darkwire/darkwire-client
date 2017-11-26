@@ -14,7 +14,7 @@ export default function configureStore(preloadedState) {
     preloadedState,
     composeEnhancers(middlewares)
   )
-  
+
   if (module.hot) {
     module.hot.accept('../reducers', () => {
       // eslint-disable-next-line global-require
