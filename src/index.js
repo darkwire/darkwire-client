@@ -1,6 +1,10 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
+// eslint-disable-next-line no-unused-vars
+import bootstrap from 'bootstrap'
+// eslint-disable-next-line no-unused-vars
+import webCryptoShim from 'webcrypto-shim/webcrypto-shim.js'
 import Root from './root'
 
 const renderApp = (Component) => {

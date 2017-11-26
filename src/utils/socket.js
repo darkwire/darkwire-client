@@ -1,9 +1,10 @@
 import socketIO from 'socket.io-client'
+import apiConfig from '../api/config'
 
 let socket
 
 export const connect = (roomId) => {
-  socket = socketIO(`http://localhost:3000/${roomId}`)
+  socket = socketIO(`${apiConfig.protocol}://${apiConfig.domain}:${apiConfig.port}/${roomId}`)
   return socket
 }
 

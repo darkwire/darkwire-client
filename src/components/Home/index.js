@@ -6,7 +6,6 @@ import Nav from 'components/Nav'
 import shortId from 'shortid'
 import ChatInput from 'containers/Chat'
 import Connecting from 'components/Connecting'
-import Commands from 'components/Commands'
 import Message from 'components/Message'
 import Username from 'components/Username'
 import Notice from 'components/Notice'
@@ -14,7 +13,11 @@ import Modal from 'react-modal'
 import About from 'components/About'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
+import RoomLocked from 'components/RoomLocked'
 import { X } from 'react-feather'
+import { defer } from 'lodash'
+import Tinycon from 'tinycon'
+import beepFile from 'audio/beep.mp3'
 
 const crypto = new Crypto()
 
@@ -23,59 +26,82 @@ export default class Home extends Component {
     super(props)
 
     this.state = {
-      ready: false,
+      focusChat: false,
     }
   }
 
   async componentWillMount() {
     const roomId = this.props.match.params.roomId
 
-    await this.props.createRoom(roomId)
+    const res = await this.props.createRoom(roomId)
+
+    if (res.json.isLocked) {
+      this.props.openModal('Room Locked')
+      return
+    }
+
+    if (res.json.size === 1) {
+      this.props.openModal('Welcome')
+    }
 
     const io = connect(roomId)
 
     await this.createUser()
 
-    this.setState({
-      ready: true,
-    }, () => {
-      io.on('USER_ENTER', (payload) => {
-        this.props.receiveUserEnter(payload)
-        this.props.sendSocketMessage({
-          type: 'ADD_USER',
-          payload: {
-            username: this.props.username,
-            publicKey: this.props.publicKey,
-            isOwner: this.props.iAmOwner,
-            id: this.props.userId,
-          },
-        })
+    io.on('USER_ENTER', (payload) => {
+      this.props.receiveUserEnter(payload)
+      this.props.sendSocketMessage({
+        type: 'ADD_USER',
+        payload: {
+          username: this.props.username,
+          publicKey: this.props.publicKey,
+          isOwner: this.props.iAmOwner,
+          id: this.props.userId,
+        },
       })
+    })
 
-      io.on('USER_EXIT', (payload) => {
-        this.props.receiveUserExit(payload)
-      })
+    io.on('USER_EXIT', (payload) => {
+      this.props.receiveUserExit(payload)
+    })
 
-      io.on('PAYLOAD', (payload) => {
-        this.props.receiveSocketMessage(payload)
-      })
+    io.on('PAYLOAD', (payload) => {
+      this.props.receiveSocketMessage(payload)
+    })
 
-      io.on('TOGGLE_LOCK_ROOM', (payload) => {
-        this.props.receiveToggleLockRoom(payload)
-      })
+    io.on('TOGGLE_LOCK_ROOM', (payload) => {
+      this.props.receiveToggleLockRoom(payload)
+    })
 
-      const { username, publicKey, privateKey } = this.props
+    const { username, publicKey, privateKey } = this.props
 
-      this.props.sendUserEnter({
-        username,
-        publicKey,
-        privateKey,
-      })
+    this.props.sendUserEnter({
+      username,
+      publicKey,
+      privateKey,
     })
   }
 
   componentDidMount() {
     this.bindEvents()
+
+    if (this.props.joining) {
+      this.props.openModal('Connecting')
+    }
+
+    this.beep = window.Audio && new window.Audio(beepFile)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.joining && !nextProps.joining) {
+      this.props.closeModal()
+    }
+
+    Tinycon.setBubble(nextProps.faviconCount)
+
+    if (nextProps.faviconCount !== 0 && this.props.soundIsEnabled) {
+      this.beep.play()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -116,15 +142,6 @@ export default class Home extends Component {
             timestamp={activity.timestamp}
           />
         )
-      case 'SLASH_COMMAND':
-        return (
-          <Commands
-            sender={activity.username}
-            command={activity.command}
-            triggerCommand={this.props.triggerCommand}
-            timestamp={activity.timestamp}
-          />
-        )
       case 'USER_ENTER':
         return (
           <Notice>
@@ -144,10 +161,22 @@ export default class Home extends Component {
             <div><Username username={activity.username} /> {lockedWord} the room</div>
           </Notice>
         )
-      case 'SYSTEM_NOTICE':
+      case 'NOTICE':
         return (
           <Notice>
             <div>{activity.message}</div>
+          </Notice>
+        )
+      case 'CHANGE_USERNAME':
+        return (
+          <Notice>
+            <div><Username username={activity.currentUsername} /> changed their name to <Username username={activity.newUsername} /></div>
+          </Notice>
+        )
+      case 'USER_ACTION':
+        return (
+          <Notice>
+            <div><Username username={activity.username} /> {activity.action}</div>
           </Notice>
         )
       default:
@@ -155,38 +184,53 @@ export default class Home extends Component {
     }
   }
 
-  getModalComponent() {
+  getModal() {
     switch (this.props.modalComponent) {
       case 'Connecting':
-        return <Connecting />
+        return {
+          component: <Connecting />,
+          title: 'Connecting...',
+          preventClose: true,
+        }
       case 'About':
-        return <About />
+        return {
+          component: <About />,
+          title: 'About',
+        }
       case 'Settings':
-        return <Settings />
+        return {
+          component: <Settings toggleSoundEnabled={this.props.toggleSoundEnabled} soundIsEnabled={this.props.soundIsEnabled} />,
+          title: 'Settings',
+        }
       case 'Welcome':
-        return <Welcome roomId={this.props.roomId} />
+        return {
+          component: <Welcome roomId={this.props.roomId} />,
+          title: 'Welcome to Darkwire v2',
+        }
+      case 'Room Locked':
+        return {
+          component: <RoomLocked />,
+          title: 'This room is locked',
+          preventClose: true,
+        }
       default:
-        return null
-    }
-  }
-
-  getModalTitle() {
-    switch (this.props.modalComponent) {
-      case 'Connecting':
-        return 'Connecting...'
-      case 'About':
-        return 'About'
-      case 'Settings':
-        return 'Settings'
-      case 'Welcome':
-        return 'Welcome to Darkwire v2'
-      default:
-        return null
+        return {
+          component: null,
+          title: null,
+        }
     }
   }
 
   bindEvents() {
     this.messageStream.addEventListener('scroll', this.onScroll.bind(this))
+
+    window.onfocus = () => {
+      this.props.toggleWindowFocus(true)
+    }
+
+    window.onblur = () => {
+      this.props.toggleWindowFocus(false)
+    }
   }
 
   async createUser() {
@@ -203,8 +247,13 @@ export default class Home extends Component {
     })
   }
 
+  handleChatClick() {
+    this.setState({ focusChat: true })
+    defer(() => this.setState({ focusChat: false }))
+  }
+
   render() {
-    const { ready } = this.state
+    const modalOpts = this.getModal()
     return (
       <div className="h-100">
         <div className="nav-container">
@@ -218,13 +267,7 @@ export default class Home extends Component {
             iAmOwner={this.props.iAmOwner}
           />
         </div>
-        <div className="message-stream h-100" ref={el => this.messageStream = el}>
-          {!ready ? (
-            <Notice level="warning">
-              <div className="activity-item">
-                Establishing a secure connection...
-              </div>
-            </Notice>) : null}
+        <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
           <ul ref={el => this.activitiesList = el}>
             {this.props.activities.map((activity, index) => (
               <li key={index} className={`activity-item ${activity.type}`}>
@@ -234,7 +277,7 @@ export default class Home extends Component {
           </ul>
         </div>
         <div className="chat-container">
-          <ChatInput />
+          <ChatInput focusChat={this.state.focusChat} />
         </div>
         <Modal
           isOpen={Boolean(this.props.modalComponent)}
@@ -250,19 +293,21 @@ export default class Home extends Component {
             afterOpen: 'react-modal-overlay_after-open',
             beforeClose: 'react-modal-overlay_before-close',
           }}
-          shouldCloseOnOverlayClick
+          shouldCloseOnOverlayClick={!modalOpts.preventClose}
           onRequestClose={this.props.closeModal}
         >
           <div className="react-modal-header">
             <h4 className="react-modal-title float-left">
-              {this.getModalTitle()}
+              {modalOpts.title}
             </h4>
-            <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
-              <X />
-            </button>
+            {!modalOpts.preventClose &&
+              <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
+                <X />
+              </button>
+            }
           </div>
           <div className="react-modal-component">
-            {this.getModalComponent()}
+            {modalOpts.component}
           </div>
         </Modal>
       </div>
@@ -290,7 +335,6 @@ Home.propTypes = {
   roomId: PropTypes.string.isRequired,
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
-  triggerCommand: PropTypes.func.isRequired,
   receiveToggleLockRoom: PropTypes.func.isRequired,
   modalComponent: PropTypes.string,
   openModal: PropTypes.func.isRequired,
@@ -300,4 +344,9 @@ Home.propTypes = {
   iAmOwner: PropTypes.bool.isRequired,
   sendUserEnter: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
+  joining: PropTypes.bool.isRequired,
+  toggleWindowFocus: PropTypes.func.isRequired,
+  faviconCount: PropTypes.number.isRequired,
+  soundIsEnabled: PropTypes.bool.isRequired,
+  toggleSoundEnabled: PropTypes.func.isRequired,
 }

@@ -22,7 +22,7 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
           privateKey,
           {
             name: 'RSA-OAEP',
-            hash: { name: window.crypto.webkitSubtle ? 'SHA-1' : 'SHA-256' },
+            hash: { name: 'SHA-1' },
           },
           { name: 'AES-CBC' },
           true,
@@ -35,7 +35,7 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
           privateKey,
           {
             name: 'RSA-OAEP',
-            hash: { name: window.crypto.webkitSubtle ? 'SHA-1' : 'SHA-256' },
+            hash: { name: 'SHA-1' },
           },
           { name: 'HMAC', hash: { name: 'SHA-256' } },
           true,

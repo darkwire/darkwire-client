@@ -3,13 +3,119 @@ import PropTypes from 'prop-types'
 import sanitizeHtml from 'sanitize-html'
 import FileTransfer from 'components/FileTransfer'
 import { CornerDownRight } from 'react-feather'
+import { connect } from 'react-redux'
+import { clearActivities, showNotice } from '../../actions'
+import { getSelectedText } from '../../utils/dom'
 
-export default class Chat extends Component {
+export class Chat extends Component {
   constructor(props) {
     super(props)
     this.state = {
       message: '',
     }
+
+    this.commands = [{
+      command: 'nick',
+      description: 'Changes nickname.',
+      paramaters: ['{username}'],
+      usage: '/nick {username}',
+      scope: 'global',
+      action: (params) => { // eslint-disable-line
+        let newUsername = params.join(' ') || '' // eslint-disable-line
+
+        // Remove things that arent digits or chars
+        newUsername = newUsername.replace(/[^A-Za-z0-9]/g, '-')
+
+        const errors = []
+
+        if (!newUsername.trim().length) {
+          errors.push('Username cannot be blank')
+        }
+
+        if (newUsername.toString().length > 16) {
+          errors.push('Username cannot be greater than 16 characters')
+        }
+
+        if (!newUsername.match(/^[A-Z]/i)) {
+          errors.push('Username must start with a letter')
+        }
+
+        if (errors.length) {
+          return this.props.showNotice({
+            message: `${errors.join(', ')}`,
+            level: 'error',
+          })
+        }
+
+        this.props.sendSocketMessage({
+          type: 'CHANGE_USERNAME',
+          payload: {
+            id: this.props.userId,
+            newUsername,
+            currentUsername: this.props.username,
+          },
+        })
+      },
+    }, {
+      command: 'help',
+      description: 'Shows a list of commands.',
+      paramaters: [],
+      usage: '/help',
+      scope: 'local',
+      action: (params) => { // eslint-disable-line
+        const validCommands = this.commands.map(command => `/${command.command}`)
+        this.props.showNotice({
+          message: `Valid commands: ${validCommands.sort().join(', ')}`,
+          level: 'info',
+        })
+      },
+    }, {
+      command: 'me',
+      description: 'Invoke virtual action',
+      paramaters: ['{action}'],
+      usage: '/me {action}',
+      scope: 'global',
+      action: (params) => { // eslint-disable-line
+        const actionMessage = params.join(' ')
+
+        this.props.sendSocketMessage({
+          type: 'USER_ACTION',
+          payload: {
+            action: actionMessage,
+          },
+        })
+      },
+    }, {
+      command: 'clear',
+      description: 'Clears the chat screen',
+      paramaters: [],
+      usage: '/clear',
+      scope: 'local',
+      action: (params = null) => { // eslint-disable-line
+        this.props.clearActivities()
+      },
+    }]
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.focusChat) {
+      if (!getSelectedText()) {
+        this.textInput.focus()
+      }
+    }
+  }
+
+  executeCommand(command) {
+    const commandToExecute = this.commands.find(cmnd => cmnd.command === command.command)
+
+    if (commandToExecute) {
+      const { params } = command
+      const commandResult = commandToExecute.action(params)
+
+      return commandResult
+    }
+
+    return null
   }
 
   handleFormSubmit(evt) {
@@ -48,13 +154,7 @@ export default class Chat extends Component {
     const isCommand = this.parseCommand(message)
 
     if (isCommand) {
-      this.props.sendSocketMessage({
-        type: 'SLASH_COMMAND',
-        payload: {
-          command: isCommand,
-          timestamp: Date.now(),
-        },
-      })
+      this.executeCommand(isCommand)
     } else {
       this.props.sendSocketMessage({
         type: 'SEND_MESSAGE',
@@ -84,7 +184,7 @@ export default class Chat extends Component {
   render() {
     return (
       <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
-        <input autoFocus="autofocus" className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
+        <input ref={(input) => { this.textInput = input }} autoFocus className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
         <div className="input-controls">
           <FileTransfer sendSockMessage={this.props.sendSocketMessage} />
           <button onClick={this.sendMessage.bind(this)} className="icon is-right send btn btn-link">
@@ -98,4 +198,24 @@ export default class Chat extends Component {
 
 Chat.propTypes = {
   sendSocketMessage: PropTypes.func.isRequired,
+  showNotice: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  clearActivities: PropTypes.func.isRequired,
+  focusChat: PropTypes.bool.isRequired,
 }
+
+const mapStateToProps = state => ({
+  username: state.user.username,
+  userId: state.user.id,
+})
+
+const mapDispatchToProps = {
+  clearActivities,
+  showNotice,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Chat)

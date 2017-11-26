@@ -1,6 +1,9 @@
 const initialState = {
   modalComponent: null,
   scrolledToBottom: true,
+  windowIsFocused: true,
+  unreadMessageCount: 0,
+  soundIsEnabled: true,
 }
 
 const app = (state = initialState, action) => {
@@ -19,6 +22,22 @@ const app = (state = initialState, action) => {
       return {
         ...state,
         scrolledToBottom: action.payload,
+      }
+    case 'TOGGLE_WINDOW_FOCUS':
+      return {
+        ...state,
+        windowIsFocused: action.payload,
+        unreadMessageCount: 0,
+      }
+    case 'HANDLE_SOCKET_MESSAGE_SEND_MESSAGE':
+      return {
+        ...state,
+        unreadMessageCount: state.windowIsFocused ? 0 : state.unreadMessageCount + 1,
+      }
+    case 'TOGGLE_SOUND_ENABLED':
+      return {
+        ...state,
+        soundIsEnabled: action.payload,
       }
     default:
       return state

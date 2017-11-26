@@ -97,6 +97,32 @@ const room = (state = initialState, action) => {
         ...state,
         isLocked: action.payload.locked,
       }
+    case 'SEND_SOCKET_MESSAGE_CHANGE_USERNAME':
+      const newUsername = action.payload.newUsername
+      const userId = action.payload.id
+      return {
+        ...state,
+        members: state.members.map(member => (
+          member.id === userId ?
+            {
+              ...member,
+              username: newUsername,
+            } : member
+        )),
+      }
+    case 'HANDLE_SOCKET_MESSAGE_CHANGE_USERNAME':
+      const newUsername2 = action.payload.payload.newUsername
+      const userId2 = action.payload.payload.id
+      return {
+        ...state,
+        members: state.members.map(member => (
+          member.id === userId2 ?
+            {
+              ...member,
+              username: newUsername2,
+            } : member
+        )),
+      }
     default:
       return state
   }
