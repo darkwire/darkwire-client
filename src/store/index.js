@@ -14,12 +14,14 @@ export default function configureStore(preloadedState) {
     preloadedState,
     composeEnhancers(middlewares)
   )
-
-  module.hot.accept('../reducers', () => {
-    // eslint-disable-next-line global-require
-    const nextRootReducer = require('../reducers/index')
-    store.replaceReducer(nextRootReducer)
-  })
+  
+  if (module.hot) {
+    module.hot.accept('../reducers', () => {
+      // eslint-disable-next-line global-require
+      const nextRootReducer = require('../reducers/index')
+      store.replaceReducer(nextRootReducer)
+    })
+  }
 
   return store
 }
