@@ -183,7 +183,7 @@ export default class Home extends Component {
       case 'RECEIVE_FILE':
         return (
           <div>
-            <Username username={activity.username} /> sent you a file. <FileDownload fileName={activity.fileName} encodedFile={activity.encodedFile} fileType={activity.fileType}></FileDownload>
+            <Username username={activity.username} /> sent you a file. <FileDownload fileName={activity.fileName} encodedFile={activity.encodedFile} fileType={activity.fileType} />
           </div>
         )
       case 'SEND_FILE':

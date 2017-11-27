@@ -33,7 +33,8 @@ export default class FileTransfer extends Component {
       const reader = new window.FileReader()
 
       if (!file) {
-        return reject()
+        reject()
+        return
       }
 
       reader.onload = (readerEvent) => {
@@ -55,11 +56,13 @@ export default class FileTransfer extends Component {
       const fileExtension = file.name.split('.').pop().toLowerCase()
 
       if (VALID_FILE_TYPES.indexOf(fileExtension) <= -1) {
-        alert('file type not supported')
+        // eslint-disable-next-line no-alert
+        alert('File type not supported')
         return false
       }
 
       if (file.size > 2000000) {
+        // eslint-disable-next-line no-alert
         alert('Max filesize is 2MB.')
         return false
       }

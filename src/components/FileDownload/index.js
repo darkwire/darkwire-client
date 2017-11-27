@@ -11,7 +11,7 @@ class FileDownload extends Component {
 
   async componentWillMount() {
     const blob = await this.createBlob(this.props.encodedFile, this.props.fileType)
-    const url = window.URL.createObjectURL(blob);
+    const url = window.URL.createObjectURL(blob)
 
     this.setState({
       fileUrl: url,
@@ -50,7 +50,7 @@ class FileDownload extends Component {
     return (
       <span>
         {this.state.fileUrl &&
-          <a target='_blank' href={this.state.fileUrl}>Download {this.props.fileName}</a>
+          <a target="_blank" href={this.state.fileUrl}>Download {this.props.fileName}</a>
         }
       </span>
     )
