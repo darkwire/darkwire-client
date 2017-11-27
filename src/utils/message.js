@@ -81,6 +81,7 @@ export const prepare = (payload, state) => new Promise(async (resolve) => {
       ...payload.payload,
       sender: myId,
       username: myUsername,
+      text: encodeURI(payload.payload.text),
     },
   }
 
