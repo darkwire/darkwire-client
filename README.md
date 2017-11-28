@@ -1,6 +1,6 @@
 # Darkwire Client
 
-This is the client for Darkwire.io. You need to run the server in order for this client to work.
+This is the client for Darkwire. It requires [darkwire-server](https://github.com/seripap/darkwire-server) in order to run.
 
 ## Dev
 
@@ -9,7 +9,7 @@ $ yarn
 $ yarn dev
 ```
 
-The Darkwire.io client is now running on port 8080.
+A dev server is now running on port 8080.
 
 ## Browser Support
 
