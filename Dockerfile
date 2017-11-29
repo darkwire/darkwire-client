@@ -1,5 +1,3 @@
-LABEL maintainer="https://github.com/seripap/darkwire.io"
-
 FROM nginx:1.13.7
 
 RUN apt-get update \
