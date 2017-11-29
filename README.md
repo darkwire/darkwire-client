@@ -11,16 +11,15 @@ $ yarn dev
 
 A dev server is now running on port 8080.
 
-## Browser Support
+## Docker
 
-Darkwire relies on native [Crypto](https://developer.mozilla.org/en-US/docs/Web/API/Window/crypto) support.
+Building locally:
 
-Chrome 49+
-IE 11*
-Edge 14+
-Firefox 54+
-Safari 10.1+
-Opera 47+
-iOS 10.2+
-Android Browser 56+
-Chrome for Android 59+
+```
+$ docker build -t darkwire-client .
+```
+
+Run from official repository:
+```
+$ docker run -p 80:80 darkwire/darkwire-client
+```
