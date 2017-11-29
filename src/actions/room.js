@@ -51,6 +51,10 @@ export const receiveUserEnter = payload => async (dispatch) => {
   dispatch({ type: 'USER_ENTER', payload })
 }
 
+export const onFileTransfer = payload => async (dispatch) => {
+  dispatch({ type: 'PREFLIGHT_FILE_TRANSFER', payload })
+}
+
 export const sendSocketMessage = payload => async (dispatch, getState) => {
   const state = getState()
   const msg = await prepareMessage(payload, state)

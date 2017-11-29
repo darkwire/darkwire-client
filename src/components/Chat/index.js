@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import sanitizeHtml from 'sanitize-html'
+import FileTransfer from 'components/FileTransfer'
 import { CornerDownRight } from 'react-feather'
 import { connect } from 'react-redux'
 import { clearActivities, showNotice } from '../../actions'
@@ -185,6 +186,7 @@ export class Chat extends Component {
       <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
         <input ref={(input) => { this.textInput = input }} autoFocus className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
         <div className="input-controls">
+          <FileTransfer sendSocketMessage={this.props.sendSocketMessage} />
           <button onClick={this.sendMessage.bind(this)} className="icon is-right send btn btn-link">
             <CornerDownRight className={this.canSend() ? '' : 'disabled'} />
           </button>

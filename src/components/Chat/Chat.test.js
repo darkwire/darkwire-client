@@ -1,14 +1,15 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import { shallow } from 'enzyme'
+import toJson from 'enzyme-to-json'
 import { Chat } from './index.js'
 
 const sendSocketMessage = jest.fn()
 
 test('Chat Component', () => {
-  const component = renderer.create(
+  const component = shallow(
     <Chat focusChat={false} userId="foo" username="user" showNotice={() => {}} clearActivities={() => {}} sendSocketMessage={sendSocketMessage} />
   )
-  const componentJSON = component.toJSON()
+  const componentJSON = toJson(component)
 
   expect(component).toMatchSnapshot()
   expect(componentJSON.children.length).toBe(2)
