@@ -5,13 +5,17 @@ import FileTransfer from 'components/FileTransfer'
 import { CornerDownRight } from 'react-feather'
 import { connect } from 'react-redux'
 import { clearActivities, showNotice } from '../../actions'
-import { getSelectedText } from '../../utils/dom'
+import { getSelectedText, hasTouchSupport } from '../../utils/dom'
+// Disable for now
+// import autosize from 'autosize'
 
 export class Chat extends Component {
   constructor(props) {
     super(props)
     this.state = {
       message: '',
+      touchSupport: hasTouchSupport,
+      shiftKeyDown: false,
     }
 
     this.commands = [{
@@ -97,10 +101,57 @@ export class Chat extends Component {
     }]
   }
 
+  componentDidMount() {
+    if (!hasTouchSupport) {
+      // Disable for now due to vary issues:
+      // Paste not working, shift+enter line breaks
+      // autosize(this.textInput);
+      this.textInput.addEventListener('autosize:resized', () => {
+        this.props.scrollToBottom()
+      })
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.focusChat) {
       if (!getSelectedText()) {
-        this.textInput.focus()
+        // Don't focus for now, evaulate UX benfits
+        // this.textInput.focus()
+      }
+    }
+  }
+
+  componentDidUpdate(nextProps, nextState) {
+    if (!nextState.message.trim().length) {
+      // autosize.update(this.textInput)
+    }
+  }
+
+  handleKeyUp(e) {
+    if (e.key === 'Shift') {
+      this.setState({
+        shiftKeyDown: false,
+      })
+    }
+  }
+
+  handleKeyPress(e) {
+    if (e.key === 'Shift') {
+      this.setState({
+        shiftKeyDown: true,
+      })
+    }
+    // Add `&& !this.state.shiftKeyDown` once
+    // shift+enter and autosize behavior is fixed
+    // (line breaks require shift+enter twice)
+    if (e.key === 'Enter' && !hasTouchSupport) {
+      e.preventDefault()
+      if (this.canSend()) {
+        this.sendMessage()
+      } else {
+        this.setState({
+          message: '',
+        })
       }
     }
   }
@@ -116,6 +167,11 @@ export class Chat extends Component {
     }
 
     return null
+  }
+
+  handleSendClick() {
+    this.sendMessage.bind(this)
+    this.textInput.focus()
   }
 
   handleFormSubmit(evt) {
@@ -165,7 +221,6 @@ export class Chat extends Component {
       })
     }
 
-
     this.setState({
       message: '',
     })
@@ -182,14 +237,29 @@ export class Chat extends Component {
   }
 
   render() {
+    const touchSupport = this.state.touchSupport
+
     return (
       <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
-        <input ref={(input) => { this.textInput = input }} autoFocus className="chat" type="text" value={this.state.message} placeholder="Type here" onChange={this.handleInputChange.bind(this)} />
-        <div className="input-controls">
+        <div className="input-controls-left">
           <FileTransfer sendSocketMessage={this.props.sendSocketMessage} />
-          <button onClick={this.sendMessage.bind(this)} className="icon is-right send btn btn-link">
-            <CornerDownRight className={this.canSend() ? '' : 'disabled'} />
-          </button>
+        </div>
+        <textarea
+          rows="1"
+          onKeyUp={this.handleKeyUp.bind(this)}
+          onKeyDown={this.handleKeyPress.bind(this)}
+          ref={(input) => { this.textInput = input }}
+          autoFocus
+          className="chat"
+          value={this.state.message}
+          placeholder="Type here"
+          onChange={this.handleInputChange.bind(this)} />
+        <div className="input-controls">
+          {touchSupport &&
+            <button onClick={this.handleSendClick.bind(this)} className={`icon is-right send btn btn-link ${this.canSend() ? 'active' : ''}`}>
+              <CornerDownRight className={this.canSend() ? '' : 'disabled'} />
+            </button>
+          }
         </div>
       </form>
     )
@@ -203,6 +273,7 @@ Chat.propTypes = {
   username: PropTypes.string.isRequired,
   clearActivities: PropTypes.func.isRequired,
   focusChat: PropTypes.bool.isRequired,
+  scrollToBottom: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({

@@ -8,12 +8,13 @@ import configureStore from 'store'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import shortId from 'shortid'
 import Home from 'containers/Home'
+import { hasTouchSupport } from './utils/dom'
 
 const store = configureStore()
 
 export default class Root extends Component {
   componentWillMount() {
-    if ('ontouchstart' in document.documentElement) {
+    if (hasTouchSupport) {
       document.body.classList.add('touch')
     }
   }

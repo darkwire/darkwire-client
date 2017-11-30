@@ -38,8 +38,11 @@ svg:hover
 svg text::selection
   background: none
 
-input.chat
+textarea.chat
+  resize: none !important
   width: 100%
+  max-height: 200px
+  min-height: 50px
   background-color: $secondary
   border-top: 1px solid $inactive
   border-left: 0px
@@ -48,7 +51,14 @@ input.chat
   color: $body
   outline: 0
   font-size: 18px
-  padding: 12px 65px 12px 12px
+  padding: 12px 12px 12px 55px
+
+input[type='text'],
+textarea
+  font-size: 16px
+
+body.touch textarea.chat
+  padding-right: 65px
 
 .right-border
   border-right: 1px solid $inactive
@@ -76,25 +86,45 @@ input.chat
 .chat-container
   margin-top: auto
   width: 100%
-  position: fixed
-  bottom: 0px
   .chat-preflight-container
     position: relative
+    .input-controls-left
+      position: absolute
+      left: 0px
+      bottom: 0px
+      height: 100%
+      display: flex
+      width: 45px
+      .send
+        padding: 0px
+        padding-top: 12px
+        width: 100%
     .input-controls
       position: absolute
       right: 0px
       bottom: 0px
       height: 100%
       display: flex
-    .icon
-      padding: 12px
+      .send
+        width: 40px
+        height: 40px
+        border-radius: 50px
+        margin-top: 8px
+        margin-right: 8px
+        padding-top: 8px
+        padding-left: 9px
+        &.active
+          background: #007bff
+          color: white
 
 .message-stream
-  display: flex
-  padding: 70px 15px
+  padding: 0px 15px
   overflow: auto
   overflow-y: scroll
   -webkit-overflow-scrolling: touch
+  flex: 1
+  display: flex
+  flex-direction: column
   ul
     width: 100%
     margin-top: auto
@@ -131,7 +161,8 @@ input.chat
     padding: 20px
     max-width: 500px
     width: calc(100% - 30px)
-    margin: 50px auto 0px auto
+    margin: 20px auto 0px auto
+    max-height: 75%
     .close-modal
       float: right
       padding: 0px
@@ -143,3 +174,9 @@ input.chat
   text-overflow: ellipsis
   overflow: hidden
   white-space: nowrap
+
+.main-chat
+  padding-top: 55px
+  display: flex;
+  flex-direction: column;
+  height: 100%;
