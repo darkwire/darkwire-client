@@ -104,10 +104,10 @@ export default class FileTransfer extends Component {
       return null
     }
     return (
-      <button className="icon is-right send btn btn-link">
-        <File className={this.canSend() ? '' : 'disabled'} />
+      <span className="icon is-right send btn btn-link">
         <input className={styles} type="file" name="fileUploader" id="fileInput" ref={c => this._fileInput = c} />
-      </button>
+        <File className={this.canSend() ? '' : 'disabled'} />
+      </span>
     )
   }
 }

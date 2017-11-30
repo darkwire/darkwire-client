@@ -8,3 +8,7 @@ export const getSelectedText = () => {
   }
   return text
 }
+
+export const hasTouchSupport =
+  ('ontouchstart' in window)
+  || (window.DocumentTouch && document instanceof DocumentTouch)

@@ -122,8 +122,7 @@ export default class Home extends Component {
     const offset = elemRect.top - bodyRect.top
     const activitiesListYPos = offset
 
-    const scrolledToBottom = (activitiesListHeight + activitiesListYPos + 70) === messageStreamHeight
-
+    const scrolledToBottom = (activitiesListHeight + (activitiesListYPos - 60)) <= messageStreamHeight
     if (scrolledToBottom) {
       if (!this.props.scrolledToBottom) {
         this.props.setScrolledToBottom(true)
@@ -213,7 +212,7 @@ export default class Home extends Component {
       case 'Settings':
         return {
           component: <Settings toggleSoundEnabled={this.props.toggleSoundEnabled} soundIsEnabled={this.props.soundIsEnabled} />,
-          title: 'Settings',
+          title: 'Settings & Help',
         }
       case 'Welcome':
         return {
@@ -232,6 +231,11 @@ export default class Home extends Component {
           title: null,
         }
     }
+  }
+
+  scrollToBottom() {
+    this.messageStream.scrollTop = this.messageStream.scrollHeight
+    this.props.setScrolledToBottom(true)
   }
 
   bindEvents() {
@@ -280,17 +284,19 @@ export default class Home extends Component {
             iAmOwner={this.props.iAmOwner}
           />
         </div>
-        <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
-          <ul ref={el => this.activitiesList = el}>
-            {this.props.activities.map((activity, index) => (
-              <li key={index} className={`activity-item ${activity.type}`}>
-                {this.getActivityComponent(activity)}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="chat-container">
-          <ChatInput focusChat={this.state.focusChat} />
+        <div className="main-chat">
+          <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
+            <ul ref={el => this.activitiesList = el}>
+              {this.props.activities.map((activity, index) => (
+                <li key={index} className={`activity-item ${activity.type}`}>
+                  {this.getActivityComponent(activity)}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="chat-container">
+            <ChatInput scrollToBottom={this.scrollToBottom.bind(this)} focusChat={this.state.focusChat} />
+          </div>
         </div>
         <Modal
           isOpen={Boolean(this.props.modalComponent)}
@@ -310,14 +316,14 @@ export default class Home extends Component {
           onRequestClose={this.props.closeModal}
         >
           <div className="react-modal-header">
-            <h4 className="react-modal-title float-left">
-              {modalOpts.title}
-            </h4>
             {!modalOpts.preventClose &&
               <button onClick={this.props.closeModal} className="btn btn-link btn-plain close-modal">
                 <X />
               </button>
             }
+            <h4 className="react-modal-title">
+              {modalOpts.title}
+            </h4>
           </div>
           <div className="react-modal-component">
             {modalOpts.component}
