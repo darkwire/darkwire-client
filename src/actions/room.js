@@ -64,14 +64,15 @@ export const sendSocketMessage = payload => async (dispatch, getState) => {
 
 export const toggleLockRoom = () => async (dispatch, getState) => {
   const state = getState()
-  getIO().emit('TOGGLE_LOCK_ROOM')
-  dispatch({
-    type: 'TOGGLE_LOCK_ROOM',
-    payload: {
-      locked: !state.room.isLocked,
-      username: state.user.username,
-      sender: state.user.id,
-    },
+  getIO().emit('TOGGLE_LOCK_ROOM', null, (res) => {
+    dispatch({
+      type: 'TOGGLE_LOCK_ROOM',
+      payload: {
+        locked: res.isLocked,
+        username: state.user.username,
+        sender: state.user.id,
+      },
+    })
   })
 }
 
