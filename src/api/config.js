@@ -9,9 +9,9 @@ switch (process.env.NODE_ENV) {
     port = 443
     break
   case 'production':
-    domain = 'api.darkwire.io'
-    protocol = 'https'
-    port = 443
+    domain = process.env.API_SERVER || 'api.darkwire.io'
+    protocol = process.env.PROTOCOL || 'https'
+    port = process.env.PORT || 443
     break
   default:
     domain = 'localhost'
