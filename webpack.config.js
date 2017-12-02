@@ -14,7 +14,23 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const extractCSS = new ExtractTextPlugin('styles.css')
 const extractVendorCSS = new ExtractTextPlugin('vendor.css')
 
-const getSassLoaders = () => ['style-loader', 'css-loader?sourceMap=true&localIdentName=[path][name]--[local]&importLoaders=1', 'postcss-loader', 'sass-loader']
+const cssLoaderDev = 'css-loader?sourceMap=true&localIdentName=[path][name]--[local]&importLoaders=1';
+
+const getSassLoaders = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return ['style-loader', cssLoaderDev, 'postcss-loader', 'sass-loader'];
+  } else {
+    return extractCSS.extract(['css-loader', 'postcss-loader', 'sass-loader']);
+  }
+}
+
+const getCssLoaders = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return ['style-loader', cssLoaderDev, 'postcss-loader'];
+  } else {
+    return extractVendorCSS.extract(['css-loader', 'postcss-loader']);
+  }
+}
 
 const sourcePath = path.join(__dirname, './src')
 
@@ -76,14 +92,14 @@ module.exports = {
     publicPath: '/',
   },
   module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.css$/, loaders: ['style-loader', 'css-loader?sourceMap=true&localIdentName=[path][name]--[local]&importLoaders=1', 'postcss-loader'] },
-      { test: /\.sass$/, loaders: getSassLoaders() },
-      { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader' },
-      { test: /\.(eot|svg|ttf|woff|woff2)$/i, loader: 'file-loader' },
-      { test: /\.(mp3)$/i, loader: 'file-loader' },
+    rules: [
+      { test: /\.js$/, use: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.jsx$/, use: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.css$/, use: getCssLoaders() },
+      { test: /\.sass$/, use: getSassLoaders() },
+      { test: /\.(jpe?g|png|gif|svg)$/i, use: 'file-loader' },
+      { test: /\.(eot|svg|ttf|woff|woff2)$/i, use: 'file-loader' },
+      { test: /\.(mp3)$/i, use: 'file-loader' },
     ],
   },
   plugins: [
