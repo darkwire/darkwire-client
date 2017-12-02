@@ -55,8 +55,8 @@ class Welcome extends Component {
             </div>
           </div>
         </form>
-        <div>
-          <div>TOR Mirror: <a href="http://darkwirevqhjfmla.onion" target="_blank" rel="noopener noreferrer">http://darkwirevqhjfmla.onion</a></div>
+        <div className="react-modal-footer">
+          <button className='btn btn-primary btn-lg' onClick={this.props.close}>Ok</button>
         </div>
       </div>
     )
@@ -65,6 +65,7 @@ class Welcome extends Component {
 
 Welcome.propTypes = {
   roomId: PropTypes.string.isRequired,
+  close: PropTypes.func.isRequired,
 }
 
 export default Welcome

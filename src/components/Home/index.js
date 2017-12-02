@@ -216,7 +216,7 @@ export default class Home extends Component {
         }
       case 'Welcome':
         return {
-          component: <Welcome roomId={this.props.roomId} />,
+          component: <Welcome roomId={this.props.roomId} close={this.props.closeModal} />,
           title: 'Welcome to Darkwire v2',
         }
       case 'Room Locked':
