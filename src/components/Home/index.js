@@ -105,11 +105,15 @@ export default class Home extends Component {
     }
   }
 
+  scrollToBottomIfShould() {
+    if (this.props.scrolledToBottom) {
+      this.messageStream.scrollTop = this.messageStream.scrollHeight
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.activities.length < this.props.activities.length) {
-      if (this.props.scrolledToBottom) {
-        this.messageStream.scrollTop = this.messageStream.scrollHeight
-      }
+      this.scrollToBottomIfShould()
     }
   }
 
@@ -130,6 +134,14 @@ export default class Home extends Component {
     } else if (this.props.scrolledToBottom) {
       this.props.setScrolledToBottom(false)
     }
+  }
+
+  getFileDisplay(activity) {
+    const type = activity.fileType
+    if (type.match('image.*')) {
+      return <img className='image-transfer' src={`data:${activity.fileType};base64,${activity.encodedFile}`} alt={`${activity.fileName} from ${activity.username}`} onLoad={this.scrollToBottomIfShould.bind(this)} />
+    }
+    return null
   }
 
   getActivityComponent(activity) {
@@ -183,12 +195,14 @@ export default class Home extends Component {
         return (
           <div>
             <Username username={activity.username} /> sent you a file. <FileDownload fileName={activity.fileName} encodedFile={activity.encodedFile} fileType={activity.fileType} />
+            {this.getFileDisplay(activity)}
           </div>
         )
       case 'SEND_FILE':
         return (
           <Notice>
             <div>You sent {activity.fileName}</div>
+            {this.getFileDisplay(activity)}
           </Notice>
         )
       default:
