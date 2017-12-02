@@ -4,7 +4,7 @@ import apiConfig from '../api/config'
 let socket
 
 export const connect = (roomId) => {
-  socket = socketIO(`${apiConfig.protocol}://${apiConfig.domain}:${apiConfig.port}/${roomId}`)
+  socket = socketIO(`${apiConfig.protocol}://${apiConfig.host}:${apiConfig.port}/${roomId}`)
   return socket
 }
 
