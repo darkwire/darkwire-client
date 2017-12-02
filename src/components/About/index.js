@@ -25,7 +25,11 @@ class About extends Component {
         server and DNS costs. Thank you!
         </p>
         <strong>Bitcoin</strong>
-        <p>Address: 189sPnHGcjP5uteg2UuNgcJ5eoaRAP4Bw4</p>
+        <p>189sPnHGcjP5uteg2UuNgcJ5eoaRAP4Bw4</p>
+        <strong>Ethereum</strong>
+        <p>0xD6e3D881036903999E2c0480fe9d2c20600C1c28</p>
+        <strong>Litecoin</strong>
+        <p>LUViQeSggBBtYoN2qNtXSuxYoRMzRY8CSX</p>
         <strong>PayPal:</strong>
         <br />
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
