@@ -23,7 +23,7 @@ class Message extends Component {
           </span>
         </div>
         <div className="chat">
-          <p>{decodeURI(this.props.message)}</p>
+          <div>{decodeURI(this.props.message)}</div>
         </div>
       </div>
     )
