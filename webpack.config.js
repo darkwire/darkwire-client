@@ -11,8 +11,12 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const extractCSS = new ExtractTextPlugin('styles.css')
-const extractVendorCSS = new ExtractTextPlugin('vendor.css')
+const extractCSS = new ExtractTextPlugin({
+  filename: 'styles-[hash].css'
+})
+const extractVendorCSS = new ExtractTextPlugin({
+  filename: 'vendor-[hash].css'
+})
 
 const cssLoaderDev = 'css-loader?sourceMap=true&localIdentName=[path][name]--[local]&importLoaders=1';
 
