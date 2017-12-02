@@ -1,6 +1,6 @@
 FROM nginx:1.13.7
 
-LABEL maintainer "Darkwire Team <info@darkwire.io>"
+LABEL maintainer "Darkwire Team <hello@darkwire.io>"
 
 RUN apt-get update \
   && apt-get install -y curl git bzip2 libfontconfig1-dev
