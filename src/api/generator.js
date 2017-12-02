@@ -1,9 +1,9 @@
 import config from './config'
 
 export default (resourceName) => {
-  const { port, protocol, domain } = config
+  const { port, protocol, host } = config
 
   const resourcePath = resourceName
 
-  return `${protocol}://${domain}:${port}/${resourcePath}`
+  return `${protocol}://${host}:${port}/${resourcePath}`
 }

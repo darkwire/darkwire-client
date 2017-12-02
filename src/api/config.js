@@ -1,26 +1,26 @@
-let domain
+let host
 let protocol
 let port
 
 switch (process.env.NODE_ENV) {
   case 'staging':
-    domain = 'api-staging.darkwire.io'
-    protocol = 'https'
-    port = 443
+    host = process.env.API_HOST || 'api-staging.darkwire.io'
+    protocol = process.env.API_PROTOCOL || 'https'
+    port = process.env.API_PORT || 443
     break
   case 'production':
-    domain = 'api.darkwire.io'
-    protocol = 'https'
-    port = 443
+    host = process.env.API_HOST || 'api.darkwire.io'
+    protocol = process.env.API_PROTOCOL || 'https'
+    port = process.env.API_PORT || 443
     break
   default:
-    domain = 'localhost'
-    protocol = 'http'
-    port = 3000
+    host = process.env.API_HOST || 'localhost'
+    protocol = process.env.API_PROTOCOL || 'http'
+    port = process.env.API_PORT || 3000
 }
 
 export default {
-  domain,
+  host,
   port,
   protocol,
 }
