@@ -105,12 +105,6 @@ export default class Home extends Component {
     }
   }
 
-  scrollToBottomIfShould() {
-    if (this.props.scrolledToBottom) {
-      this.messageStream.scrollTop = this.messageStream.scrollHeight
-    }
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.activities.length < this.props.activities.length) {
       this.scrollToBottomIfShould()
@@ -139,7 +133,14 @@ export default class Home extends Component {
   getFileDisplay(activity) {
     const type = activity.fileType
     if (type.match('image.*')) {
-      return <img className='image-transfer' src={`data:${activity.fileType};base64,${activity.encodedFile}`} alt={`${activity.fileName} from ${activity.username}`} onLoad={this.scrollToBottomIfShould.bind(this)} />
+      return (
+        <img
+          className="image-transfer"
+          src={`data:${activity.fileType};base64,${activity.encodedFile}`}
+          alt={`${activity.fileName} from ${activity.username}`}
+          onLoad={this.scrollToBottomIfShould.bind(this)}
+        />
+      )
     }
     return null
   }
@@ -244,6 +245,12 @@ export default class Home extends Component {
           component: null,
           title: null,
         }
+    }
+  }
+
+  scrollToBottomIfShould() {
+    if (this.props.scrolledToBottom) {
+      this.messageStream.scrollTop = this.messageStream.scrollHeight
     }
   }
 
