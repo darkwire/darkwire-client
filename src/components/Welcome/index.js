@@ -28,6 +28,10 @@ class Welcome extends Component {
     })
   }
 
+  componentWillUnmount() {
+    $('.copy-room').tooltip('hide')
+  }
+
   render() {
     return (
       <div>
