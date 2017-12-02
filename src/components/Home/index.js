@@ -176,7 +176,7 @@ export default class Home extends Component {
       case 'USER_ACTION':
         return (
           <Notice>
-            <div><Username username={activity.username} /> {activity.action}</div>
+            <div>&#42; <Username username={activity.username} /> {activity.action}</div>
           </Notice>
         )
       case 'RECEIVE_FILE':
