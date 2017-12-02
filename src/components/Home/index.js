@@ -32,7 +32,7 @@ export default class Home extends Component {
   }
 
   async componentWillMount() {
-    const roomId = this.props.match.params.roomId
+    const roomId = encodeURI(this.props.match.params.roomId)
 
     const res = await this.props.createRoom(roomId)
 
