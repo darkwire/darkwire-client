@@ -14,11 +14,11 @@ import About from 'components/About'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
 import RoomLocked from 'components/RoomLocked'
-import FileDownload from 'components/FileDownload'
 import { X } from 'react-feather'
 import { defer } from 'lodash'
 import Tinycon from 'tinycon'
 import beepFile from 'audio/beep.mp3'
+import { getObjectUrl } from 'utils/file'
 
 const crypto = new Crypto()
 
@@ -193,16 +193,18 @@ export default class Home extends Component {
           </Notice>
         )
       case 'RECEIVE_FILE':
+        const downloadUrl = getObjectUrl(activity.encodedFile, activity.fileType)
         return (
           <div>
-            <Username username={activity.username} /> sent you a file. <FileDownload fileName={activity.fileName} encodedFile={activity.encodedFile} fileType={activity.fileType} />
+            <Username username={activity.username} /> sent you a file. <a target="_blank" href={downloadUrl}>Download {activity.fileName}</a>
             {this.getFileDisplay(activity)}
           </div>
         )
       case 'SEND_FILE':
+        const url = getObjectUrl(activity.encodedFile, activity.fileType)
         return (
           <Notice>
-            <div>You sent {activity.fileName}</div>
+            <div>You sent <a target="_blank" href={url}>{activity.fileName}</a></div>
             {this.getFileDisplay(activity)}
           </Notice>
         )
