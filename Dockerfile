@@ -1,10 +1,11 @@
 FROM nginx:1.13.7
 
+LABEL maintainer "Darkwire Team <info@darkwire.io>"
+
 RUN apt-get update \
   && apt-get install -y curl git bzip2 libfontconfig1-dev
 
 ENV NODE_VERSION 9.2.0
-
 
 RUN curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
   && curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
