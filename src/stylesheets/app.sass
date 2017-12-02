@@ -12,6 +12,9 @@ ul
   margin: 0px
   padding: 0px
 
+a
+  cursor: pointer
+
 button
   cursor: pointer
 
@@ -134,12 +137,11 @@ body.touch textarea.chat
 .activity-item
   margin-bottom: 15px
   &.SEND_MESSAGE
-    border-bottom: 1px solid $inactive
     .chat-meta
       font-size: 13px
       .timestamp
         font-size: 11px
-        padding-left: 5px
+        padding-left: 10px
     .chat
       p
         font-size: 16px
@@ -169,6 +171,10 @@ body.touch textarea.chat
   .react-modal-header
     overflow: auto
     margin-bottom: 20px
+  .react-modal-footer
+    margin-top: 25px
+    button
+      float: right      
 
 .ellipsis
   text-overflow: ellipsis

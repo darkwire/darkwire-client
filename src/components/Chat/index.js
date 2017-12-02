@@ -81,6 +81,9 @@ export class Chat extends Component {
       scope: 'global',
       action: (params) => { // eslint-disable-line
         const actionMessage = params.join(' ')
+        if (!actionMessage.trim().length) {
+          return false
+        }
 
         this.props.sendSocketMessage({
           type: 'USER_ACTION',
@@ -210,7 +213,10 @@ export class Chat extends Component {
     const isCommand = this.parseCommand(message)
 
     if (isCommand) {
-      this.executeCommand(isCommand)
+      const res = this.executeCommand(isCommand)
+      if (res === false) {
+        return
+      }
     } else {
       this.props.sendSocketMessage({
         type: 'SEND_MESSAGE',
