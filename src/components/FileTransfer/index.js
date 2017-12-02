@@ -61,9 +61,9 @@ export default class FileTransfer extends Component {
         return false
       }
 
-      if (file.size > 2000000) {
+      if (file.size > 4 * 1000000) {
         // eslint-disable-next-line no-alert
-        alert('Max filesize is 2MB.')
+        alert('Max filesize is 4MB')
         return false
       }
 

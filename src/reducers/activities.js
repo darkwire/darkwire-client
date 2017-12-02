@@ -67,6 +67,9 @@ const activities = (state = initialState, action) => {
           ...state.items,
           {
             fileName: action.payload.fileName,
+            encodedFile: action.payload.encodedFile,
+            fileType: action.payload.fileType,
+            username: action.payload.username,
             type: 'SEND_FILE',
           },
         ],
