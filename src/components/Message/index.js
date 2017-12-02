@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import TimeAgo from 'react-timeago'
 import Username from 'components/Username'
+import moment from 'moment'
 
 class Message extends Component {
   render() {
@@ -10,16 +10,7 @@ class Message extends Component {
         <div className="chat-meta">
           <Username username={this.props.sender} />
           <span className="muted timestamp">
-            <TimeAgo
-              date={this.props.timestamp}
-              minPeriod={60}
-              formatter={(value, unit, suffix) => {
-                if (unit === 'second') {
-                  return 'just now'
-                }
-                return `${value} ${unit}${value > 1 ? 's' : ''} ${suffix}`
-              }}
-            />
+            {moment(this.props.timestamp).format('LT')}
           </span>
         </div>
         <div className="chat">
