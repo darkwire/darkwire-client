@@ -56,7 +56,7 @@ class Welcome extends Component {
           </div>
         </form>
         <div className="react-modal-footer">
-          <button className='btn btn-primary btn-lg' onClick={this.props.close}>Ok</button>
+          <button className="btn btn-primary btn-lg" onClick={this.props.close}>Ok</button>
         </div>
       </div>
     )
