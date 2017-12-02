@@ -144,10 +144,8 @@ export class Chat extends Component {
         shiftKeyDown: true,
       })
     }
-    // Add `&& !this.state.shiftKeyDown` once
-    // shift+enter and autosize behavior is fixed
-    // (line breaks require shift+enter twice)
-    if (e.key === 'Enter' && !hasTouchSupport) {
+    // Fix when autosize is enabled - line breaks require shift+enter twice
+    if (e.key === 'Enter' && !hasTouchSupport && !this.state.shiftKeyDown) {
       e.preventDefault()
       if (this.canSend()) {
         this.sendMessage()
