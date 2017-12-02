@@ -14,10 +14,10 @@ class Message extends Component {
           </span>
         </div>
         <div className="chat">
-          {decodeURI(this.props.message).split('\n').map((item, key) => {
+          {decodeURI(this.props.message).split('\n').map((item, key) => (
             // preserve line breaks
-            return <span key={key}>{item}<br/></span>
-          })}
+            <span key={key}>{item}<br /></span>
+          ))}
         </div>
       </div>
     )

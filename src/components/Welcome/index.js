@@ -44,8 +44,8 @@ class Welcome extends Component {
             <li>Front-end rewritten in React.js and Redux</li>
             <li>Send files up to 4 MB</li>
           </ul>
-          <div>          
-            You can learn more <a href="https://github.com/seripap/darkwire.io" target="_blank">here</a>.
+          <div>
+            You can learn more <a href="https://github.com/seripap/darkwire.io" target="_blank" rel="noopener noreferrer">here</a>.
           </div>
         </div>
         <br />
