@@ -23,7 +23,10 @@ class Message extends Component {
           </span>
         </div>
         <div className="chat">
-          <div>{decodeURI(this.props.message)}</div>
+          {decodeURI(this.props.message).split('\n').map((item, key) => {
+            // preserve line breaks
+            return <span key={key}>{item}<br/></span>
+          })}
         </div>
       </div>
     )
