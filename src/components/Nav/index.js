@@ -99,7 +99,7 @@ class Nav extends Component {
               <span>{this.props.members.length}</span>
             </DropdownTrigger>
             <DropdownContent>
-              <ul>
+              <ul className="plain">
                 {this.props.members.map((member, index) => (
                   <li key={`user-${index}`}>
                     <Username username={member.username} />

@@ -232,7 +232,7 @@ export default class Home extends Component {
       case 'Welcome':
         return {
           component: <Welcome roomId={this.props.roomId} close={this.props.closeModal} />,
-          title: 'Welcome to Darkwire v2',
+          title: 'Welcome to Darkwire v2.0',
         }
       case 'Room Locked':
         return {
@@ -307,7 +307,7 @@ export default class Home extends Component {
         </div>
         <div className="main-chat">
           <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
-            <ul ref={el => this.activitiesList = el}>
+            <ul className="plain" ref={el => this.activitiesList = el}>
               {this.props.activities.map((activity, index) => (
                 <li key={index} className={`activity-item ${activity.type}`}>
                   {this.getActivityComponent(activity)}
@@ -342,9 +342,9 @@ export default class Home extends Component {
                 <X />
               </button>
             }
-            <h4 className="react-modal-title">
+            <h3 className="react-modal-title">
               {modalOpts.title}
-            </h4>
+            </h3>
           </div>
           <div className="react-modal-component">
             {modalOpts.component}

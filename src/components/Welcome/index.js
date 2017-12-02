@@ -36,12 +36,23 @@ class Welcome extends Component {
     return (
       <div>
         <div>
-          We&#39;ve placed you in a new chat room.
+          v2.0 is a complete rewrite and includes several new features. Here are some highlights:
+          <ul className="native">
+            <li>Support on all modern browsers (Chrome, Firefox, Safari, Safari iOS, Android)</li>
+            <li>Slash commands (/nick, /me, /clear)</li>
+            <li>Room owners can lock the room, preventing anyone else from joining</li>
+            <li>Front-end rewritten in React.js and Redux</li>
+            <li>Send files up to 4 MB</li>
+          </ul>
+          <div>          
+            You can learn more <a href="https://github.com/seripap/darkwire.io" target="_blank">here</a>.
+          </div>
         </div>
+        <br />
         <br />
         <form>
           <div className="form-group">
-            <label htmlFor="room-url">Invite people using the following URL:</label>
+            <label htmlFor="room-url">You&#39;re the first one here. Invite others using the following URL:</label>
             <div className="input-group">
               <input id="room-url" className="form-control" type="text" readOnly placeholder={this.state.roomUrl} />
               <span className="input-group-btn">

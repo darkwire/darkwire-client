@@ -17,6 +17,25 @@ class About extends Component {
         </p>
         <p>Questions/comments? Email us at hello[at]darkwire.io</p>
         <p>Found a bug or want a new feature? <a href="https://github.com/seripap/darkwire.io/issues" target="_blank" rel="noopener noreferrer">Open a ticket on Github</a>.</p>
+        <br/>
+        <h4>Donate</h4>
+        <br/>
+        <p>Darkwire is maintained and hosted by two developers with full-time jobs. If you get some value
+        from this service we would appreciate any donation you can afford. We use these funds for 
+        server and DNS costs. Thank you!
+        </p>
+        <strong>Bitcoin</strong>
+        <p>Address: 189sPnHGcjP5uteg2UuNgcJ5eoaRAP4Bw4</p>
+        <strong>PayPal:</strong>
+        <br/>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+          <input type="hidden" name="cmd" value="_s-xclick" />
+          <input type="hidden" name="hosted_button_id" value="UAH5BCLA9Y8VW" />
+          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+          <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+        </form>
+        <br/>
+        <br/>
       </div>
     )
   }
