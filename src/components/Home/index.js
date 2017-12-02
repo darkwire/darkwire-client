@@ -226,7 +226,7 @@ export default class Home extends Component {
         }
       case 'Settings':
         return {
-          component: <Settings toggleSoundEnabled={this.props.toggleSoundEnabled} soundIsEnabled={this.props.soundIsEnabled} />,
+          component: <Settings roomId={this.props.roomId} toggleSoundEnabled={this.props.toggleSoundEnabled} soundIsEnabled={this.props.soundIsEnabled} />,
           title: 'Settings & Help',
         }
       case 'Welcome':

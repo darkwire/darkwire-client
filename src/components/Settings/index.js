@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import RoomLink from 'components/RoomLink'
 
 class Settings extends Component {
   handleSoundToggle() {
@@ -9,14 +10,22 @@ class Settings extends Component {
   render() {
     return (
       <div>
-        <form>
-          <div className="form-check">
-            <label className="form-check-label" htmlFor="sound-control">
-              <input id="sound-control" onChange={this.handleSoundToggle.bind(this)} className="form-check-input" type="checkbox" checked={this.props.soundIsEnabled} />
-              Sound
-            </label>
-          </div>
-        </form>
+        <div>
+          <h5>Sound</h5>
+          <form>
+            <div className="form-check">
+              <label className="form-check-label" htmlFor="sound-control">
+                <input id="sound-control" onChange={this.handleSoundToggle.bind(this)} className="form-check-input" type="checkbox" checked={this.props.soundIsEnabled} />
+                Sound
+              </label>
+            </div>
+          </form>
+        </div>
+        <br />
+        <div>
+          <h5>This room</h5>
+          <RoomLink roomId={this.props.roomId} />
+        </div>
         <br />
         <div>
           <h5>Room Ownership</h5>
@@ -49,6 +58,7 @@ class Settings extends Component {
 Settings.propTypes = {
   soundIsEnabled: PropTypes.bool.isRequired,
   toggleSoundEnabled: PropTypes.func.isRequired,
+  roomId: PropTypes.string.isRequired,
 }
 
 export default Settings
