@@ -1,5 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
+const execSync = require('child_process').execSync
+
+const clientVersion = execSync('git describe --abbrev=0 --tags', {encoding: 'utf-8'}).trim();
+const sha = execSync('git rev-parse HEAD', {encoding: 'utf-8'}).trim();
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -124,6 +128,8 @@ module.exports = {
         API_HOST: JSON.stringify(process.env.API_HOST),
         API_PROTOCOL: JSON.stringify(process.env.API_PROTOCOL),
         API_PORT: JSON.stringify(process.env.API_PORT),
+        VERSION: JSON.stringify(clientVersion),
+        COMMIT_SHA: JSON.stringify(sha),
       },
     }),
   ].concat(plugins),

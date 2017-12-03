@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class About extends Component {
   render() {
     return (
       <div>
+        <strong>Client</strong>
+        <p>Version: <a target="_blank" href={`https://github.com/seripap/darkwire-client/releases/tag/${process.env.VERSION}`}>{process.env.VERSION}</a><br />
+        Commit SHA: <a target="_blank" href={`https://github.com/seripap/darkwire-client/commit/${process.env.COMMIT_SHA}`}>{process.env.COMMIT_SHA}</a></p>
+        <strong>Server</strong>
+        <p>Version: <a target="_blank" href={`https://github.com/seripap/darkwire-server/releases/tag/${this.props.serverVersion}`}>{this.props.serverVersion}</a><br />
+        Commit SHA: <a target="_blank" href={`https://github.com/seripap/darkwire-server/commit/${this.props.serverSHA}`}>{this.props.serverSHA}</a></p>
+        <br />
         <p>This software uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto" target="_blank" rel="noopener noreferrer">Web Cryptography API</a> to
         encrypt data which is transferred using <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener noreferrer">secure WebSockets</a>.
           Messages are never stored on a server or sent over the wire in plain-text.</p>
@@ -44,6 +52,8 @@ class About extends Component {
 }
 
 About.propTypes = {
+  serverVersion: PropTypes.string.isRequired,
+  serverSHA: PropTypes.string.isRequired,
 }
 
 export default About

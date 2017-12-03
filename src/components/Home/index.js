@@ -223,7 +223,7 @@ export default class Home extends Component {
         }
       case 'About':
         return {
-          component: <About />,
+          component: <About serverVersion={this.props.serverVersion} serverSHA={this.props.serverSHA} />,
           title: 'About',
         }
       case 'Settings':
@@ -391,4 +391,6 @@ Home.propTypes = {
   faviconCount: PropTypes.number.isRequired,
   soundIsEnabled: PropTypes.bool.isRequired,
   toggleSoundEnabled: PropTypes.func.isRequired,
+  serverSHA: PropTypes.string.isRequired,
+  serverVersion: PropTypes.string.isRequired,
 }
