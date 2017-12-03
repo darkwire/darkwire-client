@@ -6,6 +6,7 @@ const initialState = {
   soundIsEnabled: true,
   serverVersion: '',
   serverSHA: '',
+  socketConnected: false,
 }
 
 const app = (state = initialState, action) => {
@@ -46,6 +47,11 @@ const app = (state = initialState, action) => {
       return {
         ...state,
         soundIsEnabled: action.payload,
+      }
+    case 'TOGGLE_SOCKET_CONNECTED':
+      return {
+        ...state,
+        socketConnected: action.payload,
       }
     default:
       return state

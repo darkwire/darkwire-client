@@ -14,7 +14,7 @@ import About from 'components/About'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
 import RoomLocked from 'components/RoomLocked'
-import { X } from 'react-feather'
+import { X, AlertCircle } from 'react-feather'
 import { defer } from 'lodash'
 import Tinycon from 'tinycon'
 import beepFile from 'audio/beep.mp3'
@@ -46,6 +46,34 @@ export default class Home extends Component {
     }
 
     const io = connect(roomId)
+
+    const disconnectEvents = [
+      'reconnect_failed',
+      'connect_timeout',
+      'connect_error',
+      'disconnect',
+      'reconnect',
+      'reconnect_error',
+      'reconnecting',
+      'reconnect_attempt',
+    ]
+
+    disconnectEvents.forEach((evt) => {
+      io.on(evt, () => {
+        this.props.toggleSocketConnected(false)
+      })
+    })
+
+    const connectEvents = [
+      'connect',
+      'reconnect',
+    ]
+
+    connectEvents.forEach((evt) => {
+      io.on(evt, () => {
+        this.props.toggleSocketConnected(true)
+      })
+    })
 
     await this.createUser()
 
@@ -297,6 +325,11 @@ export default class Home extends Component {
     return (
       <div className="h-100">
         <div className="nav-container">
+          {!this.props.socketConnected &&
+            <div className="alert-banner">
+              <span className="icon"><AlertCircle size='15' /></span> Disconnected
+            </div>
+          }
           <Nav
             members={this.props.members}
             roomId={this.props.roomId}
@@ -393,4 +426,6 @@ Home.propTypes = {
   toggleSoundEnabled: PropTypes.func.isRequired,
   serverSHA: PropTypes.string.isRequired,
   serverVersion: PropTypes.string.isRequired,
+  toggleSocketConnected: PropTypes.func.isRequired,
+  socketConnected: PropTypes.bool.isRequired,
 }

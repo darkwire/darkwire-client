@@ -15,6 +15,7 @@ import {
   sendUserEnter,
   toggleWindowFocus,
   toggleSoundEnabled,
+  toggleSocketConnected,
 } from 'actions'
 
 const mapStateToProps = (state) => {
@@ -37,6 +38,7 @@ const mapStateToProps = (state) => {
     soundIsEnabled: state.app.soundIsEnabled,
     serverVersion: state.app.serverVersion,
     serverSHA: state.app.serverSHA,
+    socketConnected: state.app.socketConnected,
   }
 }
 
@@ -55,6 +57,7 @@ const mapDispatchToProps = {
   sendUserEnter,
   toggleWindowFocus,
   toggleSoundEnabled,
+  toggleSocketConnected,
 }
 
 export default connect(
