@@ -1,4 +1,14 @@
 #! /bin/bash
+
+set -e
+
+if [ -z $1 ]; then
+  echo "Release type is required:"
+  echo "[<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]"
+  echo "See https://docs.npmjs.com/cli/version"
+  exit 1
+fi
+
 npm version $1
 
 git push origin master --follow-tags
