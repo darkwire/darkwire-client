@@ -21,7 +21,11 @@ COPY package.json /app
 RUN $HOME/.yarn/bin/yarn install
 
 COPY . /app
-RUN $HOME/.yarn/bin/yarn build:production
+RUN API_HOST=localhost API_PORT=3000 API_PROTOCOL=http $HOME/.yarn/bin/yarn build:production
+
+# Need src and git during build process but not after
+RUN rm -r /app/src
+RUN rm -r /app/.git
 
 RUN mv /app/dist /var/www
 
