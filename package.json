@@ -21,7 +21,8 @@
     "lint:fix": "eslint --fix src",
     "test": "BABEL_DISABLE_CACHE=1 NODE_ENV=test jest --u",
     "test:dev": "jest --watch",
-    "test:coverage": "BABEL_DISABLE_CACHE=1 NODE_ENV=test jest --coverage"
+    "test:coverage": "BABEL_DISABLE_CACHE=1 NODE_ENV=test jest --coverage",
+    "release": "./release.sh"
   },
   "dependencies": {
     "autosize": "^4.0.0",
