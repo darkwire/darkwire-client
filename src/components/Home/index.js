@@ -280,7 +280,9 @@ export default class Home extends Component {
 
   scrollToBottomIfShould() {
     if (this.props.scrolledToBottom) {
-      this.messageStream.scrollTop = this.messageStream.scrollHeight
+      setTimeout(() => {
+        this.messageStream.scrollTop = this.messageStream.scrollHeight
+      }, 0)
     }
   }
 
