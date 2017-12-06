@@ -45,7 +45,13 @@ export default class Home extends Component {
       this.props.openModal('Welcome')
     }
 
+    const user = await this.createUser()
+
     const io = connect(roomId)
+
+    this.props.sendUserEnter({
+      publicKey: user.publicKey,
+    })
 
     const disconnectEvents = [
       'reconnect_failed',
@@ -75,8 +81,6 @@ export default class Home extends Component {
       })
     })
 
-    await this.createUser()
-
     io.on('USER_ENTER', (payload) => {
       this.props.receiveUserEnter(payload)
       this.props.sendSocketMessage({
@@ -100,14 +104,6 @@ export default class Home extends Component {
 
     io.on('TOGGLE_LOCK_ROOM', (payload) => {
       this.props.receiveToggleLockRoom(payload)
-    })
-
-    const { username, publicKey, privateKey } = this.props
-
-    this.props.sendUserEnter({
-      username,
-      publicKey,
-      privateKey,
     })
   }
 
@@ -303,17 +299,23 @@ export default class Home extends Component {
     }
   }
 
-  async createUser() {
-    const username = shortId.generate()
+  createUser() {
+    return new Promise(async (resolve) => {
+      const username = shortId.generate()
 
-    const encryptDecryptKeys = await crypto.createEncryptDecryptKeys()
-    const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
-    const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
+      const encryptDecryptKeys = await crypto.createEncryptDecryptKeys()
+      const exportedEncryptDecryptPrivateKey = await crypto.exportKey(encryptDecryptKeys.privateKey)
+      const exportedEncryptDecryptPublicKey = await crypto.exportKey(encryptDecryptKeys.publicKey)
 
-    this.props.createUser({
-      username,
-      publicKey: exportedEncryptDecryptPublicKey,
-      privateKey: exportedEncryptDecryptPrivateKey,
+      this.props.createUser({
+        username,
+        publicKey: exportedEncryptDecryptPublicKey,
+        privateKey: exportedEncryptDecryptPrivateKey,
+      })
+
+      resolve({
+        publicKey: exportedEncryptDecryptPublicKey,
+      })
     })
   }
 
@@ -406,7 +408,6 @@ Home.propTypes = {
   activities: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
   publicKey: PropTypes.object.isRequired,
-  privateKey: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,
   match: PropTypes.object.isRequired,
   roomId: PropTypes.string.isRequired,
