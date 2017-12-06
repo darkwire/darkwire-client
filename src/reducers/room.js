@@ -70,9 +70,19 @@ const room = (state = initialState, action) => {
         ],
       }
     case 'USER_ENTER':
+      /*
+      In this payload the server sends all users' public keys. Normally the server
+      will have all the users the client does, but in some cases - such as when
+      new users join before this client has registered with the server (this can
+      happen when lots of users join in quick succession) - the client
+      will receive a USER_ENTER event that doesn't contain itself. In that case we
+      want to prepend "me" to the members payload
+      */
+      const diff = _.differenceBy(state.members, action.payload, m => m.publicKey.n)
+      const members = diff.length ? state.members.concat(action.payload) : action.payload
       return {
         ...state,
-        members: action.payload.map((user) => {
+        members: members.map((user) => {
           const exists = state.members.find(m => _.isEqual(m.publicKey, user.publicKey))
           if (exists) {
             return {
