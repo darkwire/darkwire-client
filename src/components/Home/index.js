@@ -18,6 +18,7 @@ import { X, AlertCircle } from 'react-feather'
 import { defer } from 'lodash'
 import Tinycon from 'tinycon'
 import beepFile from 'audio/beep.mp3'
+import Zoom from 'utils/ImageZoom'
 import { getObjectUrl } from 'utils/file'
 
 const crypto = new Crypto()
@@ -27,6 +28,7 @@ export default class Home extends Component {
     super(props)
 
     this.state = {
+      zoomableImages: [],
       focusChat: false,
     }
   }
@@ -163,10 +165,11 @@ export default class Home extends Component {
     if (type.match('image.*')) {
       return (
         <img
-          className="image-transfer"
+          ref={c => this._zoomableImage = c}
+          className="image-transfer zoomable"
           src={`data:${activity.fileType};base64,${activity.encodedFile}`}
           alt={`${activity.fileName} from ${activity.username}`}
-          onLoad={this.scrollToBottomIfShould.bind(this)}
+          onLoad={this.handleImageDisplay.bind(this)}
         />
       )
     }
@@ -276,6 +279,11 @@ export default class Home extends Component {
           title: null,
         }
     }
+  }
+
+  handleImageDisplay() {
+    Zoom(this._zoomableImage)
+    this.scrollToBottomIfShould()
   }
 
   scrollToBottomIfShould() {
