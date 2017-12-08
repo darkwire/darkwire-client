@@ -78,7 +78,7 @@ const getMain = () => {
   if (process.env.NODE_ENV === 'development') {
     arr.unshift(
       'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:8080',
+      `webpack-dev-server/client?http://localhost:${process.env.PORT}`,
       'webpack/hot/only-dev-server'
     )
   }
@@ -137,7 +137,7 @@ module.exports = {
     hot: process.env.NODE_ENV === 'development',
     publicPath: '/',
     historyApiFallback: true,
-    port: 8080,
+    port: process.env.PORT || 8080,
     compress: false,
     stats: {
       assets: true,
