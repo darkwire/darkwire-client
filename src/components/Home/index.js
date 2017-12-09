@@ -113,12 +113,6 @@ export default class Home extends Component {
     })
   }
 
-  initApp(user) {
-    this.props.sendUserEnter({
-      publicKey: user.publicKey,
-    })
-  }
-
   componentDidMount() {
     this.bindEvents()
 
@@ -285,6 +279,12 @@ export default class Home extends Component {
           title: null,
         }
     }
+  }
+
+  initApp(user) {
+    this.props.sendUserEnter({
+      publicKey: user.publicKey,
+    })
   }
 
   handleImageDisplay() {
