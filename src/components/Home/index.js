@@ -374,7 +374,7 @@ export default class Home extends Component {
         <div className="main-chat">
           <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
             <ul className="plain" ref={el => this.activitiesList = el}>
-              <li><p className="tos"><a href="#" onClick={this.props.openModal.bind(this, 'TOS')}> By using Darkwire, you are agreeing to our Terms of Service.</a></p></li>
+              <li><p className="tos"><a onClick={this.props.openModal.bind(this, 'TOS')}> By using Darkwire, you are agreeing to our Terms of Service.</a></p></li>
               {this.props.activities.map((activity, index) => (
                 <li key={index} className={`activity-item ${activity.type}`}>
                   {this.getActivityComponent(activity)}
