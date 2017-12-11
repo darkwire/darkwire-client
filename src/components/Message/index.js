@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Username from 'components/Username'
 import moment from 'moment'
+import Linkify from 'react-linkify'
 
 class Message extends Component {
   render() {
+    const msg = decodeURI(this.props.message)
+
     return (
       <div>
         <div className="chat-meta">
@@ -14,10 +17,10 @@ class Message extends Component {
           </span>
         </div>
         <div className="chat">
-          {decodeURI(this.props.message).split('\n').map((item, key) => (
-            // preserve line breaks
-            <span key={key}>{item}<br /></span>
-          ))}
+          <Linkify properties={{
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          }}>{msg}</Linkify>
         </div>
       </div>
     )

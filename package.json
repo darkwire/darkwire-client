@@ -40,6 +40,7 @@
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-feather": "^1.0.7",
+    "react-linkify": "^0.2.1",
     "react-modal": "^2.3.2",
     "react-redux": "^5.0.3",
     "react-router": "^4.2.0",
