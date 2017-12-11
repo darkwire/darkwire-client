@@ -37,7 +37,7 @@ class RoomLink extends Component {
       <form>
         <div className="form-group">
           <div className="input-group">
-            <input id="room-url" className="form-control" type="text" readOnly placeholder={this.state.roomUrl} />
+            <input id="room-url" className="form-control" type="text" readOnly value={this.state.roomUrl} />
             <span className="input-group-btn">
               <button
                 className="copy-room btn btn-secondary"

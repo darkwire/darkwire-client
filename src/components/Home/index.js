@@ -11,6 +11,7 @@ import Username from 'components/Username'
 import Notice from 'components/Notice'
 import Modal from 'react-modal'
 import About from 'components/About'
+import TOS from 'components/TOS'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
 import RoomLocked from 'components/RoomLocked'
@@ -19,7 +20,10 @@ import { defer } from 'lodash'
 import Tinycon from 'tinycon'
 import beepFile from 'audio/beep.mp3'
 import Zoom from 'utils/ImageZoom'
+import classNames from 'classnames'
 import { getObjectUrl } from 'utils/file'
+
+import { styles } from './styles.css'
 
 const crypto = new Crypto()
 
@@ -257,6 +261,11 @@ export default class Home extends Component {
           component: <About serverVersion={this.props.serverVersion} serverSHA={this.props.serverSHA} />,
           title: 'About',
         }
+      case 'TOS':
+        return {
+          component: <TOS />,
+          title: 'Terms of Service',
+        }
       case 'Settings':
         return {
           component: <Settings roomId={this.props.roomId} toggleSoundEnabled={this.props.toggleSoundEnabled} soundIsEnabled={this.props.soundIsEnabled} />,
@@ -345,7 +354,7 @@ export default class Home extends Component {
   render() {
     const modalOpts = this.getModal()
     return (
-      <div className="h-100">
+      <div className={classNames(styles, 'h-100')}>
         <div className="nav-container">
           {!this.props.socketConnected &&
             <div className="alert-banner">
@@ -365,6 +374,7 @@ export default class Home extends Component {
         <div className="main-chat">
           <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
             <ul className="plain" ref={el => this.activitiesList = el}>
+              <li><p className="tos"><a onClick={this.props.openModal.bind(this, 'TOS')}> By using Darkwire, you are agreeing to our Terms of Service.</a></p></li>
               {this.props.activities.map((activity, index) => (
                 <li key={index} className={`activity-item ${activity.type}`}>
                   {this.getActivityComponent(activity)}
