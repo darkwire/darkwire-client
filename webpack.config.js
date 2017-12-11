@@ -4,6 +4,7 @@ const execSync = require('child_process').execSync
 
 const clientVersion = execSync('git describe --abbrev=0 --tags', {encoding: 'utf-8'}).trim();
 const sha = execSync('git rev-parse HEAD', {encoding: 'utf-8'}).trim();
+const port = process.env.PORT || 8080;
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -78,7 +79,7 @@ const getMain = () => {
   if (process.env.NODE_ENV === 'development') {
     arr.unshift(
       'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:8080',
+      `webpack-dev-server/client?http://localhost:${port}`,
       'webpack/hot/only-dev-server'
     )
   }
@@ -137,7 +138,7 @@ module.exports = {
     hot: process.env.NODE_ENV === 'development',
     publicPath: '/',
     historyApiFallback: true,
-    port: 8080,
+    port,
     compress: false,
     stats: {
       assets: true,

@@ -35,6 +35,8 @@ export default class Home extends Component {
       zoomableImages: [],
       focusChat: false,
     }
+
+    this.hasConnected = false
   }
 
   async componentWillMount() {
@@ -54,10 +56,6 @@ export default class Home extends Component {
     const user = await this.createUser()
 
     const io = connect(roomId)
-
-    this.props.sendUserEnter({
-      publicKey: user.publicKey,
-    })
 
     const disconnectEvents = [
       'reconnect_failed',
@@ -83,6 +81,12 @@ export default class Home extends Component {
 
     connectEvents.forEach((evt) => {
       io.on(evt, () => {
+        if (evt === 'connect') {
+          if (!this.hasConnected) {
+            this.initApp(user)
+            this.hasConnected = true
+          }
+        }
         this.props.toggleSocketConnected(true)
       })
     })
@@ -284,6 +288,12 @@ export default class Home extends Component {
           title: null,
         }
     }
+  }
+
+  initApp(user) {
+    this.props.sendUserEnter({
+      publicKey: user.publicKey,
+    })
   }
 
   handleImageDisplay() {

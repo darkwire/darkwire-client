@@ -4,7 +4,12 @@ import apiConfig from '../api/config'
 let socket
 
 export const connect = (roomId) => {
-  socket = socketIO(`${apiConfig.protocol}://${apiConfig.host}:${apiConfig.port}/${roomId}`)
+  socket = socketIO(`${apiConfig.protocol}://${apiConfig.host}:${apiConfig.port}`, {
+    query: {
+      roomId,
+    },
+    forceNew: true,
+  })
   return socket
 }
 
