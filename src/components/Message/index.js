@@ -6,7 +6,7 @@ import Linkify from 'react-linkify'
 
 class Message extends Component {
   render() {
-    let msg = decodeURI(this.props.message)
+    const msg = decodeURI(this.props.message)
 
     return (
       <div>
