@@ -4175,6 +4175,12 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+linkify-it@^1.2.0:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/linkify-it/-/linkify-it-1.2.4.tgz#0773526c317c8fd13bd534ee1d180ff88abf881a"
+  dependencies:
+    uc.micro "^1.0.1"
+
 load-bmfont@^1.2.3:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/load-bmfont/-/load-bmfont-1.3.0.tgz#bb7e7c710de6bcafcb13cb3b8c81e0c0131ecbc9"
@@ -5945,6 +5951,14 @@ react-hot-loader@3.1.3:
     redbox-react "^1.3.6"
     source-map "^0.6.1"
 
+react-linkify@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-linkify/-/react-linkify-0.2.1.tgz#b28d3f9544539a622fec8d42b4800eb9d23bf981"
+  dependencies:
+    linkify-it "^1.2.0"
+    prop-types "^15.5.8"
+    tlds "^1.57.0"
+
 react-modal@^2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-2.3.2.tgz#af9d625da218461de3e87551609dfca12d8d4946"
@@ -7023,6 +7037,10 @@ tinycon@^0.6.8:
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/tinycon/-/tinycon-0.6.8.tgz#e7da223e3ee0cbf9db7963fa335699bb21777a73"
 
+tlds@^1.57.0:
+  version "1.199.0"
+  resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.199.0.tgz#a4fc8c3058216488a80aaaebb427925007e55217"
+
 tmp@^0.0.31:
   version "0.0.31"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.31.tgz#8f38ab9438e17315e5dbd8b3657e8bfb277ae4a7"
@@ -7123,6 +7141,10 @@ typedarray@^0.0.6:
 ua-parser-js@^0.7.9:
   version "0.7.14"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
+
+uc.micro@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.3.tgz#7ed50d5e0f9a9fb0a573379259f2a77458d50192"
 
 uglify-js@3.0.x:
   version "3.0.28"
