@@ -245,9 +245,6 @@ export class Chat extends Component {
 
     return (
       <form onSubmit={this.handleFormSubmit.bind(this)} className="chat-preflight-container">
-        <div className="input-controls-left">
-          <FileTransfer sendSocketMessage={this.props.sendSocketMessage} />
-        </div>
         <textarea
           rows="1"
           onKeyUp={this.handleKeyUp.bind(this)}
@@ -259,6 +256,7 @@ export class Chat extends Component {
           placeholder="Type here"
           onChange={this.handleInputChange.bind(this)} />
         <div className="input-controls">
+          <FileTransfer sendSocketMessage={this.props.sendSocketMessage} />
           {touchSupport &&
             <button onClick={this.handleSendClick.bind(this)} className={`icon is-right send btn btn-link ${this.canSend() ? 'active' : ''}`}>
               <CornerDownRight className={this.canSend() ? '' : 'disabled'} />
