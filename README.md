@@ -1,6 +1,8 @@
 # Darkwire Client
 
-This is the client for Darkwire. It requires [darkwire-server](https://github.com/seripap/darkwire-server) in order to run.
+This is the client for [Darkwire](https://github.com/seripap/darkwire.io). It requires [darkwire-server](https://github.com/seripap/darkwire-server) in order to run.
+
+For more information about how Darkwire works, visit the [main repository](https://github.com/seripap/darkwire.io).
 
 ## Dev
 
