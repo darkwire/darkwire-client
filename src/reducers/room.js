@@ -40,7 +40,8 @@ const room = (state = initialState, action) => {
           }),
       }
     case 'HANDLE_SOCKET_MESSAGE_ADD_USER':
-      const joining = state.joining ? state.members.length < state.size : false
+      const membersWithId = state.members.filter(m => m.id)
+      const joining = state.joining ? membersWithId.length + 1 < state.size : false
 
       return {
         ...state,
