@@ -103,6 +103,10 @@ const activities = (state = initialState, action) => {
         return state
       }
 
+      if (action.payload.state.room.joining) {
+        return state
+      }
+
       return {
         ...state,
         items: [
