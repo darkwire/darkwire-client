@@ -46,6 +46,17 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
     })
   })
 
+  const verified = await crypto.verifyPayload(
+    signature,
+    payloadBuffer,
+    signingKey
+  )
+
+  if (!verified) {
+    reject()
+    return
+  }
+
   const decryptedPayload = await crypto.decryptMessage(
     payloadBuffer,
     sessionKey,
@@ -54,17 +65,7 @@ export const process = (payload, state) => new Promise(async (resolve, reject) =
 
   const payloadJson = JSON.parse(crypto.convertArrayBufferViewToString(new Uint8Array(decryptedPayload)))
 
-  const verified = await crypto.verifyPayload(
-    signature,
-    decryptedPayload,
-    signingKey
-  )
-
-  if (verified) {
-    resolve(payloadJson)
-  } else {
-    reject()
-  }
+  resolve(payloadJson)
 })
 
 export const prepare = (payload, state) => new Promise(async (resolve) => {
@@ -90,7 +91,7 @@ export const prepare = (payload, state) => new Promise(async (resolve) => {
   const encryptedPayload = await crypto.encryptMessage(payloadBuffer, sessionKey, iv)
   const payloadString = await crypto.convertArrayBufferViewToString(new Uint8Array(encryptedPayload))
 
-  const signature = await crypto.signMessage(payloadBuffer, signingKey)
+  const signature = await crypto.signMessage(encryptedPayload, signingKey)
 
   const encryptedKeys = await Promise.all(state.room.members
     .map(async (member) => {
