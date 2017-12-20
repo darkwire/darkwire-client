@@ -19,7 +19,7 @@ import {
 } from 'actions'
 
 const mapStateToProps = (state) => {
-  const me = state.room.members.find(m => m.username === state.user.username)
+  const me = state.room.members.find(m => m.id === state.user.id)
 
   return {
     activities: state.activities.items,
