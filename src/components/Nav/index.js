@@ -104,7 +104,7 @@ class Nav extends Component {
                   <li key={`user-${index}`}>
                     <Username username={member.username} />
                     <span className="icon-container">
-                      {member.username === this.props.username &&
+                      {member.id === this.props.userId &&
                         <span data-toggle="tooltip" data-placement="bottom" title="Me" className="me-icon-wrap">
                           <User className="me-icon" />
                         </span>
@@ -153,7 +153,7 @@ class Nav extends Component {
 Nav.propTypes = {
   members: PropTypes.array.isRequired,
   roomId: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
   roomLocked: PropTypes.bool.isRequired,
   toggleLockRoom: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,

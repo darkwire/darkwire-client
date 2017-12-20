@@ -364,11 +364,11 @@ export default class Home extends Component {
           <Nav
             members={this.props.members}
             roomId={this.props.roomId}
-            username={this.props.username}
             roomLocked={this.props.roomLocked}
             toggleLockRoom={this.props.toggleLockRoom}
             openModal={this.props.openModal}
             iAmOwner={this.props.iAmOwner}
+            userId={this.props.userId}
           />
         </div>
         <div className="main-chat">
