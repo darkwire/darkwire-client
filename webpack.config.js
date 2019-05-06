@@ -1,4 +1,3 @@
-require('dotenv').config()
 const path = require('path')
 const webpack = require('webpack')
 const execSync = require('child_process').execSync
