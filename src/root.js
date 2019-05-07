@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-simple-dropdown/styles/Dropdown.css'
-import 'stylesheets/app.sass'
+import styles from 'stylesheets/app.sass'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import { Provider } from 'react-redux'
@@ -9,6 +10,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import shortId from 'shortid'
 import Home from 'containers/Home'
 import { hasTouchSupport } from './utils/dom'
+console.log(styles);
 
 const store = configureStore()
 

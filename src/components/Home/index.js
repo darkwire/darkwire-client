@@ -22,7 +22,7 @@ import Zoom from 'utils/ImageZoom'
 import classNames from 'classnames'
 import { getObjectUrl } from 'utils/file'
 
-import { styles } from './styles.css'
+import styles from './styles.module.scss'
 
 const crypto = new Crypto()
 
@@ -348,7 +348,7 @@ export default class Home extends Component {
   render() {
     const modalOpts = this.getModal()
     return (
-      <div className={classNames(styles, 'h-100')}>
+      <div className={classNames(styles.styles, 'h-100')}>
         <div className="nav-container">
           {!this.props.socketConnected &&
             <div className="alert-banner">
@@ -368,7 +368,7 @@ export default class Home extends Component {
         <div className="main-chat">
           <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
             <ul className="plain" ref={el => this.activitiesList = el}>
-              <li><p className="tos"><a onClick={this.props.openModal.bind(this, 'About')}> By using Darkwire, you are agreeing to our Acceptable Use Policy and Terms of Service.</a></p></li>
+              <li><p className={styles.tos}><a onClick={this.props.openModal.bind(this, 'About')}> By using Darkwire, you are agreeing to our Acceptable Use Policy and Terms of Service.</a></p></li>
               {this.props.activities.map((activity, index) => (
                 <li key={index} className={`activity-item ${activity.type}`}>
                   {this.getActivityComponent(activity)}

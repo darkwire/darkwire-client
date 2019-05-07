@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import uuid from 'uuid'
 import { File } from 'react-feather'
 import { sanitize } from 'utils'
-import { styles } from './styles.css'
+import {styles} from './styles.module.scss'
 
 const VALID_FILE_TYPES = ['png', 'jpg', 'jpeg', 'gif', 'zip', 'rar', 'gzip', 'pdf', 'txt', 'json', 'doc', 'docx', 'csv', 'js', 'html', 'css']
 

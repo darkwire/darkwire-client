@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Copy } from 'react-feather'
 import Clipboard from 'clipboard'
+import $ from 'jquery';
 
 class RoomLink extends Component {
   constructor(props) {

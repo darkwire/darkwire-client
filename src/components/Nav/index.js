@@ -6,6 +6,8 @@ import logoImg from 'img/logo.png'
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import Username from 'components/Username'
 import Clipboard from 'clipboard'
+import $ from 'jquery';
+// import 'popper.js';
 
 class Nav extends Component {
   componentDidMount() {
