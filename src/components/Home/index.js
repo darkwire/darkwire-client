@@ -11,7 +11,6 @@ import Username from 'components/Username'
 import Notice from 'components/Notice'
 import Modal from 'react-modal'
 import About from 'components/About'
-import TOS from 'components/TOS'
 import Settings from 'components/Settings'
 import Welcome from 'components/Welcome'
 import RoomLocked from 'components/RoomLocked'
@@ -231,7 +230,7 @@ export default class Home extends Component {
         const downloadUrl = getObjectUrl(activity.encodedFile, activity.fileType)
         return (
           <div>
-            <Username username={activity.username} /> sent you a file. <a target="_blank" href={downloadUrl}>Download {activity.fileName}</a>
+            <Username username={activity.username} /> sent you a file. <a target="_blank" href={downloadUrl} rel="noopener noreferrer">Download {activity.fileName}</a>
             {this.getFileDisplay(activity)}
           </div>
         )
@@ -239,7 +238,7 @@ export default class Home extends Component {
         const url = getObjectUrl(activity.encodedFile, activity.fileType)
         return (
           <Notice>
-            <div>You sent <a target="_blank" href={url}>{activity.fileName}</a></div>
+            <div>You sent <a target="_blank" href={url} rel="noopener noreferrer">{activity.fileName}</a></div>
             {this.getFileDisplay(activity)}
           </Notice>
         )
@@ -258,13 +257,8 @@ export default class Home extends Component {
         }
       case 'About':
         return {
-          component: <About serverVersion={this.props.serverVersion} serverSHA={this.props.serverSHA} />,
+          component: <About roomId={this.props.roomId} serverVersion={this.props.serverVersion} serverSHA={this.props.serverSHA} />,
           title: 'About',
-        }
-      case 'TOS':
-        return {
-          component: <TOS />,
-          title: 'Terms of Service',
         }
       case 'Settings':
         return {
@@ -374,7 +368,7 @@ export default class Home extends Component {
         <div className="main-chat">
           <div onClick={this.handleChatClick.bind(this)} className="message-stream h-100" ref={el => this.messageStream = el}>
             <ul className="plain" ref={el => this.activitiesList = el}>
-              <li><p className="tos"><a onClick={this.props.openModal.bind(this, 'TOS')}> By using Darkwire, you are agreeing to our Terms of Service.</a></p></li>
+              <li><p className="tos"><a onClick={this.props.openModal.bind(this, 'About')}> By using Darkwire, you are agreeing to our Acceptable Use Policy and Terms of Service.</a></p></li>
               {this.props.activities.map((activity, index) => (
                 <li key={index} className={`activity-item ${activity.type}`}>
                   {this.getActivityComponent(activity)}
