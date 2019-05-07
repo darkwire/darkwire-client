@@ -230,7 +230,7 @@ export default class Home extends Component {
         const downloadUrl = getObjectUrl(activity.encodedFile, activity.fileType)
         return (
           <div>
-            <Username username={activity.username} /> sent you a file. <a target="_blank" href={downloadUrl}>Download {activity.fileName}</a>
+            <Username username={activity.username} /> sent you a file. <a target="_blank" href={downloadUrl} rel="noopener noreferrer">Download {activity.fileName}</a>
             {this.getFileDisplay(activity)}
           </div>
         )
@@ -238,7 +238,7 @@ export default class Home extends Component {
         const url = getObjectUrl(activity.encodedFile, activity.fileType)
         return (
           <Notice>
-            <div>You sent <a target="_blank" href={url}>{activity.fileName}</a></div>
+            <div>You sent <a target="_blank" href={url} rel="noopener noreferrer">{activity.fileName}</a></div>
             {this.getFileDisplay(activity)}
           </Notice>
         )
