@@ -7,7 +7,6 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import Username from 'components/Username'
 import Clipboard from 'clipboard'
 import $ from 'jquery';
-// import 'popper.js';
 
 class Nav extends Component {
   componentDidMount() {
