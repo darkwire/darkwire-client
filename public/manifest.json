@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Darkwire",
+  "name": "Darkwire.io - encrypted web chat",
   "icons": [
     {
       "src": "favicon.ico",
