@@ -1,16 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { styles } from './styles.module.css'
+import styles from './styles.module.css'
 
-const Notice = props => (<div className={styles}>
-
-  <div className={classNames(styles, {
-    info: props.level === 'info',
-    warning: props.level === 'warning',
-    danger: props.level === 'danger',
-  })}>{props.children}</div>
-</div>)
+const Notice = props => (
+  <div>
+    <div className={classNames({
+      info: props.level === 'info',
+      warning: props.level === 'warning',
+      danger: props.level === 'danger',
+    })}>
+      {props.children}
+    </div>
+  </div>
+)
 
 Notice.defaultProps = {
   level: 'info',

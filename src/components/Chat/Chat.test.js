@@ -7,7 +7,7 @@ const sendSocketMessage = jest.fn()
 
 test('Chat Component', () => {
   const component = mount(
-    <Chat focusChat={false} userId="foo" username="user" showNotice={() => {}} clearActivities={() => {}} sendSocketMessage={sendSocketMessage} />
+    <Chat scrollToBottom={() => {}} focusChat={false} userId="foo" username="user" showNotice={() => {}} clearActivities={() => {}} sendSocketMessage={sendSocketMessage} />
   )
 
   const componentJSON = toJson(component)
