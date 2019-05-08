@@ -8,10 +8,8 @@ For more information about how Darkwire works, visit the [main repository](https
 
 ```
 $ yarn
-$ yarn dev
+$ yarn start
 ```
-
-A dev server is now running on port 8080.
 
 ## Docker
 
