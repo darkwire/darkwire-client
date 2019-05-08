@@ -10,7 +10,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import shortId from 'shortid'
 import Home from 'containers/Home'
 import { hasTouchSupport } from './utils/dom'
-console.log(styles);
 
 const store = configureStore()
 
