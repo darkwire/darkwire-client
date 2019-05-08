@@ -33,8 +33,8 @@ class About extends Component {
       <div>
         <h4>Version</h4>
         <strong>Client</strong>
-        <p>Version: <a target="_blank" href={`https://github.com/seripap/darkwire-client/releases/tag/${process.env.VERSION}`}>{process.env.VERSION}</a><br />
-        Commit SHA: <a target="_blank" href={`https://github.com/seripap/darkwire-client/commit/${process.env.COMMIT_SHA}`}>{process.env.COMMIT_SHA}</a></p>
+        <p>Version: <a target="_blank" href={`https://github.com/seripap/darkwire-client/releases/tag/${process.env.REACT_APP_VERSION}`}>{process.env.REACT_APP_VERSION}</a><br />
+        Commit SHA: <a target="_blank" href={`https://github.com/seripap/darkwire-client/commit/${process.env.REACT_APP_COMMIT_SHA}`}>{process.env.REACT_APP_COMMIT_SHA}</a></p>
         <strong>Server</strong>
         <p>Version: <a target="_blank" href={`https://github.com/seripap/darkwire-server/releases/tag/${this.props.serverVersion}`}>{this.props.serverVersion}</a><br />
         Commit SHA: <a target="_blank" href={`https://github.com/seripap/darkwire-server/commit/${this.props.serverSHA}`}>{this.props.serverSHA}</a></p>
