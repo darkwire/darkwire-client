@@ -1,4 +1,3 @@
-import isoFetch from 'isomorphic-fetch'
 import {
   fetchStart,
   fetchSuccess,
@@ -30,7 +29,7 @@ export default (opts, dispatch, name, metaOpts = {}) => {
   return new Promise((resolve, reject) => {
     const meta = { ...metaOpts, timestamp: Date.now() }
     dispatch(fetchStart(name, method, resourceId, meta))
-    return isoFetch(url, config)
+    return window.fetch(url, config)
       .then(async (response) => {
         let json = {}
 

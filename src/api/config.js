@@ -4,19 +4,19 @@ let port
 
 switch (process.env.NODE_ENV) {
   case 'staging':
-    host = process.env.API_HOST || 'api-staging.darkwire.io'
-    protocol = process.env.API_PROTOCOL || 'https'
-    port = process.env.API_PORT || 443
+    host = process.env.REACT_APP_API_HOST
+    protocol = process.env.REACT_APP_API_PROTOCOL || 'https'
+    port = process.env.REACT_APP_API_PORT || 443
     break
   case 'production':
-    host = process.env.API_HOST || 'api.darkwire.io'
-    protocol = process.env.API_PROTOCOL || 'https'
-    port = process.env.API_PORT || 443
+    host = process.env.REACT_APP_API_HOST
+    protocol = process.env.REACT_APP_API_PROTOCOL || 'https'
+    port = process.env.REACT_APP_API_PORT || 443
     break
   default:
-    host = process.env.API_HOST || 'localhost'
-    protocol = process.env.API_PROTOCOL || 'http'
-    port = process.env.API_PORT || 3000
+    host = process.env.REACT_APP_API_HOST || 'localhost'
+    protocol = process.env.REACT_APP_API_PROTOCOL || 'http'
+    port = process.env.REACT_APP_API_PORT || 3000
 }
 
 export default {

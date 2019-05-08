@@ -33,11 +33,11 @@ class About extends Component {
       <div>
         <h4>Version</h4>
         <strong>Client</strong>
-        <p>Version: <a target="_blank" href={`https://github.com/seripap/darkwire-client/releases/tag/${process.env.VERSION}`}>{process.env.VERSION}</a><br />
-        Commit SHA: <a target="_blank" href={`https://github.com/seripap/darkwire-client/commit/${process.env.COMMIT_SHA}`}>{process.env.COMMIT_SHA}</a></p>
+        <p>Version: <a target="_blank" href={`https://github.com/darkwire/darkwire-client/releases/tag/${process.env.REACT_APP_VERSION}`}>{process.env.REACT_APP_VERSION}</a><br />
+        Commit SHA: <a target="_blank" href={`https://github.com/darkwire/darkwire-client/commit/${process.env.REACT_APP_COMMIT_SHA}`}>{process.env.REACT_APP_COMMIT_SHA}</a></p>
         <strong>Server</strong>
-        <p>Version: <a target="_blank" href={`https://github.com/seripap/darkwire-server/releases/tag/${this.props.serverVersion}`}>{this.props.serverVersion}</a><br />
-        Commit SHA: <a target="_blank" href={`https://github.com/seripap/darkwire-server/commit/${this.props.serverSHA}`}>{this.props.serverSHA}</a></p>
+        <p>Version: <a target="_blank" href={`https://github.com/darkwire/darkwire-server/releases/tag/${this.props.serverVersion}`}>{this.props.serverVersion}</a><br />
+        Commit SHA: <a target="_blank" href={`https://github.com/darkwire/darkwire-server/commit/${this.props.serverSHA}`}>{this.props.serverSHA}</a></p>
         <br />
 
         <h4>Software</h4>
@@ -45,7 +45,7 @@ class About extends Component {
         encrypt data which is transferred using <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener noreferrer">secure WebSockets</a>.
           Messages are never stored on a server or sent over the wire in plain-text.</p>
         <p>We believe in privacy and transparency.
-        &nbsp;<a href="https://github.com/seripap/darkwire.io" target="_blank" rel="noopener noreferrer">View the source code and documentation on GitHub.</a></p>
+        &nbsp;<a href="https://github.com/darkwire/darkwire.io" target="_blank" rel="noopener noreferrer">View the source code and documentation on GitHub.</a></p>
         <br />
 
         <h4>Report Abuse</h4>
@@ -165,7 +165,7 @@ terms, please stop using the Service.</p>
 
         <h4>Contact</h4>
         <p>Questions/comments? Email us at hello[at]darkwire.io</p>
-        <p>Found a bug or want a new feature? <a href="https://github.com/seripap/darkwire.io/issues" target="_blank" rel="noopener noreferrer">Open a ticket on Github</a>.</p>
+        <p>Found a bug or want a new feature? <a href="https://github.com/darkwire/darkwire.io/issues" target="_blank" rel="noopener noreferrer">Open a ticket on Github</a>.</p>
         <br />
 
         <h4>Donate</h4>

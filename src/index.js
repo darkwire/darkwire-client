@@ -1,27 +1,12 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { AppContainer } from 'react-hot-loader'
-// eslint-disable-next-line no-unused-vars
-import bootstrap from 'bootstrap'
-// eslint-disable-next-line no-unused-vars
-import webCryptoShim from 'webcrypto-shim/webcrypto-shim.js'
-import Root from './root'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import Root from './root';
+import * as serviceWorker from './serviceWorker';
 
-const renderApp = (Component) => {
-  render(
-    <AppContainer>
-      <Component />
-    </AppContainer>,
-    document.getElementById('root')
-  )
-}
+ReactDOM.render(<Root />, document.getElementById('root'));
 
-renderApp(Root)
-
-if (module.hot) {
-  module.hot.accept('./root.js', () => {
-    // eslint-disable-next-line global-require
-    const rootComponent = require('./root').default
-    renderApp(rootComponent)
-  })
-}
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
