@@ -33,10 +33,8 @@ class About extends Component {
       <div>
         <h4>Version</h4>
         <strong>Client</strong>
-        <p>Version: <a target="_blank" href={`https://github.com/darkwire/darkwire-client/releases/tag/${process.env.REACT_APP_VERSION}`}>{process.env.REACT_APP_VERSION}</a><br />
         Commit SHA: <a target="_blank" href={`https://github.com/darkwire/darkwire-client/commit/${process.env.REACT_APP_COMMIT_SHA}`}>{process.env.REACT_APP_COMMIT_SHA}</a></p>
         <strong>Server</strong>
-        <p>Version: <a target="_blank" href={`https://github.com/darkwire/darkwire-server/releases/tag/${this.props.serverVersion}`}>{this.props.serverVersion}</a><br />
         Commit SHA: <a target="_blank" href={`https://github.com/darkwire/darkwire-server/commit/${this.props.serverSHA}`}>{this.props.serverSHA}</a></p>
         <br />
 
@@ -193,7 +191,6 @@ terms, please stop using the Service.</p>
 }
 
 About.propTypes = {
-  serverVersion: PropTypes.string.isRequired,
   serverSHA: PropTypes.string.isRequired,
   roomId: PropTypes.string.isRequired,
 }

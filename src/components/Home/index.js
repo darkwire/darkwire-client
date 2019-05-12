@@ -259,7 +259,7 @@ export default class Home extends Component {
         }
       case 'About':
         return {
-          component: <About roomId={this.props.roomId} serverVersion={this.props.serverVersion} serverSHA={this.props.serverSHA} />,
+          component: <About roomId={this.props.roomId} serverSHA={this.props.serverSHA} />,
           title: 'About',
         }
       case 'Settings':
@@ -452,7 +452,6 @@ Home.propTypes = {
   soundIsEnabled: PropTypes.bool.isRequired,
   toggleSoundEnabled: PropTypes.func.isRequired,
   serverSHA: PropTypes.string.isRequired,
-  serverVersion: PropTypes.string.isRequired,
   toggleSocketConnected: PropTypes.func.isRequired,
   socketConnected: PropTypes.bool.isRequired,
 }
