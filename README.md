@@ -12,16 +12,3 @@ For more information about how Darkwire works, visit the [main repository](https
 $ yarn
 $ yarn start
 ```
-
-## Docker
-
-Building locally:
-
-```
-$ docker build -t darkwire-client .
-```
-
-Run from official repository:
-```
-$ docker run -p 80:80 darkwire/darkwire-client
-```

@@ -16,7 +16,7 @@ switch (process.env.NODE_ENV) {
   default:
     host = process.env.REACT_APP_API_HOST || 'localhost'
     protocol = process.env.REACT_APP_API_PROTOCOL || 'http'
-    port = process.env.REACT_APP_API_PORT || 3000
+    port = process.env.REACT_APP_API_PORT || 3001
 }
 
 export default {

@@ -4,7 +4,6 @@ const initialState = {
   windowIsFocused: true,
   unreadMessageCount: 0,
   soundIsEnabled: true,
-  serverVersion: '',
   serverSHA: '',
   socketConnected: false,
 }
@@ -14,7 +13,6 @@ const app = (state = initialState, action) => {
     case 'FETCH_CREATE_HANDSHAKE_SUCCESS':
       return {
         ...state,
-        serverVersion: action.payload.json.version,
         serverSHA: action.payload.json.sha,
       }
     case 'OPEN_MODAL':
