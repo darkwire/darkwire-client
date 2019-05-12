@@ -5,5 +5,9 @@ export default (resourceName) => {
 
   const resourcePath = resourceName
 
+  if (!host) {
+    return `/${resourcePath}`;
+  }
+
   return `${protocol}://${host}:${port}/${resourcePath}`
 }
