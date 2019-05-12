@@ -32,9 +32,9 @@ class About extends Component {
     return (
       <div>
         <h4>Version</h4>
-        <strong>Client</strong>
+        <p><strong>Client</strong>
         Commit SHA: <a target="_blank" href={`https://github.com/darkwire/darkwire-client/commit/${process.env.REACT_APP_COMMIT_SHA}`}>{process.env.REACT_APP_COMMIT_SHA}</a></p>
-        <strong>Server</strong>
+        <p><strong>Server</strong>
         Commit SHA: <a target="_blank" href={`https://github.com/darkwire/darkwire-server/commit/${this.props.serverSHA}`}>{this.props.serverSHA}</a></p>
         <br />
 
